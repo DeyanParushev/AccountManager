@@ -27,6 +27,10 @@ namespace AccountManager.Data.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
@@ -143,7 +147,8 @@ namespace AccountManager.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(15, 15)
+                        .HasColumnType("decimal(15,15)");
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");

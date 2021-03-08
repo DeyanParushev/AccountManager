@@ -28,7 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AccountManager.Data\AccountManager.Data.csproj" />
+    <ProjectReference Include="..\AccountManager.DTOs\AccountManager.DTOs.csproj" />
+    <ProjectReference Include="..\AccountManager.Services\AccountManager.Services.csproj" />
+    <ProjectReference Include="..\AccountManager.ViewModels\AccountManager.ViewModels.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

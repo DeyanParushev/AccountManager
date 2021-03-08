@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccountManager.Data.Migrations
 {
     [DbContext(typeof(AccountManagerContext))]
-    [Migration("20210308100347_InitialCreate")]
+    [Migration("20210308120600_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,10 @@ namespace AccountManager.Data.Migrations
 
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -145,7 +149,8 @@ namespace AccountManager.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(15, 15)
+                        .HasColumnType("decimal(15,15)");
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");

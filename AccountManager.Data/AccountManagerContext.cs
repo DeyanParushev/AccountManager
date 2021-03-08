@@ -29,6 +29,10 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Transfer>()
+                .Property("Amount")
+                .HasPrecision(15, 15);
+
             base.OnModelCreating(builder);   
         }
     }

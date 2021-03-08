@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountManager", "AccountManager\AccountManager.csproj", "{151C7572-3CE3-4310-8D58-1198C9664045}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountManager", "AccountManager\AccountManager.csproj", "{151C7572-3CE3-4310-8D58-1198C9664045}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountManager.Models", "AccountManager.Models\AccountManager.Models.csproj", "{4C6D433E-372F-41F2-8200-C6BBFF81FC4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountManager.Models", "AccountManager.Models\AccountManager.Models.csproj", "{4C6D433E-372F-41F2-8200-C6BBFF81FC4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountManager.Data", "AccountManager.Data\AccountManager.Data.csproj", "{5B48990F-E8FF-448A-B34D-BE7DBF7C0BDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountManager.Data", "AccountManager.Data\AccountManager.Data.csproj", "{5B48990F-E8FF-448A-B34D-BE7DBF7C0BDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountManager.DTOs", "AccountManager.DTOs\AccountManager.DTOs.csproj", "{6EB46EFA-1A20-416D-9CEE-875B8A94895E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountManager.DTOs", "AccountManager.DTOs\AccountManager.DTOs.csproj", "{6EB46EFA-1A20-416D-9CEE-875B8A94895E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountManager.Services", "AccountManager.Services\AccountManager.Services.csproj", "{DDE7C7B5-481E-4C7B-A64E-A26C7DD2EBAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountManager.Services", "AccountManager.Services\AccountManager.Services.csproj", "{DDE7C7B5-481E-4C7B-A64E-A26C7DD2EBAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountManager.ViewModels", "AccountManager.ViewModels\AccountManager.ViewModels.csproj", "{D1B68412-208B-45EF-AF7B-38A1322A80A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{DDE7C7B5-481E-4C7B-A64E-A26C7DD2EBAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDE7C7B5-481E-4C7B-A64E-A26C7DD2EBAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDE7C7B5-481E-4C7B-A64E-A26C7DD2EBAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1B68412-208B-45EF-AF7B-38A1322A80A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1B68412-208B-45EF-AF7B-38A1322A80A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1B68412-208B-45EF-AF7B-38A1322A80A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1B68412-208B-45EF-AF7B-38A1322A80A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

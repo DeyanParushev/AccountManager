@@ -14,6 +14,9 @@
         [Key]
         public string Id { get; set; }
 
+        [Required]
+        public string Name { get; set; }
+
         public virtual ICollection<Transfer> Transfers { get; set; }
     }
 }
