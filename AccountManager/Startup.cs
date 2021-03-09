@@ -57,9 +57,10 @@ namespace AccountManager
                 configuration.RootPath = "ClientApp/build";
             });
 
-            var jwt = Configuration.GetSection("JwtConfiguration:Secret");
-            services.AddSingleton<AzureSettings>();
-            services.AddSingleton<JwtSettings>();
+            var jwt = Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+            var azure = Configuration.GetSection("AzureSettings").Get<AzureSettings>();
+            services.AddSingleton(jwt);
+            services.AddSingleton(azure);
             services.AddTransient<IAccountsService, AccountsService>();
         }
 

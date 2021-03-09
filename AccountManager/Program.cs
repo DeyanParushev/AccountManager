@@ -25,9 +25,10 @@ namespace AccountManager
 
                 var env = hostingContext.HostingEnvironment;
 
-                config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                      .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                      .AddJsonFile("secrets.json", optional: true, reloadOnChange: true);
+                config.AddJsonFile($"appsettings.json", optional: false, reloadOnChange: true)
+                      .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true)
+                      .AddJsonFile($"appsettings.Production.json", optional: false, reloadOnChange: true);
+                //.AddJsonFile("secrets.json", optional: false, reloadOnChange: true);
 
                 config.AddEnvironmentVariables();
 

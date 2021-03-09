@@ -11,18 +11,21 @@
     public class AccountController : ControllerBase
     {
         private readonly IAccountsService accountsService;
-        private readonly JwtSettings azure;
+        private readonly AzureSettings azure;
+        private readonly JwtSettings jwt;
 
-        public AccountController(IAccountsService accountsService, JwtSettings azure)
+        public AccountController(IAccountsService accountsService, AzureSettings azure, JwtSettings jwt)
         {
             this.accountsService = accountsService;
             this.azure = azure;
+            this.jwt = jwt;
         }
 
         [HttpPost("Create")]
         public async Task<IActionResult> Create(AccountInputModel acount)
         {
-            var azure = this.azure.Secret;
+            var jwt = this.jwt;
+            var azure = this.azure;
             if (!ModelState.IsValid)
             {
                 var error = new { Message = ModelState.Values };
