@@ -1,14 +1,9 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace AccountManager
 {
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Hosting;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -17,10 +12,33 @@ namespace AccountManager
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+        //Host.CreateDefaultBuilder(args)
+        //    .ConfigureWebHostDefaults(webBuilder =>
+        //    {
+        //        webBuilder.UseStartup<Startup>();
+        //    });
+
+        Host.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration((hostingContext, config) =>
+            {
+                config.Sources.Clear();
+
+                var env = hostingContext.HostingEnvironment;
+
+                config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                      .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                      .AddJsonFile("secrets.json", optional: true, reloadOnChange: true);
+
+                config.AddEnvironmentVariables();
+
+                if (args != null)
                 {
-                    webBuilder.UseStartup<Startup>();
-                });
+                    config.AddCommandLine(args);
+                }
+            })
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
     }
 }

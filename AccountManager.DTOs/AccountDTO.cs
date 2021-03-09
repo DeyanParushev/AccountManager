@@ -8,6 +8,7 @@
         public AccountDTO()
         {
             Id = Guid.NewGuid().ToString();
+            Transfers = new HashSet<TransferDTO>();
         }
 
         public string Id { get; set; }

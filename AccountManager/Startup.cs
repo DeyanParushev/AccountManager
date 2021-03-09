@@ -11,6 +11,11 @@ namespace AccountManager
 
     using AccountManager.Data;
     using AccountManager.Models;
+    using AccountManager.Services.Interfaces;
+    using AccountManager.Services;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using System.Text;
+    using Microsoft.IdentityModel.Tokens;
 
     public class Startup
     {
@@ -37,7 +42,11 @@ namespace AccountManager
                 .AddApiAuthorization<ApplicationUser, AccountManagerContext>();
 
             services.AddAuthentication()
-                .AddIdentityServerJwt();
+                .AddIdentityServerJwt()
+                .AddJwtBearer(options => 
+                {
+                    
+                });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -47,6 +56,11 @@ namespace AccountManager
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            var jwt = Configuration.GetSection("JwtConfiguration:Secret");
+            services.AddSingleton<AzureSettings>();
+            services.AddSingleton<JwtSettings>();
+            services.AddTransient<IAccountsService, AccountsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

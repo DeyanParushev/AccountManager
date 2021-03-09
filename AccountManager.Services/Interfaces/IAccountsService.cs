@@ -1,17 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using AccountManager.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AccountManager.Services.Interfaces
 {
     public interface IAccountsService
     {
-        public ICollection<T> GetAll<T>(string userId);
+        public Task<ICollection<T>> GetAll<T>(string userId);
 
-        public T GetAccount<T>(string accountId);
+        public Task<T> GetAccount<T>(string accountId);
 
-        public void Create<T>(T account);
+        public Task Delete(string accountId);
 
-        public void Delete(string accountId);
-
-        public T2 Edit<T1, T2>(T1 account);
+        public Task<T2> Edit<T1, T2>(T1 account);
+        
+        public Task Create(Account account, string userId);
     }
 }
