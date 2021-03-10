@@ -41,11 +41,17 @@ namespace AccountManager
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, AccountManagerContext>();
 
-            services.AddAuthentication()
+            var jwt = Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddIdentityServerJwt()
                 .AddJwtBearer(options => 
                 {
-                    
+                    options.TokenValidationParameters.ValidateAudience = true;
+                    options.TokenValidationParameters.ValidateIssuer = true;
+                    options.TokenValidationParameters.ValidateLifetime = true;
+                    options.TokenValidationParameters.ValidateIssuerSigningKey = true;
+                    options.TokenValidationParameters.ValidIssuer = jwt.Issuer;
+                    options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Secret));
                 });
 
             services.AddControllersWithViews();
@@ -57,7 +63,6 @@ namespace AccountManager
                 configuration.RootPath = "ClientApp/build";
             });
 
-            var jwt = Configuration.GetSection("JwtSettings").Get<JwtSettings>();
             var azure = Configuration.GetSection("AzureSettings").Get<AzureSettings>();
             services.AddSingleton(jwt);
             services.AddSingleton(azure);

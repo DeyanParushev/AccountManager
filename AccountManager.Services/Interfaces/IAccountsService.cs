@@ -14,6 +14,6 @@ namespace AccountManager.Services.Interfaces
 
         public Task<T2> Edit<T1, T2>(T1 account);
         
-        public Task Create(Account account, string userId);
+        public Task Create(Account account);
     }
 }

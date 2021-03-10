@@ -9,5 +9,7 @@
         public string BlobEndpoint { get; set; }
 
         public string BlobSasUrl { get; set; }
+
+        public string ConnectionString { get; set; }
     }
 }

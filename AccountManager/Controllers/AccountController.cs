@@ -1,31 +1,32 @@
 ﻿namespace AccountManager.Controllers
 {
+    using System;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-   
+    using Microsoft.AspNetCore.Identity;
+
     using AccountManager.Services.Interfaces;
     using AccountManager.ViewModels.InputModels;
     using AccountManager.Models;
+    using Microsoft.AspNetCore.Authorization;
 
     [Route("Accounts")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountsService accountsService;
-        private readonly AzureSettings azure;
-        private readonly JwtSettings jwt;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public AccountController(IAccountsService accountsService, AzureSettings azure, JwtSettings jwt)
+        public AccountController(
+            IAccountsService accountsService,
+            UserManager<ApplicationUser> userManager)
         {
             this.accountsService = accountsService;
-            this.azure = azure;
-            this.jwt = jwt;
+            this.userManager = userManager;
         }
 
-        [HttpPost("Create")]
-        public async Task<IActionResult> Create(AccountInputModel acount)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] AccountInputModel acount)
         {
-            var jwt = this.jwt;
-            var azure = this.azure;
             if (!ModelState.IsValid)
             {
                 var error = new { Message = ModelState.Values };
@@ -35,11 +36,18 @@
             var acountModel = new Account
             {
                 Name = acount.Name,
+                UserId = User.Identity.AuthenticationType,
             };
 
-            await accountsService.Create(acountModel, User.Identity.Name);
-
-            return Ok();
+            try
+            {
+                await accountsService.Create(acountModel);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

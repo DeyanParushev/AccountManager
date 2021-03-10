@@ -18,20 +18,26 @@
             this.context = context;
         }
 
-        public async Task Create(Account account, string userId)
+        public async Task Create(Account account)
         {
-            var userAccounts = context.Users
-                .Where(x => x.Id == userId)
-                .Select(x => x.Accounts)
-                .SingleOrDefault();
+            var user = context.Users.SingleOrDefault(x => x.Id == account.UserId);
 
-            if (userAccounts == null || !userAccounts.Contains(account))
+            if (user == null)
             {
-                context.Accounts.Add(account);
-                await context.SaveChangesAsync();
+                throw new ArgumentException("User does not exist.");
             }
 
-            throw new ArgumentException("Account name already exists");
+            var userAccount = context.Accounts
+                .Where(x => x.UserId == user.Id && x.Name == account.Name)
+                .SingleOrDefault();
+
+            if (userAccount == null)
+            {
+                throw new ArgumentException("Account name already exists");
+            }
+
+            context.Accounts.Add(account);
+            await context.SaveChangesAsync();
         }
 
         public Task Delete(string accountId)
