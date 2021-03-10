@@ -9,6 +9,7 @@
         public Account()
         {
             Id = Guid.NewGuid().ToString();
+            Transfers = new HashSet<Transfer>();
         }
 
         [Key]

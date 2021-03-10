@@ -3,30 +3,30 @@
     using System;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Identity;
 
     using AccountManager.Services.Interfaces;
     using AccountManager.ViewModels.InputModels;
     using AccountManager.Models;
-    using Microsoft.AspNetCore.Authorization;
 
     [Route("Accounts")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountsService accountsService;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IJwtService jwtService;
 
         public AccountController(
             IAccountsService accountsService,
-            UserManager<ApplicationUser> userManager)
+            IJwtService jwtService)
         {
             this.accountsService = accountsService;
-            this.userManager = userManager;
+            this.jwtService = jwtService;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AccountInputModel acount)
         {
+            var userClaims = jwtService.GetUserClaims(Request.Cookies["JwtToken"]);
+
             if (!ModelState.IsValid)
             {
                 var error = new { Message = ModelState.Values };
@@ -36,7 +36,7 @@
             var acountModel = new Account
             {
                 Name = acount.Name,
-                UserId = User.Identity.AuthenticationType,
+                UserId = userClaims["UserId"],
             };
 
             try

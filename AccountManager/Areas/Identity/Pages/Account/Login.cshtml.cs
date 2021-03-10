@@ -15,6 +15,7 @@
     using System.Text;
     using System.IdentityModel.Tokens.Jwt;
     using System;
+    using System.Security.Claims;
 
     [AllowAnonymous]
     public class LoginModel : PageModel
@@ -120,10 +121,13 @@
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
+            var claimsIdentity = new ClaimsIdentity();
+            claimsIdentity.AddClaim(new Claim("Username", user.UserName));
+            claimsIdentity.AddClaim(new Claim("UserId", user.Id));
 
             var token = new JwtSecurityToken(jwtSettings.Issuer,
               jwtSettings.Issuer,
-              null,
+              claimsIdentity.Claims.ToArray(),
               expires: DateTime.Now.AddMinutes(120),
               signingCredentials: credentials);
 

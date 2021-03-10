@@ -67,6 +67,7 @@ namespace AccountManager
             services.AddSingleton(jwt);
             services.AddSingleton(azure);
             services.AddTransient<IAccountsService, AccountsService>();
+            services.AddTransient<IJwtService, JwtService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

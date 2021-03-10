@@ -9,7 +9,7 @@ export class Home extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: 'React Hooks POST Request Example' })
         };
-        fetch('https://localhost:44382/Accounts/Create', requestOptions)
+        fetch('https://localhost:44382/Accounts', requestOptions)
             .then(response => console.log(response));
     }
 

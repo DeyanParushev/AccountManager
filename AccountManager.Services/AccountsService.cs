@@ -31,7 +31,7 @@
                 .Where(x => x.UserId == user.Id && x.Name == account.Name)
                 .SingleOrDefault();
 
-            if (userAccount == null)
+            if (userAccount != null)
             {
                 throw new ArgumentException("Account name already exists");
             }
