@@ -1,6 +1,9 @@
 namespace AccountManager
 {
+    using System.Text;
+
     using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -8,14 +11,12 @@ namespace AccountManager
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Tokens;
 
     using AccountManager.Data;
     using AccountManager.Models;
     using AccountManager.Services.Interfaces;
     using AccountManager.Services;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using System.Text;
-    using Microsoft.IdentityModel.Tokens;
 
     public class Startup
     {
@@ -43,16 +44,16 @@ namespace AccountManager
 
             var jwt = Configuration.GetSection("JwtSettings").Get<JwtSettings>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddIdentityServerJwt()
-                .AddJwtBearer(options => 
-                {
-                    options.TokenValidationParameters.ValidateAudience = true;
-                    options.TokenValidationParameters.ValidateIssuer = true;
-                    options.TokenValidationParameters.ValidateLifetime = true;
-                    options.TokenValidationParameters.ValidateIssuerSigningKey = true;
-                    options.TokenValidationParameters.ValidIssuer = jwt.Issuer;
-                    options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Secret));
-                });
+                .AddIdentityServerJwt();
+                //.AddJwtBearer(options => 
+                //{
+                //    options.TokenValidationParameters.ValidateAudience = true;
+                //    options.TokenValidationParameters.ValidateIssuer = true;
+                //    options.TokenValidationParameters.ValidateLifetime = true;
+                //    options.TokenValidationParameters.ValidateIssuerSigningKey = true;
+                //    options.TokenValidationParameters.ValidIssuer = jwt.Issuer;
+                //    options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Secret));
+                //});
 
             services.AddControllersWithViews();
             services.AddRazorPages();

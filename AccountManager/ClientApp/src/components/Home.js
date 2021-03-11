@@ -35,7 +35,7 @@ export class Home extends Component {
                 <form>
                     <label htmlFor="name"></label>
                     <input type="text" name="name" placeholder="input text"></input>
-                    <button type="submit" className="btn btn-primary" onClick={this.SubmitForm()}>Submit</button>
+                    <button type="button" className="btn btn-primary" onClick={this.SubmitForm()}>Submit</button>
                 </form>
 
             </div>

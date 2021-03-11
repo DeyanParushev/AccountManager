@@ -16,22 +16,24 @@
     using System.IdentityModel.Tokens.Jwt;
     using System;
     using System.Security.Claims;
+    using AccountManager.Services.Interfaces;
 
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly JwtSettings jwtSettings;
+        private readonly IJwtService jwtService;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LoginModel> logger;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager,
+        public LoginModel(
+            SignInManager<ApplicationUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<ApplicationUser> userManager,
-            JwtSettings jwtSettings)
+            IJwtService jwtService)
         {
             this.userManager = userManager;
-            this.jwtSettings = jwtSettings;
+            this.jwtService = jwtService;
             this.signInManager = signInManager;
             this.logger = logger;
         }
@@ -92,9 +94,9 @@
                 {
                     logger.LogInformation("User logged in.");
                     var user = await userManager.FindByEmailAsync(Input.Email);
-                    var token = GenerateJwtToken(user);
+                    var token = jwtService.GenerateJwtToken(user);
 
-                    Response.Cookies.Append("JwtToken", token);
+                    Response.Cookies.Append("Token", token);
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -117,21 +119,5 @@
             return Page();
         }
 
-        private string GenerateJwtToken(ApplicationUser user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
-            var claimsIdentity = new ClaimsIdentity();
-            claimsIdentity.AddClaim(new Claim("Username", user.UserName));
-            claimsIdentity.AddClaim(new Claim("UserId", user.Id));
-
-            var token = new JwtSecurityToken(jwtSettings.Issuer,
-              jwtSettings.Issuer,
-              claimsIdentity.Claims.ToArray(),
-              expires: DateTime.Now.AddMinutes(120),
-              signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
     }
 }

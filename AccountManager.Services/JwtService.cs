@@ -1,20 +1,35 @@
 ﻿namespace AccountManager.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
+    using System.Security.Claims;
+    using System.Text;
 
+    using Microsoft.IdentityModel.Tokens;
+
+    using AccountManager.Models;
     using AccountManager.Services.Interfaces;
 
     public class JwtService : IJwtService
     {
-        public Dictionary<string, string> GetUserClaims(string token) 
+        private readonly JwtSettings jwtSettings;
+        private readonly JwtSecurityTokenHandler tokenHandler;
+
+        public JwtService(JwtSettings jwtSettings)
+        {
+            this.jwtSettings = jwtSettings;
+            this.tokenHandler = new JwtSecurityTokenHandler();
+        }
+
+        public Dictionary<string, string> GetUserClaims(string token)
         {
             var userClaims = new Dictionary<string, string>();
 
             var handler = new JwtSecurityTokenHandler();
             var tokenValues = handler.ReadJwtToken(token);
-            
+
             var usernameClaim = tokenValues.Claims
                 .Where(x => x.Type == "Username")
                 .Select(x => new
@@ -37,6 +52,57 @@
             userClaims.Add(idClaim.Type, idClaim.Value);
 
             return userClaims;
+        }
+
+        public string GenerateJwtToken(ApplicationUser user)
+        {
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim("UserId", user.Id),
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(120),
+                SigningCredentials = new SigningCredentials
+                (
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+                    SecurityAlgorithms.HmacSha512
+                ),
+                Issuer = jwtSettings.Issuer,
+                Audience = jwtSettings.Issuer.ToLower(),
+            };
+
+            var token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+            return tokenString;
+        }
+
+        public ClaimsPrincipal VerifyToken(string token)
+        {
+            try
+            {
+
+                var claims = tokenHandler.ValidateToken(token,
+                    new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+                        ValidateIssuer = true,
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Issuer.ToLower(),
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero,
+                    }, out SecurityToken validatedToken);
+                return claims;
+            }
+            catch (Exception ex)
+            {
+                var exception = ex.Message;
+                return null;
+            }
+
         }
     }
 }

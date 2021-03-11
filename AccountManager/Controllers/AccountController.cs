@@ -7,6 +7,7 @@
     using AccountManager.Services.Interfaces;
     using AccountManager.ViewModels.InputModels;
     using AccountManager.Models;
+    using AccountManager.Filters;
 
     [Route("Accounts")]
     public class AccountController : ControllerBase
@@ -23,9 +24,10 @@
         }
 
         [HttpPost]
+        [TokenAuthenticationFilter]
         public async Task<IActionResult> Create([FromBody] AccountInputModel acount)
         {
-            var userClaims = jwtService.GetUserClaims(Request.Cookies["JwtToken"]);
+            var userClaims = jwtService.VerifyToken(Request.Cookies["Token"]);
 
             if (!ModelState.IsValid)
             {
@@ -36,8 +38,7 @@
             var acountModel = new Account
             {
                 Name = acount.Name,
-                UserId = userClaims["UserId"],
-            };
+                           };
 
             try
             {
