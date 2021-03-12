@@ -2,8 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    
+    using AccountManager.DTOs;
+    using AccountManager.Services.Automapper;
 
-    public class IncomeViewModel
+    public class IncomeViewModel : IMapFrom<IncomeDTO>
     {
         public string Id { get; set; }
 

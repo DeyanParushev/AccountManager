@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AccountManager.DTOs\AccountManager.DTOs.csproj" />
+    <ProjectReference Include="..\AccountManager.Services\AccountManager.Services.csproj" />
+  </ItemGroup>
+
 </Project>

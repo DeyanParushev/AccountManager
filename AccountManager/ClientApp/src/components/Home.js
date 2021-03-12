@@ -6,7 +6,9 @@ export class Home extends Component {
     SubmitForm = function () {
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({ name: 'React Hooks POST Request Example' })
         };
         fetch('https://localhost:44382/Accounts', requestOptions)

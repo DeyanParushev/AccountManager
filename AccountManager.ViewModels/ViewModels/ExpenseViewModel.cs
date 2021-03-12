@@ -2,8 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+  
+    using AccountManager.DTOs;
+    using AccountManager.Services.Automapper;
 
-    public class ExpenseViewModel
+    public class ExpenseViewModel : IMapFrom<ExpenseDTO>
     {
         public string Id { get; set; }
 

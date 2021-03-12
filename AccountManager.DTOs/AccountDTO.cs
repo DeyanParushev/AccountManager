@@ -8,11 +8,16 @@
         public AccountDTO()
         {
             Id = Guid.NewGuid().ToString();
-            Transfers = new HashSet<TransferDTO>();
+            Incomes = new HashSet<IncomeDTO>();
+            Expenses = new HashSet<ExpenseDTO>();
         }
 
         public string Id { get; set; }
 
-        public virtual ICollection<TransferDTO> Transfers { get; set; }
+        public string Name { get; set; }
+
+        public virtual ICollection<IncomeDTO> Incomes { get; set; }
+
+        public virtual ICollection<ExpenseDTO> Expenses { get; set; }
     }
 }

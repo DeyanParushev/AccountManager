@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AccountManager.Data\AccountManager.Data.csproj" />
+    <ProjectReference Include="..\AccountManager.DTOs\AccountManager.DTOs.csproj" />
   </ItemGroup>
 
 </Project>

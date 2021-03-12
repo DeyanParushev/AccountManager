@@ -1,6 +1,9 @@
 ﻿namespace AccountManager.ViewModels
 {
-    public class CategoryViewModel
+    using AccountManager.DTOs;
+    using AccountManager.Services.Automapper;
+
+    public class CategoryViewModel : IMapFrom<CategoryDTO>
     {
         public int Id { get; set; }
 

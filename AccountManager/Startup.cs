@@ -15,8 +15,12 @@ namespace AccountManager
 
     using AccountManager.Data;
     using AccountManager.Models;
-    using AccountManager.Services.Interfaces;
     using AccountManager.Services;
+    using AccountManager.Services.Automapper;
+    using AccountManager.Services.Interfaces;
+    using AccountManager.DTOs;
+    using AccountManager.ViewModels.ViewModels;
+    using AccountManager.ViewModels;
 
     public class Startup
     {
@@ -27,7 +31,6 @@ namespace AccountManager
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AccountManagerContext>(options =>
@@ -43,22 +46,43 @@ namespace AccountManager
                 .AddApiAuthorization<ApplicationUser, AccountManagerContext>();
 
             var jwt = Configuration.GetSection("JwtSettings").Get<JwtSettings>();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddIdentityServerJwt();
-                //.AddJwtBearer(options => 
-                //{
-                //    options.TokenValidationParameters.ValidateAudience = true;
-                //    options.TokenValidationParameters.ValidateIssuer = true;
-                //    options.TokenValidationParameters.ValidateLifetime = true;
-                //    options.TokenValidationParameters.ValidateIssuerSigningKey = true;
-                //    options.TokenValidationParameters.ValidIssuer = jwt.Issuer;
-                //    options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Secret));
-                //});
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+           {
+               x.RequireHttpsMetadata = false;
+               x.SaveToken = false;
+               x.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidateIssuerSigningKey = true,
+                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Secret)),
+                   ValidateIssuer = false,
+                   ValidateAudience = false,
+               };
+           })
+            .AddIdentityServerJwt();
+
+            services.AddAutoMapper(options => 
+            {
+                options.CreateMap<Account, AccountDTO>();
+                options.CreateMap<Transfer, TransferDTO>();
+                options.CreateMap<Expense, ExpenseDTO>();
+                options.CreateMap<Income, IncomeDTO>();
+                options.CreateMap<Category, CategoryDTO>();
+                options.CreateMap<Tag, TagDTO>();
+
+                options.CreateMap<AccountDTO, AccountViewModel>();
+                options.CreateMap<IncomeDTO, IncomeViewModel>();
+                options.CreateMap<Expense, ExpenseViewModel>();
+                options.CreateMap<TagDTO, TagViewModel>();
+                options.CreateMap<CategoryDTO, CategoryViewModel>();
+
+            });
 
             services.AddControllersWithViews();
-            services.AddRazorPages();
-
-            // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
@@ -71,7 +95,6 @@ namespace AccountManager
             services.AddTransient<IJwtService, JwtService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -82,7 +105,6 @@ namespace AccountManager
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 

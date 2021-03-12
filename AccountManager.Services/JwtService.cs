@@ -25,13 +25,13 @@
 
         public Dictionary<string, string> GetUserClaims(string token)
         {
-            var userClaims = new Dictionary<string, string>();
+            var cleanToken = token.Replace("Bearer", string.Empty).TrimStart().TrimEnd();
 
-            var handler = new JwtSecurityTokenHandler();
-            var tokenValues = handler.ReadJwtToken(token);
+            var userClaims = new Dictionary<string, string>();
+            var tokenValues = new JwtSecurityToken(cleanToken);
 
             var usernameClaim = tokenValues.Claims
-                .Where(x => x.Type == "Username")
+                .Where(x => x.Type == "unique_name")
                 .Select(x => new
                 {
                     Type = x.Type,
@@ -67,7 +67,7 @@
                 SigningCredentials = new SigningCredentials
                 (
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
-                    SecurityAlgorithms.HmacSha512
+                    SecurityAlgorithms.HmacSha512Signature
                 ),
                 Issuer = jwtSettings.Issuer,
                 Audience = jwtSettings.Issuer.ToLower(),
