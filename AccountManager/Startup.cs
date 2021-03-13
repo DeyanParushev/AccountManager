@@ -99,6 +99,7 @@ namespace AccountManager
             services.AddTransient<IJwtService, JwtService>();
             services.AddTransient<IAccountsService, AccountsService>();
             services.AddTransient<IExpensesService, ExpensesService>();
+            services.AddTransient<IIncomesService, IncomesService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -9,7 +9,6 @@
 
     using AccountManager.Data;
     using AccountManager.Models;
-    using AccountManager.Services.Automapper;
     using AccountManager.Services.Interfaces;
 
     public class ExpensesService : IExpensesService
