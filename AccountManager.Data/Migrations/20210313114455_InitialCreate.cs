@@ -224,30 +224,59 @@ namespace AccountManager.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Transfers",
+                name: "Expenses",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(15,15)", precision: 15, scale: 15, nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(20,10)", precision: 20, scale: 10, nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     AccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transfers", x => x.Id);
+                    table.PrimaryKey("PK_Expenses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transfers_Accounts_AccountId",
+                        name: "FK_Expenses_Accounts_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Transfers_Categories_CategoryId",
+                        name: "FK_Expenses_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Incomes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(20,10)", precision: 20, scale: 10, nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    AccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Incomes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Incomes_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Incomes_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
@@ -261,15 +290,22 @@ namespace AccountManager.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    TransferId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ExpenseId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IncomeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tags", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tags_Transfers_TransferId",
-                        column: x => x.TransferId,
-                        principalTable: "Transfers",
+                        name: "FK_Tags_Expenses_ExpenseId",
+                        column: x => x.ExpenseId,
+                        principalTable: "Expenses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Tags_Incomes_IncomeId",
+                        column: x => x.IncomeId,
+                        principalTable: "Incomes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -330,6 +366,26 @@ namespace AccountManager.Data.Migrations
                 column: "Expiration");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Expenses_AccountId",
+                table: "Expenses",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Expenses_CategoryId",
+                table: "Expenses",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Incomes_AccountId",
+                table: "Incomes",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Incomes_CategoryId",
+                table: "Incomes",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_Expiration",
                 table: "PersistedGrants",
                 column: "Expiration");
@@ -345,19 +401,14 @@ namespace AccountManager.Data.Migrations
                 columns: new[] { "SubjectId", "SessionId", "Type" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tags_TransferId",
+                name: "IX_Tags_ExpenseId",
                 table: "Tags",
-                column: "TransferId");
+                column: "ExpenseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transfers_AccountId",
-                table: "Transfers",
-                column: "AccountId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transfers_CategoryId",
-                table: "Transfers",
-                column: "CategoryId");
+                name: "IX_Tags_IncomeId",
+                table: "Tags",
+                column: "IncomeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -390,7 +441,10 @@ namespace AccountManager.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Transfers");
+                name: "Expenses");
+
+            migrationBuilder.DropTable(
+                name: "Incomes");
 
             migrationBuilder.DropTable(
                 name: "Accounts");

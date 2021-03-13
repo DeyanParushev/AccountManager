@@ -5,6 +5,7 @@
   
     using AccountManager.DTOs;
     using AccountManager.Services.Automapper;
+    using AccountManager.ViewModels.ViewModels;
 
     public class ExpenseViewModel : IMapFrom<ExpenseDTO>
     {
@@ -17,6 +18,8 @@
         public DateTime Date { get; set; }
 
         public string AccountId { get; set; }
+
+        public AccountViewModel Account { get; set; }
 
         public CategoryViewModel Category { get; set; }
 

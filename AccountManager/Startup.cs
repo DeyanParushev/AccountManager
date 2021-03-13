@@ -16,11 +16,11 @@ namespace AccountManager
     using AccountManager.Data;
     using AccountManager.Models;
     using AccountManager.Services;
-    using AccountManager.Services.Automapper;
     using AccountManager.Services.Interfaces;
     using AccountManager.DTOs;
     using AccountManager.ViewModels.ViewModels;
     using AccountManager.ViewModels;
+    using AccountManager.ViewModels.InputModels;
 
     public class Startup
     {
@@ -68,7 +68,6 @@ namespace AccountManager
             services.AddAutoMapper(options => 
             {
                 options.CreateMap<Account, AccountDTO>();
-                options.CreateMap<Transfer, TransferDTO>();
                 options.CreateMap<Expense, ExpenseDTO>();
                 options.CreateMap<Income, IncomeDTO>();
                 options.CreateMap<Category, CategoryDTO>();
@@ -76,10 +75,15 @@ namespace AccountManager
 
                 options.CreateMap<AccountDTO, AccountViewModel>();
                 options.CreateMap<IncomeDTO, IncomeViewModel>();
-                options.CreateMap<Expense, ExpenseViewModel>();
+                options.CreateMap<ExpenseDTO, ExpenseViewModel>();
                 options.CreateMap<TagDTO, TagViewModel>();
                 options.CreateMap<CategoryDTO, CategoryViewModel>();
 
+                options.CreateMap<AccountInputModel, Account>();
+                options.CreateMap<IncomeInputModel, Income>();
+                options.CreateMap<ExpenseInputModel, Expense>();
+                options.CreateMap<CategoryInputModel, Category>();
+                options.CreateMap<TagInputModel, Tag>();
             });
 
             services.AddControllersWithViews();
@@ -91,8 +95,10 @@ namespace AccountManager
             var azure = Configuration.GetSection("AzureSettings").Get<AzureSettings>();
             services.AddSingleton(jwt);
             services.AddSingleton(azure);
-            services.AddTransient<IAccountsService, AccountsService>();
+
             services.AddTransient<IJwtService, JwtService>();
+            services.AddTransient<IAccountsService, AccountsService>();
+            services.AddTransient<IExpensesService, ExpensesService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

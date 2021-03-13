@@ -122,29 +122,7 @@ namespace AccountManager.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("AccountManager.Models.Tag", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("TransferId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TransferId");
-
-                    b.ToTable("Tags");
-                });
-
-            modelBuilder.Entity("AccountManager.Models.Transfer", b =>
+            modelBuilder.Entity("AccountManager.Models.Expense", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -154,8 +132,8 @@ namespace AccountManager.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Amount")
-                        .HasPrecision(15, 15)
-                        .HasColumnType("decimal(15,15)");
+                        .HasPrecision(20, 10)
+                        .HasColumnType("decimal(20,10)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -167,10 +145,6 @@ namespace AccountManager.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
@@ -184,9 +158,73 @@ namespace AccountManager.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Transfers");
+                    b.ToTable("Expenses");
+                });
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Transfer");
+            modelBuilder.Entity("AccountManager.Models.Income", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(20, 10)
+                        .HasColumnType("decimal(20,10)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Incomes");
+                });
+
+            modelBuilder.Entity("AccountManager.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ExpenseId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("IncomeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpenseId");
+
+                    b.HasIndex("IncomeId");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -427,20 +465,6 @@ namespace AccountManager.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("AccountManager.Models.Expense", b =>
-                {
-                    b.HasBaseType("AccountManager.Models.Transfer");
-
-                    b.HasDiscriminator().HasValue("Expense");
-                });
-
-            modelBuilder.Entity("AccountManager.Models.Income", b =>
-                {
-                    b.HasBaseType("AccountManager.Models.Transfer");
-
-                    b.HasDiscriminator().HasValue("Income");
-                });
-
             modelBuilder.Entity("AccountManager.Models.Account", b =>
                 {
                     b.HasOne("AccountManager.Models.ApplicationUser", "User")
@@ -452,17 +476,10 @@ namespace AccountManager.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AccountManager.Models.Tag", b =>
-                {
-                    b.HasOne("AccountManager.Models.Transfer", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("TransferId");
-                });
-
-            modelBuilder.Entity("AccountManager.Models.Transfer", b =>
+            modelBuilder.Entity("AccountManager.Models.Expense", b =>
                 {
                     b.HasOne("AccountManager.Models.Account", "Account")
-                        .WithMany("Transfers")
+                        .WithMany("Expenses")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -476,6 +493,36 @@ namespace AccountManager.Data.Migrations
                     b.Navigation("Account");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("AccountManager.Models.Income", b =>
+                {
+                    b.HasOne("AccountManager.Models.Account", "Account")
+                        .WithMany("Incomes")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AccountManager.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("AccountManager.Models.Tag", b =>
+                {
+                    b.HasOne("AccountManager.Models.Expense", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("ExpenseId");
+
+                    b.HasOne("AccountManager.Models.Income", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("IncomeId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -531,7 +578,9 @@ namespace AccountManager.Data.Migrations
 
             modelBuilder.Entity("AccountManager.Models.Account", b =>
                 {
-                    b.Navigation("Transfers");
+                    b.Navigation("Expenses");
+
+                    b.Navigation("Incomes");
                 });
 
             modelBuilder.Entity("AccountManager.Models.ApplicationUser", b =>
@@ -539,7 +588,12 @@ namespace AccountManager.Data.Migrations
                     b.Navigation("Accounts");
                 });
 
-            modelBuilder.Entity("AccountManager.Models.Transfer", b =>
+            modelBuilder.Entity("AccountManager.Models.Expense", b =>
+                {
+                    b.Navigation("Tags");
+                });
+
+            modelBuilder.Entity("AccountManager.Models.Income", b =>
                 {
                     b.Navigation("Tags");
                 });

@@ -3,11 +3,12 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class IncomeViewModel
+    public class IncomeInputModel
     {
         [Required]
         public decimal Amount { get; set; }
 
+        [Required]
         public int CategoryId { get; set; }
 
         [Required]

@@ -15,8 +15,6 @@
         {
         }
 
-        public DbSet<Transfer> Transfers { get; set; }
-
         public DbSet<Account> Accounts { get; set; }
 
         public DbSet<Category> Categories { get; set; }
@@ -29,9 +27,13 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Transfer>()
+            builder.Entity<Expense>()
                 .Property("Amount")
-                .HasPrecision(15, 15);
+                .HasPrecision(20, 10);
+
+            builder.Entity<Income>()
+                .Property("Amount")
+                .HasPrecision(20, 10);
 
             base.OnModelCreating(builder);   
         }

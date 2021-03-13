@@ -1,6 +1,45 @@
 ﻿namespace AccountManager.Models
 {
-    public class Income : Transfer
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    public class Income
     {
+        public Income()
+        {
+            Id = Guid.NewGuid().ToString();
+            Tags = new HashSet<Tag>();
+        }
+
+        [Key]
+        public string Id { get; set; }
+
+        [Required]
+        [Range(0, double.MaxValue)]
+        public decimal Amount { get; set; }
+
+        [Required]
+        public int CategoryId { get; set; }
+
+        public virtual Category Category { get; set; }
+
+        [Required]
+        public string AccountId { get; set; }
+
+        public virtual Account Account { get; set; }
+
+        public virtual ICollection<Tag> Tags { get; set; }
+
+        [Required]
+        [MaxLength(200)]
+        public string Description { get; set; }
+
+        [Required]
+        public DateTime Date { get; set; }
+
+        public string ImageUrl { get; set; }
+
+        public string ImageName { get; set; }
     }
 }

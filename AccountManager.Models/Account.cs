@@ -9,7 +9,8 @@
         public Account()
         {
             Id = Guid.NewGuid().ToString();
-            Transfers = new HashSet<Transfer>();
+            Incomes = new HashSet<Income>();
+            Expenses = new HashSet<Expense>();
         }
 
         [Key]
@@ -19,7 +20,9 @@
         [MaxLength(40)]
         public string Name { get; set; }
 
-        public virtual ICollection<Transfer> Transfers { get; set; }
+        public virtual ICollection<Income> Incomes { get; set; }
+
+        public virtual ICollection<Expense> Expenses { get; set; }
 
         [Required]
         public string UserId { get; set; }

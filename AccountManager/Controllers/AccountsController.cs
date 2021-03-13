@@ -2,7 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +12,11 @@
     using AccountManager.Services.Interfaces;
     using AccountManager.ViewModels.InputModels;
     using AccountManager.ViewModels.ViewModels;
+    using System.Collections.Generic;
 
     [ApiController]
     [Route("Accounts")]
+    [Authorize]
     public class AccountsController : ControllerBase
     {
         private readonly IAccountsService accountsService;
@@ -32,14 +34,11 @@
         }
 
         [HttpGet]
-        [Route(nameof(Get))]
-        [Authorize]
         public async Task<IActionResult> Get(string accountId)
         {
-            var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-
             try
             {
+                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
                 var accountDto = await accountsService.GetAccount<AccountDTO>(accountId, userClaims["UserId"]);
                 var accountViewModel = mapper.Map<AccountViewModel>(accountDto);
 
@@ -50,10 +49,8 @@
                 return BadRequest(ex.Message);
             }
         }
-        
+
         [HttpPost]
-        [Route(nameof(Create))]
-        [Authorize]
         public async Task<IActionResult> Create(AccountInputModel acount)
         {
             if (!ModelState.IsValid)
@@ -62,16 +59,15 @@
                 return BadRequest(error);
             }
 
-            var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-            
-            var acountModel = new Account
-            {
-                Name = acount.Name,
-                UserId = userClaims["UserId"],             
-            };
-
             try
             {
+                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+
+                var acountModel = new Account
+                {
+                    Name = acount.Name,
+                    UserId = userClaims["UserId"],
+                };
                 await accountsService.Create(acountModel);
                 return Ok();
             }
@@ -82,15 +78,15 @@
         }
 
         [HttpGet]
-        [Route(nameof(GetAccounts))]
-        [Authorize]
-        public async Task<IActionResult> GetAccounts()
+        [Route(nameof(All))]
+        public async Task<IActionResult> All()
         {
             var userCalims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
 
             try
             {
                 var accountsDTO = await accountsService.GetAll<AccountDTO>(userCalims["UserId"]);
+                var accountViewModels = mapper.Map<ICollection<AccountViewModel>>(accountsDTO);
                 return Ok(accountsDTO);
             }
             catch (Exception ex)
@@ -100,11 +96,9 @@
         }
 
         [HttpPut]
-        [Route(nameof(Edit))]
-        [Authorize]
         public async Task<IActionResult> Edit(AccountInputModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
@@ -126,8 +120,6 @@
         }
 
         [HttpDelete]
-        [Route(nameof(Delete))]
-        [Authorize]
         public async Task<IActionResult> Delete(string accountId)
         {
             var user = jwtService.GetUserClaims(Request.Headers["Authorization"]);
