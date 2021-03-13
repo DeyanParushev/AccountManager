@@ -6,8 +6,8 @@
     using Microsoft.AspNetCore.Identity;
 
     using AccountManager.Models;
-    using AccountManager.ViewModels.InputModels;
     using AccountManager.Services.Interfaces;
+    using AccountManager.ViewModels.InputModels;
 
     [ApiController]
     [Route("Identity")]
@@ -35,6 +35,7 @@
             var user = new ApplicationUser
             {
                 Email = model.Email,
+                UserName = model.UserName,
             };
 
             var result = await this.userManager.CreateAsync(user, model.Password);
