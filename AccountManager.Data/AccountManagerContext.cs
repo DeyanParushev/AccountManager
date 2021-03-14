@@ -35,6 +35,12 @@
                 .Property("Amount")
                 .HasPrecision(20, 10);
 
+            builder.Entity<Tag>()
+                .HasIndex("Name");
+
+            builder.Entity<Category>()
+                .HasIndex("Name");
+
             base.OnModelCreating(builder);   
         }
     }

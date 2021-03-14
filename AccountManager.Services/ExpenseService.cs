@@ -11,12 +11,12 @@
     using AccountManager.Models;
     using AccountManager.Services.Interfaces;
 
-    public class ExpensesService : IExpensesService
+    public class ExpenseService : IExpenseService
     {
         private readonly AccountManagerContext context;
         private readonly IMapper mapper;
 
-        public ExpensesService(AccountManagerContext context, IMapper mapper)
+        public ExpenseService(AccountManagerContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;

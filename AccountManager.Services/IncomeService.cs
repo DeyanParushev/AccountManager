@@ -10,12 +10,12 @@
     using AccountManager.Data;
     using AccountManager.Models;
 
-    public class IncomesService : IIncomesService
+    public class IncomeService : IIncomeService
     {
         private readonly AccountManagerContext context;
         private readonly IMapper mapper;
 
-        public IncomesService(AccountManagerContext context, IMapper mapper)
+        public IncomeService(AccountManagerContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;

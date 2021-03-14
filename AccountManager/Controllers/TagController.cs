@@ -7,39 +7,40 @@
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    
+
     using AccountManager.DTOs;
-    using AccountManager.Services.Interfaces;
-    using AccountManager.ViewModels.ViewModels;
     using AccountManager.Models;
+    using AccountManager.Services.Interfaces;
+    using AccountManager.ViewModels;
+    using AccountManager.ViewModels.InputModels;
 
     [ApiController]
-    [Route("Incomes")]
+    [Route("Tags")]
     [Authorize]
-    public class IncomesController : ControllerBase
+    public class TagController : ControllerBase
     {
-        private readonly IIncomeService incomeService;
+        private readonly ITagService tagService;
         private readonly IMapper mapper;
         private readonly IJwtService jwtService;
 
-        public IncomesController(IIncomeService incomeService, IMapper mapper, IJwtService jwtService)
+        public TagController(ITagService tagService, IMapper mapper, IJwtService jwtService)
         {
-            this.incomeService = incomeService;
+            this.tagService = tagService;
             this.mapper = mapper;
             this.jwtService = jwtService;
         }
 
         [HttpGet]
         [Route(nameof(All))]
-        public async Task<IActionResult> All(string accountId)
+        public async Task<IActionResult> All()
         {
             try
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                var incomes = await incomeService.GetAll<IncomeDTO>(accountId, userClaims["UserId"]);
-                var putputIncomes = mapper.Map<ICollection<IncomeViewModel>>(incomes);
+                var tag = await tagService.GetAll<TagDTO>(userClaims["UserId"]);
+                var outputTags = mapper.Map<ICollection<TagViewModel>>(tag);
 
-                return Ok(putputIncomes);
+                return Ok(outputTags);
             }
             catch (Exception ex)
             {
@@ -48,15 +49,15 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(string incomeId)
+        public async Task<IActionResult> Get(int tagId)
         {
             try
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                var income = await incomeService.GetOne<IncomeDTO>(incomeId, userClaims["UserId"]);
-                var incomeExpenses = mapper.Map<IncomeViewModel>(income);
+                var tag = await tagService.GetOne<TagDTO>(tagId);
+                var outputTag = mapper.Map<TagViewModel>(tag);
 
-                return Ok(incomeExpenses);
+                return Ok(outputTag);
             }
             catch (Exception ex)
             {
@@ -65,7 +66,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(IncomeViewModel model)
+        public async Task<IActionResult> Create(TagInputModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -75,8 +76,8 @@
             try
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                var income = mapper.Map<Income>(model);
-                await incomeService.Create(income);
+                var tagDbModel = mapper.Map<Tag>(model);
+                await tagService.Create(tagDbModel, userClaims["UserId"]);
 
                 return Ok();
             }
@@ -87,7 +88,7 @@
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit(IncomeViewModel model)
+        public async Task<IActionResult> Edit(TagInputModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -97,10 +98,10 @@
             try
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                var incomeDbModel = mapper.Map<Income>(model);
-                var editedIncome = await incomeService.Edit<IncomeDTO>(incomeDbModel, userClaims["UserId"]);
+                var tagDbModel = mapper.Map<Tag>(model);
+                var editedTag = await tagService.Edit<TagDTO>(tagDbModel, userClaims["UserId"]);
 
-                return Ok(editedIncome);
+                return Ok(editedTag);
             }
             catch (Exception ex)
             {
@@ -109,12 +110,12 @@
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(string incomeId)
+        public async Task<IActionResult> Delete(int tagId)
         {
             try
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                await incomeService.Delete(incomeId, userClaims["UserId"]);
+                await tagService.Delete(tagId, userClaims["UserId"]);
 
                 return Ok();
             }

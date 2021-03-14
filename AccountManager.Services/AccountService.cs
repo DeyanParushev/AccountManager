@@ -10,18 +10,18 @@
     using AccountManager.Models;
     using AccountManager.Services.Interfaces;
 
-    public class AccountsService : IAccountsService
+    public class AccountService : IAccountService
     {
         private readonly AccountManagerContext context;
         private readonly IMapper mapper;
 
-        public AccountsService(AccountManagerContext context, IMapper mapper)
+        public AccountService(AccountManagerContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
         }
 
-        public async Task<T> GetAccount<T>(string accountId, string userId)
+        public async Task<T> GetOne<T>(string accountId, string userId)
         {
             var account = context
                 .Accounts

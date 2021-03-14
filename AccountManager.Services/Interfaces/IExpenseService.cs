@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IExpensesService
+    public interface IExpenseService
     {
         public Task<ICollection<T>> GetAll<T>(string accountId ,string userId);
 

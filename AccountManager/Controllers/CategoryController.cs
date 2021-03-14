@@ -3,43 +3,44 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
+    
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    
+   
     using AccountManager.DTOs;
-    using AccountManager.Services.Interfaces;
-    using AccountManager.ViewModels.ViewModels;
     using AccountManager.Models;
+    using AccountManager.Services.Interfaces;
+    using AccountManager.ViewModels;
+    using AccountManager.ViewModels.InputModels;
 
     [ApiController]
-    [Route("Incomes")]
+    [Route("Categories")]
     [Authorize]
-    public class IncomesController : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        private readonly IIncomeService incomeService;
+        private readonly ICategoryService categoryService;
         private readonly IMapper mapper;
         private readonly IJwtService jwtService;
 
-        public IncomesController(IIncomeService incomeService, IMapper mapper, IJwtService jwtService)
+        public CategoryController(ICategoryService categoryService, IMapper mapper, IJwtService jwtService)
         {
-            this.incomeService = incomeService;
+            this.categoryService = categoryService;
             this.mapper = mapper;
             this.jwtService = jwtService;
         }
 
         [HttpGet]
         [Route(nameof(All))]
-        public async Task<IActionResult> All(string accountId)
+        public async Task<IActionResult> All()
         {
             try
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                var incomes = await incomeService.GetAll<IncomeDTO>(accountId, userClaims["UserId"]);
-                var putputIncomes = mapper.Map<ICollection<IncomeViewModel>>(incomes);
+                var category = await categoryService.GetAll<CategoryDTO>(userClaims["UserId"]);
+                var outputCategories = mapper.Map<ICollection<CategoryViewModel>>(category);
 
-                return Ok(putputIncomes);
+                return Ok(outputCategories);
             }
             catch (Exception ex)
             {
@@ -48,15 +49,15 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(string incomeId)
+        public async Task<IActionResult> Get(int categoryId)
         {
             try
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                var income = await incomeService.GetOne<IncomeDTO>(incomeId, userClaims["UserId"]);
-                var incomeExpenses = mapper.Map<IncomeViewModel>(income);
+                var category = await categoryService.GetOne<CategoryDTO>(categoryId);
+                var outputCategory = mapper.Map<CategoryViewModel>(category);
 
-                return Ok(incomeExpenses);
+                return Ok(outputCategory);
             }
             catch (Exception ex)
             {
@@ -65,7 +66,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(IncomeViewModel model)
+        public async Task<IActionResult> Create(CategoryInputModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -75,8 +76,8 @@
             try
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                var income = mapper.Map<Income>(model);
-                await incomeService.Create(income);
+                var categoryDbModel = mapper.Map<Category>(model);
+                await categoryService.Create(categoryDbModel, userClaims["UserId"]);
 
                 return Ok();
             }
@@ -87,7 +88,7 @@
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit(IncomeViewModel model)
+        public async Task<IActionResult> Edit(CategoryInputModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -97,10 +98,10 @@
             try
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                var incomeDbModel = mapper.Map<Income>(model);
-                var editedIncome = await incomeService.Edit<IncomeDTO>(incomeDbModel, userClaims["UserId"]);
+                var categoryDbModel = mapper.Map<Category>(model);
+                var editedCategory = await categoryService.Edit<CategoryDTO>(categoryDbModel, userClaims["UserId"]);
 
-                return Ok(editedIncome);
+                return Ok(editedCategory);
             }
             catch (Exception ex)
             {
@@ -109,12 +110,12 @@
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(string incomeId)
+        public async Task<IActionResult> Delete(int categoryId)
         {
             try
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                await incomeService.Delete(incomeId, userClaims["UserId"]);
+                await categoryService.Delete(categoryId, userClaims["UserId"]);
 
                 return Ok();
             }

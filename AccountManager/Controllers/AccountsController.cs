@@ -19,12 +19,12 @@
     [Authorize]
     public class AccountsController : ControllerBase
     {
-        private readonly IAccountsService accountsService;
+        private readonly IAccountService accountsService;
         private readonly IJwtService jwtService;
         private readonly IMapper mapper;
 
         public AccountsController(
-            IAccountsService accountsService,
+            IAccountService accountsService,
             IJwtService jwtService,
             IMapper mapper)
         {
@@ -39,7 +39,7 @@
             try
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                var accountDto = await accountsService.GetAccount<AccountDTO>(accountId, userClaims["UserId"]);
+                var accountDto = await accountsService.GetOne<AccountDTO>(accountId, userClaims["UserId"]);
                 var accountViewModel = mapper.Map<AccountViewModel>(accountDto);
 
                 return Ok(accountViewModel);

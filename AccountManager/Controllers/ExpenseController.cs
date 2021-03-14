@@ -19,11 +19,11 @@
     [Authorize]
     public class ExpenseController : ControllerBase
     {
-        private readonly IExpensesService expensesService;
+        private readonly IExpenseService expensesService;
         private readonly IMapper mapper;
         private readonly IJwtService jwtService;
 
-        public ExpenseController(IExpensesService expensesService, IMapper mapper, IJwtService jwtService)
+        public ExpenseController(IExpenseService expensesService, IMapper mapper, IJwtService jwtService)
         {
             this.expensesService = expensesService;
             this.mapper = mapper;

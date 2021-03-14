@@ -5,7 +5,7 @@
     
     using AccountManager.Models;
 
-    public interface IIncomesService
+    public interface IIncomeService
     {
         public Task<ICollection<T>> GetAll<T>(string accountId, string userId);
 

@@ -97,9 +97,11 @@ namespace AccountManager
             services.AddSingleton(azure);
 
             services.AddTransient<IJwtService, JwtService>();
-            services.AddTransient<IAccountsService, AccountsService>();
-            services.AddTransient<IExpensesService, ExpensesService>();
-            services.AddTransient<IIncomesService, IncomesService>();
+            services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IExpenseService, ExpenseService>();
+            services.AddTransient<IIncomeService, IncomeService>();
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<ITagService, TagService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
