@@ -25,5 +25,9 @@
         public string Description { get; set; }
 
         public DateTime Date => DateTime.UtcNow;
+
+        public byte[] Image { get; set; }
+
+        public string ImageName { get; set; }
     }
 }

@@ -15,11 +15,13 @@
     {
         private readonly AccountManagerContext context;
         private readonly IMapper mapper;
+        private readonly ICloudService cloudService;
 
-        public ExpenseService(AccountManagerContext context, IMapper mapper)
+        public ExpenseService(AccountManagerContext context, IMapper mapper, ICloudService cloudService)
         {
             this.context = context;
             this.mapper = mapper;
+            this.cloudService = cloudService;
         }
 
         public async Task<ICollection<T>> GetAll<T>(string accountId, string userId)
@@ -60,12 +62,14 @@
             return outputExpense;
         }
 
-        public async Task Create(Expense inputExpense)
+        public async Task Create(Expense inputExpense, byte[] image)
         {
             if(!context.Accounts.Any(x => x.Id == inputExpense.AccountId))
             {
                 throw new ArgumentNullException("Account does note exist.");
             }
+
+            var imageUrl = await cloudService.Upload(image, inputExpense.ImageName);
 
             context.Expenses.Add(inputExpense);
             await context.SaveChangesAsync();

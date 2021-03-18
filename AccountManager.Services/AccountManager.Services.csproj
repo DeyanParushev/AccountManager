@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AccountManager.Data\AccountManager.Data.csproj" />
     <ProjectReference Include="..\AccountManager.DTOs\AccountManager.DTOs.csproj" />
   </ItemGroup>

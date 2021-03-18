@@ -1,5 +1,6 @@
 ﻿namespace AccountManager.ViewModels.InputModels
 {
+    using Microsoft.AspNetCore.Http;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -25,5 +26,9 @@
         public string Description { get; set; }
 
         public DateTime Date => DateTime.UtcNow;
+
+        public IFormFile Image { get; set; }
+
+        public string ImageName { get; set; }
     }
 }

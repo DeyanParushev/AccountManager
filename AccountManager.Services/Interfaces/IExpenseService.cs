@@ -10,7 +10,7 @@
 
         public Task<T> GetOne<T>(string expenseId, string userId);
 
-        public Task Create(Expense inputExpense);
+        public Task Create(Expense inputExpense, byte[] image);
 
         public Task<T> Edit<T>(Expense inputExpense, string userId);
 

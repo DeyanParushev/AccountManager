@@ -14,10 +14,10 @@ namespace AccountManager
     using Microsoft.IdentityModel.Tokens;
 
     using AccountManager.Data;
+    using AccountManager.DTOs;
     using AccountManager.Models;
     using AccountManager.Services;
     using AccountManager.Services.Interfaces;
-    using AccountManager.DTOs;
     using AccountManager.ViewModels.ViewModels;
     using AccountManager.ViewModels;
     using AccountManager.ViewModels.InputModels;
@@ -65,26 +65,7 @@ namespace AccountManager
            })
             .AddIdentityServerJwt();
 
-            services.AddAutoMapper(options => 
-            {
-                options.CreateMap<Account, AccountDTO>();
-                options.CreateMap<Expense, ExpenseDTO>();
-                options.CreateMap<Income, IncomeDTO>();
-                options.CreateMap<Category, CategoryDTO>();
-                options.CreateMap<Tag, TagDTO>();
-
-                options.CreateMap<AccountDTO, AccountViewModel>();
-                options.CreateMap<IncomeDTO, IncomeViewModel>();
-                options.CreateMap<ExpenseDTO, ExpenseViewModel>();
-                options.CreateMap<TagDTO, TagViewModel>();
-                options.CreateMap<CategoryDTO, CategoryViewModel>();
-
-                options.CreateMap<AccountInputModel, Account>();
-                options.CreateMap<IncomeInputModel, Income>();
-                options.CreateMap<ExpenseInputModel, Expense>();
-                options.CreateMap<CategoryInputModel, Category>();
-                options.CreateMap<TagInputModel, Tag>();
-            });
+            services.ConfigureAutomapper();
 
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration =>
@@ -102,6 +83,7 @@ namespace AccountManager
             services.AddTransient<IIncomeService, IncomeService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ITagService, TagService>();
+            services.AddTransient<ICloudService, BlobService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

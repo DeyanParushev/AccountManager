@@ -11,5 +11,9 @@
         public string BlobSasUrl { get; set; }
 
         public string ConnectionString { get; set; }
+
+        public string StorageName { get; set; }
+
+        public string ContainerName { get; set; }
     }
 }

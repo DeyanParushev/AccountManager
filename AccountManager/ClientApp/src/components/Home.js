@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Form from './Form';
 
 export class Home extends Component {
     static displayName = Home.name;
@@ -34,12 +35,7 @@ export class Home extends Component {
 
                 <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
 
-                <form>
-                    <label htmlFor="name"></label>
-                    <input type="text" name="name" placeholder="input text"></input>
-                    <button type="button" className="btn btn-primary" onClick={this.SubmitForm()}>Submit</button>
-                </form>
-
+                <Form/>
             </div>
         );
     }

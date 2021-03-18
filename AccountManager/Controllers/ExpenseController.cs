@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-     
+
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -13,10 +13,11 @@
     using AccountManager.ViewModels;
     using AccountManager.ViewModels.InputModels;
     using AccountManager.Models;
+    using System.IO;
 
     [ApiController]
     [Route("Expenses")]
-    [Authorize]
+    //[Authorize]
     public class ExpenseController : ControllerBase
     {
         private readonly IExpenseService expensesService;
@@ -68,7 +69,7 @@
         [HttpPost]
         public async Task<IActionResult> Create(ExpenseInputModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState.Values);
             }
@@ -77,7 +78,9 @@
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
                 var expenseDbModel = mapper.Map<Expense>(model);
-                await expensesService.Create(expenseDbModel);
+                var stream = new MemoryStream();
+                await model.Image.CopyToAsync(stream);
+                await expensesService.Create(expenseDbModel, stream.ToArray());
 
                 return Ok();
             }
