@@ -2,7 +2,6 @@
 import React from 'react'
 
 export default class Form extends Component {
-
     render() {
         return (
             <form method="POST" action="/Expenses">
