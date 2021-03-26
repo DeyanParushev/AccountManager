@@ -1,12 +1,12 @@
 ﻿export const ApplicationName = 'AccountManager';
 
-export const apiPrefix = '/api';
-
-export const authPrefix = '/Identity';
+export const ApiPrefix = '/api';
+export const BaseRoute = `https://localhost:44382${ApiPrefix}`;
+export const AuthPrefix = '/Identity';
 
 export const ApplicationPaths = {
     DefaultRedirectRoute: '/',
-    Register: `${authPrefix}/Register`,
-    Login: `${authPrefix}/Login`,
-    Logout: `${authPrefix}/Logout`,
+    Register: `${AuthPrefix}/Register`,
+    Login: `${AuthPrefix}/Login`,
+    Logout: `${AuthPrefix}/Logout`,
 }

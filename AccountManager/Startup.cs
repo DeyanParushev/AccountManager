@@ -14,13 +14,9 @@ namespace AccountManager
     using Microsoft.IdentityModel.Tokens;
 
     using AccountManager.Data;
-    using AccountManager.DTOs;
     using AccountManager.Models;
     using AccountManager.Services;
     using AccountManager.Services.Interfaces;
-    using AccountManager.ViewModels.ViewModels;
-    using AccountManager.ViewModels;
-    using AccountManager.ViewModels.InputModels;
 
     public class Startup
     {
@@ -68,6 +64,7 @@ namespace AccountManager
             services.ConfigureAutomapper();
 
             services.AddControllersWithViews();
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
@@ -109,6 +106,13 @@ namespace AccountManager
             app.UseIdentityServer();
             app.UseAuthorization();
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "api/{controller}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+            });
 
             app.UseSpa(spa =>
             {
@@ -118,14 +122,6 @@ namespace AccountManager
                 {
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
-            });
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
             });
         }
     }

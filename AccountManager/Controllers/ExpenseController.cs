@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
 
     using AutoMapper;
@@ -13,11 +14,10 @@
     using AccountManager.ViewModels;
     using AccountManager.ViewModels.InputModels;
     using AccountManager.Models;
-    using System.IO;
 
     [ApiController]
-    [Route("Expenses")]
-    //[Authorize]
+    [Route("api/[controller]")]
+    [Authorize]
     public class ExpenseController : ControllerBase
     {
         private readonly IExpenseService expensesService;

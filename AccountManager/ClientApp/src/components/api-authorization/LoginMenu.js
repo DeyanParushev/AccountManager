@@ -4,12 +4,8 @@ import { ApplicationPaths } from './ApiAuthorizationConstants';
 import { Link } from 'react-router-dom';
 
 export default class LoginMenu extends Component {
-    constructor(props) {
-        super(props);
-    }
-
+ 
     render() {
-        console.log(ApplicationPaths.Register);
         return (
             <Fragment>
                 <NavItem>

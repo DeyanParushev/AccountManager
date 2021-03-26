@@ -10,7 +10,7 @@
     using AccountManager.ViewModels.InputModels;
 
     [ApiController]
-    [Route("Identity")]
+    [Route("api/[controller]")]
 
     public class IdentityController : ControllerBase
     {
@@ -61,14 +61,14 @@
 
             if(user == null)
             {
-                return Unauthorized();
+                return BadRequest("Invalid email.");
             }
 
             var passwordValid = await userManager.CheckPasswordAsync(user, model.Password);
 
             if(!passwordValid)
             {
-                return Unauthorized();
+                return BadRequest("Invalid password.");
             }
 
             var token = jwtService.GenerateJwtToken(user);

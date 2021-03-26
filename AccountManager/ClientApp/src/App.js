@@ -4,7 +4,7 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 //import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
-import { authPrefix } from './components/api-authorization/ApiAuthorizationConstants';
+import { AuthPrefix } from './components/api-authorization/ApiAuthorizationConstants';
 
 import './custom.css'
 
@@ -15,7 +15,7 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
-        <Route path={authPrefix} component={ApiAuthorizationRoutes} />
+        <Route path={AuthPrefix} component={ApiAuthorizationRoutes} />
       </Layout>
     );
   }
