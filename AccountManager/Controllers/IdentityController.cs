@@ -1,5 +1,6 @@
 ﻿namespace AccountManager.Controllers
 {
+    using System;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState.Values);
             }
 
             var user = new ApplicationUser
@@ -45,7 +46,7 @@
                 return Ok();
             }
 
-            return BadRequest();
+            return BadRequest(result.Errors);
         }
 
         [HttpPost]
