@@ -1,9 +1,9 @@
-﻿import React, { Component, Fragment } from 'react';
+﻿import * as React from 'react';
 import { LoginService } from '../../services/AuthServices';
 import { Form, FormGroup, Label, Input, Button, Col } from 'reactstrap';
 
 
-export default class Login extends Component {
+export default class Login extends React.Component {
 
     onSubmitHandler = async (event) => {
         event.preventDefault();

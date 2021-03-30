@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import LoginMenu from './api-authorization/LoginMenu';
 import './NavMenu.css';
 
-export class NavMenu extends Component {
+export class NavMenu extends React.Component {
     static displayName = NavMenu.name;
 
     constructor(props) {
@@ -33,6 +33,15 @@ export class NavMenu extends Component {
                             <ul className="navbar-nav flex-grow">
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink tag={Link} className="text-dark" to="/Expenses">My Expenses</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink tag={Link} className="text-dark" to="/Incomes">My Incomes</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink tag={Link} className="text-dark" to="/Balance">My Balance</NavLink>
                                 </NavItem>
                                 <LoginMenu>
                                 </LoginMenu>

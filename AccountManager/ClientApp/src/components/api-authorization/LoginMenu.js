@@ -1,13 +1,13 @@
-﻿import React, { Component, Fragment } from 'react';
+﻿import * as React from 'react';
 import { NavItem, NavLink } from 'reactstrap';
 import { ApplicationPaths } from './ApiAuthorizationConstants';
 import { Link } from 'react-router-dom';
 
-export default class LoginMenu extends Component {
+export default class LoginMenu extends React.Component {
  
     render() {
         return (
-            <Fragment>
+            <React.Fragment>
                 <NavItem>
                     <NavLink tag={Link} to={ApplicationPaths.Register}>Register</NavLink>
                 </NavItem>
@@ -18,7 +18,7 @@ export default class LoginMenu extends Component {
                 <NavItem>
                     <NavLink tag={Link} to={ApplicationPaths.Logout}>Logout</NavLink>
                 </NavItem>
-            </Fragment>
+            </React.Fragment>
         )
     }
 }

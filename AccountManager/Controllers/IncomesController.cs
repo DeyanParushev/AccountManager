@@ -14,7 +14,7 @@
     using AccountManager.Models;
 
     [ApiController]
-    [Route("Incomes")]
+    [Route("api/[controller]")]
     [Authorize]
     public class IncomesController : ControllerBase
     {

@@ -15,7 +15,7 @@
     using AccountManager.ViewModels.InputModels;
 
     [ApiController]
-    [Route("Categories")]
+    [Route("api/[controller]")]
     [Authorize]
     public class CategoryController : ControllerBase
     {

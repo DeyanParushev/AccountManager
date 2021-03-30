@@ -1,7 +1,7 @@
 ﻿export const ApplicationName = 'AccountManager';
 
 export const ApiPrefix = '/api';
-export const BaseRoute = `https://localhost:44382${ApiPrefix}`;
+export const BaseRoute = `https://localhost:44382`;
 export const AuthPrefix = '/Identity';
 
 export const ApplicationPaths = {
@@ -9,4 +9,7 @@ export const ApplicationPaths = {
     Register: `${AuthPrefix}/Register`,
     Login: `${AuthPrefix}/Login`,
     Logout: `${AuthPrefix}/Logout`,
+    Incomes: `${BaseRoute}/Incomes`,
+    Expenses: `${BaseRoute}/Expenses`,
+    Balance: `${BaseRoute}/Balance`,
 }

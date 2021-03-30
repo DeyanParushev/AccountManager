@@ -1,7 +1,7 @@
-﻿import { ApplicationPaths, BaseRoute } from '../components/api-authorization/ApiAuthorizationConstants';
+﻿import { ApplicationPaths, BaseRoute, ApiPrefix } from '../components/api-authorization/ApiAuthorizationConstants';
 
 export async function RegisterService(user) {
-    const url = BaseRoute + ApplicationPaths.Register;
+    const url = BaseRoute+ ApiPrefix + ApplicationPaths.Register;
     const registerResponse = await fetch(url, {
         method: 'POST',
         headers: {
@@ -14,7 +14,7 @@ export async function RegisterService(user) {
 }
 
 export async function LoginService(user) {
-    const url = BaseRoute + ApplicationPaths.Login;
+    const url = BaseRoute+ ApiPrefix + ApplicationPaths.Login;
     const registerResponse = await fetch(url, {
         method: 'POST',
         headers: {

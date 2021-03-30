@@ -15,7 +15,7 @@
     using System.Collections.Generic;
 
     [ApiController]
-    [Route("Accounts")]
+    [Route("api/[controller]")]
     [Authorize]
     public class AccountsController : ControllerBase
     {

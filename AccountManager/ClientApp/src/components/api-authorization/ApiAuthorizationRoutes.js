@@ -1,14 +1,16 @@
-﻿import React, { Component, Fragment } from 'react';
+﻿import * as React from 'react';
 import { Route } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
 import { ApplicationPaths } from './ApiAuthorizationConstants';
+import Income from '../Income/Income';
 
-export default class ApiAuthorizationRoutes extends Component {
+export default class ApiAuthorizationRoutes extends React.Component {
     render() {
+        console.log(ApplicationPaths.Incomes);
         return (
-            <Fragment>
+            <React.Fragment>
                 <Route path={ApplicationPaths.Register}>
                     <Register />
                 </Route>
@@ -18,7 +20,7 @@ export default class ApiAuthorizationRoutes extends Component {
                 <Route path={ApplicationPaths.Logout}>
                     <Logout />
                 </Route>
-            </Fragment>
+            </React.Fragment>
         );
     }
 }

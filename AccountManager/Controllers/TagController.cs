@@ -15,7 +15,7 @@
     using AccountManager.ViewModels.InputModels;
 
     [ApiController]
-    [Route("Tags")]
+    [Route("api/[controller]")]
     [Authorize]
     public class TagController : ControllerBase
     {

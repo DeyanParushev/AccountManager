@@ -2,11 +2,7 @@
 import { Form, FormGroup, Label, Input, Button, Col, Alert } from 'reactstrap';
 import { RegisterService } from '../../services/AuthServices';
 
-interface IState {
-    isRegistered: boolean,
-}
-
-export default class Register extends React.Component<IState> {
+export default class Register extends React.Component {
     constructor(props) {
         super(props);
 
@@ -27,7 +23,7 @@ export default class Register extends React.Component<IState> {
         const response = await RegisterService(user);
 
         if (response.status === 400) {
-            this.state.isRegistered = true;
+            this.setState({ isRegistered: true });
             console.log(this.state.isRegistered);
         }
     }
