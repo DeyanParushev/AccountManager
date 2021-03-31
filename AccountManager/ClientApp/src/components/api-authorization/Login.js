@@ -4,6 +4,12 @@ import { Form, FormGroup, Label, Input, Button, Col } from 'reactstrap';
 
 
 export default class Login extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoggedIn: false,
+        }
+    }
 
     onSubmitHandler = async (event) => {
         event.preventDefault();
@@ -13,30 +19,38 @@ export default class Login extends React.Component {
         };
 
         var result = await LoginService(user);
-        console.log(result);
+        if (result !== 400) {
+            this.setState({ isLoggedIn: true });
+        }
+        else {
+            this.setState({ isLoggedIn: false });
+        }
     }
 
     render() {
         return (
-            <Form onSubmit={this.onSubmitHandler}>
-             
-                <FormGroup>
-                    <Label sm={2} for="email">Email</Label>
-                    <Col sm={10}>
-                        <Input type="email" id="email" name="email" />
-                    </Col>
-                </FormGroup>
+            <React.Fragment>
+                {this.state.isLoggedIn || <h1>User not logged in</h1>}
+                <Form onSubmit={this.onSubmitHandler}>
 
-                <FormGroup>
-                    <Label sm={2} for="password">Password</Label>
-                    <Col sm={10}>
-                        <Input type="password" id="password" name="password" />
+                    <FormGroup>
+                        <Label sm={2} for="email">Email</Label>
+                        <Col sm={10}>
+                            <Input type="email" id="email" name="email" />
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Label sm={2} for="password">Password</Label>
+                        <Col sm={10}>
+                            <Input type="password" id="password" name="password" />
+                        </Col>
+                    </FormGroup>
+                    <Col>
+                        <Button outline color="primary" >Login</Button>
                     </Col>
-                </FormGroup>
-                <Col>
-                    <Button outline color="primary" >Login</Button>
-                </Col>
-            </Form>
+                </Form>
+            </React.Fragment>
         )
     }
 }

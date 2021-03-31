@@ -1,13 +1,18 @@
 ﻿import React from 'react';
-import * as Transaction from '../Transaction/Transaction';
+import { useState, useEffect } from 'react';
+import {GetAll} from '../../services/IncomesService';
+import { Transaction } from '../Transaction/Transaction';
 
 function Income(props) {
+    const [incomes, setIncomes] = useState([]);
+    
+    useEffect(() => {
+       GetAll("dadawdaws")
+       .then(res => console.log(res));
+    }, []);
+
     return (
-        //<React.Fragment>
-        //    <h1>Income page</h1>
-        //    <Transaction/>
-        //</React.Fragment>
-        <h1>Income</h1>
+        <p>Something</p>
     )
 }
 

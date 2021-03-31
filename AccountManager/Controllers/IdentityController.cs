@@ -1,10 +1,9 @@
 ﻿namespace AccountManager.Controllers
 {
-    using System;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
 
     using AccountManager.Models;
     using AccountManager.Services.Interfaces;
@@ -43,7 +42,7 @@
 
             if (result.Succeeded)
             {
-                return Ok();
+                return Ok("Created");
             }
 
             return BadRequest(result.Errors);
@@ -60,20 +59,20 @@
 
             var user = await userManager.FindByEmailAsync(model.Email);
 
-            if(user == null)
+            if (user == null)
             {
                 return BadRequest("Invalid email.");
             }
 
             var passwordValid = await userManager.CheckPasswordAsync(user, model.Password);
 
-            if(!passwordValid)
+            if (!passwordValid)
             {
                 return BadRequest("Invalid password.");
             }
 
             var token = jwtService.GenerateJwtToken(user);
-
+            Response.Cookies.Append("AccountManagerCookie", user.UserName + "/" + user.Id);
             return token;
         }
 
@@ -83,7 +82,7 @@
         public async Task<ActionResult> Logout()
         {
             Request.Headers.Clear();
-            
+
             return Ok("Logged out");
         }
     }

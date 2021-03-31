@@ -110,7 +110,7 @@ namespace AccountManager
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "api/{controller}/{action=Index}/{id?}");
+                    pattern: "api/{controller}/{action?}/{id?}");
                 endpoints.MapRazorPages();
             });
 

@@ -9,7 +9,7 @@ export const ApplicationPaths = {
     Register: `${AuthPrefix}/Register`,
     Login: `${AuthPrefix}/Login`,
     Logout: `${AuthPrefix}/Logout`,
-    Incomes: `${BaseRoute}/Incomes`,
+    Incomes: `${BaseRoute}${ApiPrefix}/Incomes`,
     Expenses: `${BaseRoute}/Expenses`,
     Balance: `${BaseRoute}/Balance`,
 }

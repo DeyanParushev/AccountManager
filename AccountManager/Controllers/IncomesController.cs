@@ -7,11 +7,11 @@
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    
+
     using AccountManager.DTOs;
+    using AccountManager.Models;
     using AccountManager.Services.Interfaces;
     using AccountManager.ViewModels.ViewModels;
-    using AccountManager.Models;
 
     [ApiController]
     [Route("api/[controller]")]
@@ -29,8 +29,8 @@
             this.jwtService = jwtService;
         }
 
-        [HttpGet]
-        [Route(nameof(All))]
+        [HttpGet("/{accountId}")]
+        //[Route(nameof(All) + "/{accountId}")]
         public async Task<IActionResult> All(string accountId)
         {
             try
@@ -48,7 +48,7 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(string incomeId)
+        public async Task<IActionResult> One(string incomeId)
         {
             try
             {

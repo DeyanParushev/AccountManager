@@ -2,6 +2,6 @@
 
 export const Transaction = (props) => {
     return (
-        <h1>Transaction</h1>
+        <h1>Transaction!!</h1>
     )
 }
