@@ -23,6 +23,8 @@
         private readonly IExpenseService expensesService;
         private readonly IMapper mapper;
         private readonly IJwtService jwtService;
+        private const string actionRouteEnd = "/{expenseId}";
+        private const string authRequestHeader = "Authorization";
 
         public ExpenseController(IExpenseService expensesService, IMapper mapper, IJwtService jwtService)
         {
@@ -32,12 +34,12 @@
         }
 
         [HttpGet]
-        [Route(nameof(All))]
+        [Route(nameof(All) + "/{accountId}")]
         public async Task<IActionResult> All(string accountId)
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 var expenses = await expensesService.GetAll<ExpenseDTO>(accountId, userClaims["UserId"]);
                 var outputExpenses = mapper.Map<ICollection<ExpenseViewModel>>(expenses);
 
@@ -50,11 +52,12 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(string expenseId)
+        [Route(nameof(Expense) + actionRouteEnd)]
+        public async Task<IActionResult> Expense(string expenseId)
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 var expense = await expensesService.GetOne<ExpenseDTO>(expenseId, userClaims["UserId"]);
                 var outputExpense = mapper.Map<ExpenseViewModel>(expense);
 
@@ -67,6 +70,7 @@
         }
 
         [HttpPost]
+        [Route(nameof(Create) + actionRouteEnd)]
         public async Task<IActionResult> Create(ExpenseInputModel model)
         {
             if (!ModelState.IsValid)
@@ -76,7 +80,7 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 var expenseDbModel = mapper.Map<Expense>(model);
                 var stream = new MemoryStream();
                 await model.Image.CopyToAsync(stream);
@@ -91,6 +95,7 @@
         }
 
         [HttpPut]
+        [Route(nameof(Edit) + actionRouteEnd)]
         public async Task<IActionResult> Edit(ExpenseInputModel model)
         {
             if (!ModelState.IsValid)
@@ -100,7 +105,7 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 var expenseDbModel = mapper.Map<Expense>(model);
                 var editedExpense = await expensesService.Edit<ExpenseDTO>(expenseDbModel, userClaims["UserId"]);
 
@@ -113,11 +118,12 @@
         }
 
         [HttpDelete]
+        [Route(nameof(Delete) + actionRouteEnd)]
         public async Task<IActionResult> Delete(string expenseId)
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 await expensesService.Delete(expenseId, userClaims["UserId"]);
 
                 return Ok();

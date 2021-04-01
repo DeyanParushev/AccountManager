@@ -6,10 +6,6 @@ import Logout from './Logout';
 import { ApplicationPaths } from './ApiAuthorizationConstants';
 
 export default class ApiAuthorizationRoutes extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         console.log(ApplicationPaths.Incomes);
         return (

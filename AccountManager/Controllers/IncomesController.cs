@@ -21,6 +21,8 @@
         private readonly IIncomeService incomeService;
         private readonly IMapper mapper;
         private readonly IJwtService jwtService;
+        private const string actionRouteEnd = "/{incomeId}";
+        private const string authRequestHeader = "Authorization";
 
         public IncomesController(IIncomeService incomeService, IMapper mapper, IJwtService jwtService)
         {
@@ -29,13 +31,13 @@
             this.jwtService = jwtService;
         }
 
-        [HttpGet("/{accountId}")]
-        //[Route(nameof(All) + "/{accountId}")]
+        [HttpGet]
+        [Route(nameof(All) + "/{accountId}")]
         public async Task<IActionResult> All(string accountId)
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 var incomes = await incomeService.GetAll<IncomeDTO>(accountId, userClaims["UserId"]);
                 var putputIncomes = mapper.Map<ICollection<IncomeViewModel>>(incomes);
 
@@ -48,11 +50,12 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> One(string incomeId)
+        [Route(nameof(Income) + actionRouteEnd)]
+        public async Task<IActionResult> Income(string incomeId)
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 var income = await incomeService.GetOne<IncomeDTO>(incomeId, userClaims["UserId"]);
                 var incomeExpenses = mapper.Map<IncomeViewModel>(income);
 
@@ -74,7 +77,7 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 var income = mapper.Map<Income>(model);
                 await incomeService.Create(income);
 
@@ -87,6 +90,7 @@
         }
 
         [HttpPut]
+        [Route(nameof(Edit) + actionRouteEnd)]
         public async Task<IActionResult> Edit(IncomeViewModel model)
         {
             if (!ModelState.IsValid)
@@ -96,7 +100,7 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 var incomeDbModel = mapper.Map<Income>(model);
                 var editedIncome = await incomeService.Edit<IncomeDTO>(incomeDbModel, userClaims["UserId"]);
 
@@ -109,11 +113,12 @@
         }
 
         [HttpDelete]
+        [Route(nameof(Delete) + actionRouteEnd)]
         public async Task<IActionResult> Delete(string incomeId)
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 await incomeService.Delete(incomeId, userClaims["UserId"]);
 
                 return Ok();

@@ -35,13 +35,7 @@ export class NavMenu extends React.Component {
                                     <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/Expenses">My Expenses</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/Incomes">My Incomes</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/Balance">My Balance</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to="/Accounts">My Accounts</NavLink>
                                 </NavItem>
                                 <LoginMenu>
                                 </LoginMenu>

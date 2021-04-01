@@ -8,7 +8,6 @@ import { AuthPrefix } from './components/api-authorization/ApiAuthorizationConst
 import './custom.css'
 import Income from './components/Income/Income';
 import Expense from './components/Expense/Expense';
-import Balance from './components/Balance/Balance';
 import Account from './components/Account/Account';
 
 
@@ -22,8 +21,7 @@ export default class App extends React.Component {
                 <Route path={AuthPrefix} component={ApiAuthorizationRoutes} />
                 <Route exact path='/Incomes' component={Income} />
                 <Route exact path='/Expenses' component={Expense} />
-                <Route exact path='/Balance' component={Balance} />
-                <Route exact path='/Account' component={Account} />
+                <Route exact path='/Accounts' component={Account} />
             </Layout>
         );
     }
