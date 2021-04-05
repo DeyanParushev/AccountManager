@@ -7,16 +7,16 @@ import { ApplicationPaths } from './ApiAuthorizationConstants';
 
 export default class ApiAuthorizationRoutes extends React.Component {
     render() {
-        console.log(ApplicationPaths.Incomes);
         return (
             <React.Fragment>
-                <Route path={ApplicationPaths.Register}>
+
+                <Route exact path={ApplicationPaths.Register}>
                     <Register history={this.props.history}/>
                 </Route>
-                <Route path={ApplicationPaths.Login}>
+                <Route exact path={ApplicationPaths.Login}>
                     <Login />
                 </Route>
-                <Route path={ApplicationPaths.Logout}>
+                <Route exact path={ApplicationPaths.Logout}>
                     <Logout />
                 </Route>
             </React.Fragment>

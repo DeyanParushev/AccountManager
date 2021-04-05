@@ -2,7 +2,7 @@
 import { MakeRequest, ApiMethods } from './ApiRequests';
 
 export function GetAll(id, entity) {
-    const url = ApplicationPaths[entity].All + `/${id}`;
+    const url = ApplicationPaths[entity].All + id!==null ?`/${id}` : '';
     return MakeRequest(url, ApiMethods.Get)
         .then(response => {
             if (response.status === 400) {

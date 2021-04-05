@@ -1,18 +1,36 @@
-﻿import React from 'react';
+﻿import React, { Link, Fragment } from 'react';
 import { useState, useEffect } from 'react';
-import {GetAll, GetOne, Delete, Create, Edit} from '../../services/ApiService';
-import { Transaction } from '../Transaction/Transaction';
+import { GetAll, GetOne, Delete, Create, Edit } from '../../services/ApiService';
+import Transaction from '../Transaction/Transaction';
 
-function Income(props) {
+const Income = (props) => {
     const [incomes, setIncomes] = useState([]);
-    
+
     useEffect(() => {
-       GetAll("dadawdaws", "Expenses")
-       .then(res => console.log(res));
+        GetAll("dadawdaws", "Expenses")
+            .then(res => console.log(res));
     }, []);
 
     return (
-        <p>Something</p>
+        <Fragment>
+            <div>
+                <h3>Incomes</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Category</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {incomes.map(x => <Transaction transaction={x} />)}
+                    </tbody>
+                </table>
+            </div>
+            {/* <Link to="/Incomes/Create/:accountId">Create new</Link> */}
+        </Fragment>
     )
 }
 

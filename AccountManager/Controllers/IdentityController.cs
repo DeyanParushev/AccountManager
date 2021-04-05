@@ -73,6 +73,7 @@
 
             var token = jwtService.GenerateJwtToken(user);
             Response.Cookies.Append("AccountManagerCookie", user.UserName + "/" + user.Id);
+            Response.Headers.Add("Authoriazation", $"Bearer {token}");
             return token;
         }
 

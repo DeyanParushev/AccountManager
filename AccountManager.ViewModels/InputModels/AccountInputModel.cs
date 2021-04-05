@@ -1,9 +1,7 @@
 ﻿namespace AccountManager.ViewModels.InputModels
 {
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using AccountManager.ViewModels.ViewModels;
 
     public class AccountInputModel
     {

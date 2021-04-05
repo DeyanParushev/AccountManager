@@ -1,7 +1,13 @@
-﻿import * as React from 'react';
+﻿import React from 'react';
 
-export const Transaction = (props) => {
-    return (
-        <h1>Transaction!!</h1>
+const Transaction = (transaction) => {
+       return (
+        <tr>
+            <td>{transaction.date}</td>
+            <td>{transaction.Amount}</td>
+            <td>{transaction.Category}</td>
+        </tr>
     )
 }
+
+export default Transaction;
