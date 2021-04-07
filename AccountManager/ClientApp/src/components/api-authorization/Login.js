@@ -1,14 +1,14 @@
-﻿import * as React from 'react';
+﻿import React, { useContext } from 'react';
 import { LoginService } from '../../services/AuthServices';
 import { Form, FormGroup, Label, Input, Button, Col } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import GetUser from '../../services/CookieProccessor';
 
-const Login = () => {
-
-    const { setUser } = React.useContext(UserContext);
+const Login = ({props}) => {
+    const context = useContext(UserContext);
     const onSubmitHandler = (event) => {
         event.preventDefault();
+
         const sendUser = {
             email: event.target.email.value,
             password: event.target.password.value,
@@ -18,16 +18,17 @@ const Login = () => {
             .then(result => {
                 if (result !== 400) {
                     const user = GetUser(document.cookie);
-                    console.log(user);
-                    console.log(setUser);
+                    user.token = result;
+                    context.setUser(user);
+                    props.history.push('/');
                 }
                 else {
                     console.log(result);
                 }
             })
             .catch(ex => {
-
-            })
+                console.log(ex);
+            });
     }
 
     return (

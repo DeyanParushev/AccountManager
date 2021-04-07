@@ -6,6 +6,10 @@ import Logout from './Logout';
 import { ApplicationPaths } from './ApiAuthorizationConstants';
 
 export default class ApiAuthorizationRoutes extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -14,10 +18,10 @@ export default class ApiAuthorizationRoutes extends React.Component {
                     <Register history={this.props.history}/>
                 </Route>
                 <Route exact path={ApplicationPaths.Login}>
-                    <Login />
+                    <Login props={this.props} />
                 </Route>
                 <Route exact path={ApplicationPaths.Logout}>
-                    <Logout />
+                    <Logout props={this.props}/>
                 </Route>
             </React.Fragment>
         );

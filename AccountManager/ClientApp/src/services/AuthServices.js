@@ -15,7 +15,7 @@ export function RegisterService(user) {
         .then(data => data);
 }
 
-export async function LoginService(user) {
+export function LoginService(user) {
     const url = BaseRoute + ApiPrefix + ApplicationPaths.Login;
     return MakeRequest(url, ApiMethods.Post, user)
         .then(res => {
@@ -27,4 +27,18 @@ export async function LoginService(user) {
             }
         })
         .then(data => data);
+}
+
+
+export function LogoutService(user) {
+    const url = BaseRoute + ApiPrefix + ApplicationPaths.Logout;
+
+    return MakeRequest(url, ApiMethods.Post, user)
+    .then(res => {
+        if(res.status === 400) {
+            return 400;
+        } else {
+            return res;
+        }
+    });
 }

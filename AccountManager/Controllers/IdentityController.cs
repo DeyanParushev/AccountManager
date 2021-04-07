@@ -72,8 +72,8 @@
             }
 
             var token = jwtService.GenerateJwtToken(user);
-            Response.Cookies.Append("AccountManagerCookie", user.UserName + "/" + user.Id);
-            Response.Headers.Add("Authoriazation", $"Bearer {token}");
+            Response.Cookies.Append("AccountManagerCookie", user.UserName + "/" + user.Id + "/" +  user.Email);
+            Response.Headers.Add("Authorization", $"Bearer {token}");
             return token;
         }
 
@@ -83,7 +83,7 @@
         public async Task<ActionResult> Logout()
         {
             Request.Headers.Clear();
-
+            
             return Ok("Logged out");
         }
     }

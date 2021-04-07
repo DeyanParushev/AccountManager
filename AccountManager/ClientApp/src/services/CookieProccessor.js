@@ -4,12 +4,12 @@ const GetUser = (cookie) => {
     const cookies = cookie.split(';');
     cookies.map(x => x.trim());
 
-    const cookieIndex = cookies.indexOf(x => x.startsWith('AccountManagerCookie'));
-   
-    let cookieValue = cookies[cookieIndex].split('=')[1].split('%2F');
+    const extractedCookie = cookies.find(x => x.startsWith('AccountManagerCookie'));
+    let cookieValue = extractedCookie.split('=')[1].split('%2F');
     
     user.username = cookieValue[0];
     user.id = cookieValue[1];
+    user.email = cookieValue[2];
     return user;
 }
 

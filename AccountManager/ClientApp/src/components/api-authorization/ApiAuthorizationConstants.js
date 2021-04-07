@@ -20,6 +20,14 @@ const Expense = {
     GetOne: `${BaseRoute}${ApiPrefix}/Expenses/Expense`,
 }
 
+const Account = {
+    All: `${BaseRoute}${ApiPrefix}/Accounts/All`,
+    Create: `${BaseRoute}${ApiPrefix}/Accounts/Create`,
+    Delete: `${BaseRoute}${ApiPrefix}/Accounts/Delete`,
+    Edit: `${BaseRoute}${ApiPrefix}/Accounts/Edit`,
+    GetOne: `${BaseRoute}${ApiPrefix}/Accounts/Expense`,
+}
+
 export const ApplicationPaths = {
     DefaultRedirectRoute: '/',
     Register: `${AuthPrefix}/Register`,
@@ -28,4 +36,5 @@ export const ApplicationPaths = {
     Incomes: Income,
     Expenses: Expense,
     Balance: `${BaseRoute}/Balance`,
+    Accounts: Account,
 }

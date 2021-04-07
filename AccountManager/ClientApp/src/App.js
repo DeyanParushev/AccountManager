@@ -12,12 +12,17 @@ import Expense from './components/Expense/Expense';
 import Account from './components/Account/Account';
 import CreateAccount from './components/Account/CreateAccount';
 
-
 export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: {},
+            user: {
+                username: '',
+                id: '',
+                token: '',
+                email: '',
+            },
+            isLoggedIn: false,
         }
     };
     static displayName = App.name;
@@ -25,7 +30,14 @@ export default class App extends React.Component {
     render() {
         const value = {
             user: this.state.user,
-            setUser: this.setState, 
+            setUser: (inputUser) => {
+                if(JSON.stringify(inputUser) === '{}') {
+                    this.setState({user: inputUser, isLoggedIn: false});
+                } else {
+                    this.setState({user: inputUser, isLoggedIn: true});
+                }
+            },
+            isLoggedIn: this.state.isLoggedIn,
         }
 
         return (

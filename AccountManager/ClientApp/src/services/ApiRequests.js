@@ -1,10 +1,10 @@
-﻿export function MakeRequest(url, method, payLoad) {
-    console.log(method)
+﻿export function MakeRequest(url, method, payLoad, token) {
     if (method === 'GET' || method === 'DELETE') {
         return fetch(url, {
             method: method,
             headers: {
                 'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
             }
         });
     }
@@ -14,6 +14,7 @@
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(payLoad),
     });

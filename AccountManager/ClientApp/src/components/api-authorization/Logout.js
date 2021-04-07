@@ -1,11 +1,28 @@
-﻿import * as React from 'react';
+﻿import React from 'react';
+import UserContext from '../../contexts/UserContext';
+import { LogoutService } from '../..//services/AuthServices';
 
-export default class Logout extends React.Component {
-   
+class Logout extends React.Component {
+
+    componentDidMount() {
+        LogoutService(this.context.user)
+            .then(result => {
+                if (result.status === 200) {
+                    this.context.setUser({});
+                    this.props.props.history.push('/');
+                }
+            })
+            .catch(exeption => {
+                console.log(exeption);
+            });
+    }
+
     render() {
-        return (
-            <h1>Logout page</h1>
-        )
+        return null;
     }
 }
+
+Logout.contextType = UserContext;
+
+export default Logout;
 

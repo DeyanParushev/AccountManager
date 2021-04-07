@@ -1,12 +1,13 @@
-import * as React from 'react';
+import React from 'react';
+import UserContext from '../contexts/UserContext';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import LoginMenu from './api-authorization/LoginMenu';
 import './NavMenu.css';
 
-export class NavMenu extends React.Component {
+class NavMenu extends React.Component {
     static displayName = NavMenu.name;
-
+    
     constructor(props) {
         super(props);
 
@@ -22,6 +23,16 @@ export class NavMenu extends React.Component {
         });
     }
 
+    renderLogout() {
+        if (this.context.isLoggedIn) {
+            return (
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/Accounts">My Accounts</NavLink>
+                </NavItem>
+            )
+        }
+    }
+
     render() {
         return (
             <header>
@@ -34,9 +45,7 @@ export class NavMenu extends React.Component {
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                                 </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/Accounts">My Accounts</NavLink>
-                                </NavItem>
+                                {this.renderLogout()}
                                 <LoginMenu>
                                 </LoginMenu>
                             </ul>
@@ -47,3 +56,6 @@ export class NavMenu extends React.Component {
         );
     }
 }
+
+NavMenu.contextType = UserContext;
+export default NavMenu;

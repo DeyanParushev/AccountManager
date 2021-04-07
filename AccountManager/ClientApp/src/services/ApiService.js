@@ -1,9 +1,9 @@
 ﻿import { ApplicationPaths } from '../components/api-authorization/ApiAuthorizationConstants';
 import { MakeRequest, ApiMethods } from './ApiRequests';
 
-export function GetAll(id, entity) {
+export function GetAll(id, entity, token) {
     const url = ApplicationPaths[entity].All + id!==null ?`/${id}` : '';
-    return MakeRequest(url, ApiMethods.Get)
+    return MakeRequest(url, ApiMethods.Get, null, token)
         .then(response => {
             if (response.status === 400) {
                 return 400;
@@ -14,9 +14,9 @@ export function GetAll(id, entity) {
         .then(data => data);
 }
 
-export function GetOne(id, entity) {
+export function GetOne(id, entity, token) {
     const url = ApplicationPaths[entity].GetOne + `/${id}`;
-    MakeRequest(url, ApiMethods.Get)
+    MakeRequest(url, ApiMethods.Get, null, token)
         .then(response => {
             if (response.status === 400) {
                 return 400;
@@ -27,9 +27,9 @@ export function GetOne(id, entity) {
         .then(data => data);
 }
 
-export function Delete(id, entity) {
+export function Delete(id, entity, token) {
     const url = ApplicationPaths[entity].Delete + `/${id}`;
-    return MakeRequest(url, ApiMethods.Delete)
+    return MakeRequest(url, ApiMethods.Delete, null, token)
         .then(response => {
             if (response.status === 400) {
                 return 400;
@@ -40,9 +40,9 @@ export function Delete(id, entity) {
         .then(data => data);
 }
 
-export function Edit(id, entity, object) {
+export function Edit(id, entity, object, token) {
     const url = ApplicationPaths[entity].Edit + `/${id}`;
-    return MakeRequest(url, ApiMethods.Put, object)
+    return MakeRequest(url, ApiMethods.Put, object, token)
         .then(response => {
             if (response.status === 400) {
                 return 400;
@@ -53,9 +53,9 @@ export function Edit(id, entity, object) {
         .then(data => data);
 }
 
-export function Create(id, entity, object) {
+export function Create(id, entity, object, token) {
     const url = ApplicationPaths[entity].Create + `/${id}`;
-    return MakeRequest(url, ApiMethods.Put, object)
+    return MakeRequest(url, ApiMethods.Post, object, token)
         .then(response => {
             if (response.status === 400) {
                 return 400;
