@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext, Fragment, version } from 'react';
+import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { Form, FormGroup, Label, Col, Input, Button } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import { Create } from '../../services/ApiService';
 import Error from '../Error/Error';
 
-const CreatAccount = () => {
+const CreatAccount = ({history}) => {
     const context = useContext(UserContext);
     const [state, setState] = useState({ message: '' });
     const [showError, setShowError] = useState(false);
@@ -22,9 +22,13 @@ const CreatAccount = () => {
             name: e.target.name.value,
         };
 
-        // Finish the redirect and error handling
         Create(context.user.id, 'Accounts', account, context.user.token)
-            .then()
+            .then(response => {
+                history.push('/Accounts');
+            })
+            .catch(ex => {
+                console.log(ex);
+            })
     }
 
     useEffect(() => {

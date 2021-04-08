@@ -13,7 +13,6 @@ export default class ApiAuthorizationRoutes extends React.Component {
     render() {
         return (
             <React.Fragment>
-
                 <Route exact path={ApplicationPaths.Register}>
                     <Register history={this.props.history}/>
                 </Route>
