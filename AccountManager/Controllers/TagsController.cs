@@ -17,13 +17,14 @@
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class TagController : ControllerBase
+    public class TagsController : ControllerBase
     {
         private readonly ITagService tagService;
         private readonly IMapper mapper;
         private readonly IJwtService jwtService;
+        private const string routeParameter = "/{userId}";
 
-        public TagController(ITagService tagService, IMapper mapper, IJwtService jwtService)
+        public TagsController(ITagService tagService, IMapper mapper, IJwtService jwtService)
         {
             this.tagService = tagService;
             this.mapper = mapper;
@@ -66,6 +67,7 @@
         }
 
         [HttpPost]
+        [Route(nameof(Create) + routeParameter)]
         public async Task<IActionResult> Create(TagInputModel model)
         {
             if (!ModelState.IsValid)

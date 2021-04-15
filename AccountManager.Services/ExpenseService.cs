@@ -69,7 +69,9 @@
                 throw new ArgumentNullException("Account does note exist.");
             }
 
-            var imageUrl = await cloudService.Upload(image, inputExpense.ImageName);
+            //var imageUrl = await cloudService.Upload(image, inputExpense.ImageName);
+
+            inputExpense.Id = Guid.NewGuid().ToString();
 
             context.Expenses.Add(inputExpense);
             await context.SaveChangesAsync();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import UserContext from '../contexts/UserContext';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -7,7 +7,7 @@ import './NavMenu.css';
 
 class NavMenu extends React.Component {
     static displayName = NavMenu.name;
-    
+
     constructor(props) {
         super(props);
 
@@ -26,9 +26,17 @@ class NavMenu extends React.Component {
     renderLogout() {
         if (this.context.isLoggedIn) {
             return (
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/Accounts">My Accounts</NavLink>
-                </NavItem>
+                <Fragment>
+                    <NavItem>
+                        <NavLink tag={Link} className="text-dark" to="/Categories/Create">Create Category</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} className="text-dark" to="/Tags/Create">Create Tag</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} className="text-dark" to="/Accounts">My Accounts</NavLink>
+                    </NavItem>
+                </Fragment>
             )
         }
     }

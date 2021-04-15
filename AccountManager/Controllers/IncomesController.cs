@@ -12,6 +12,7 @@
     using AccountManager.Models;
     using AccountManager.Services.Interfaces;
     using AccountManager.ViewModels.ViewModels;
+    using AccountManager.ViewModels.InputModels;
 
     [ApiController]
     [Route("api/[controller]")]
@@ -21,7 +22,7 @@
         private readonly IIncomeService incomeService;
         private readonly IMapper mapper;
         private readonly IJwtService jwtService;
-        private const string actionRouteEnd = "/{incomeId}";
+        private const string incomeParameter = "/{incomeId}";
         private const string authRequestHeader = "Authorization";
 
         public IncomesController(IIncomeService incomeService, IMapper mapper, IJwtService jwtService)
@@ -50,7 +51,7 @@
         }
 
         [HttpGet]
-        [Route(nameof(Income) + actionRouteEnd)]
+        [Route(nameof(Income) + incomeParameter)]
         public async Task<IActionResult> Income(string incomeId)
         {
             try
@@ -68,7 +69,8 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(IncomeViewModel model)
+        [Route(nameof(Create))]
+        public async Task<IActionResult> Create(IncomeInputModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -90,7 +92,7 @@
         }
 
         [HttpPut]
-        [Route(nameof(Edit) + actionRouteEnd)]
+        [Route(nameof(Edit) + incomeParameter)]
         public async Task<IActionResult> Edit(IncomeViewModel model)
         {
             if (!ModelState.IsValid)
@@ -113,7 +115,7 @@
         }
 
         [HttpDelete]
-        [Route(nameof(Delete) + actionRouteEnd)]
+        [Route(nameof(Delete) + incomeParameter)]
         public async Task<IActionResult> Delete(string incomeId)
         {
             try

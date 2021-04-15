@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    
+
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-   
+
     using AccountManager.DTOs;
     using AccountManager.Models;
     using AccountManager.Services.Interfaces;
@@ -17,13 +17,14 @@
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class CategoryController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService categoryService;
         private readonly IMapper mapper;
         private readonly IJwtService jwtService;
+        private const string routeParameter = "/{userId}";
 
-        public CategoryController(ICategoryService categoryService, IMapper mapper, IJwtService jwtService)
+        public CategoriesController(ICategoryService categoryService, IMapper mapper, IJwtService jwtService)
         {
             this.categoryService = categoryService;
             this.mapper = mapper;
@@ -66,7 +67,8 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CategoryInputModel model)
+        [Route(nameof(Create) + routeParameter)]
+        public async Task<IActionResult> Create(CategoryInputModel model, string userId)
         {
             if (!ModelState.IsValid)
             {
@@ -75,9 +77,8 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
                 var categoryDbModel = mapper.Map<Category>(model);
-                await categoryService.Create(categoryDbModel, userClaims["UserId"]);
+                await categoryService.Create(categoryDbModel, userId);
 
                 return Ok();
             }

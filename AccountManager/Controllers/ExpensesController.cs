@@ -18,7 +18,7 @@
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class ExpenseController : ControllerBase
+    public class ExpensesController : ControllerBase
     {
         private readonly IExpenseService expensesService;
         private readonly IMapper mapper;
@@ -26,7 +26,7 @@
         private const string actionRouteEnd = "/{expenseId}";
         private const string authRequestHeader = "Authorization";
 
-        public ExpenseController(IExpenseService expensesService, IMapper mapper, IJwtService jwtService)
+        public ExpensesController(IExpenseService expensesService, IMapper mapper, IJwtService jwtService)
         {
             this.expensesService = expensesService;
             this.mapper = mapper;
@@ -70,7 +70,7 @@
         }
 
         [HttpPost]
-        [Route(nameof(Create) + actionRouteEnd)]
+        [Route(nameof(Create))]
         public async Task<IActionResult> Create(ExpenseInputModel model)
         {
             if (!ModelState.IsValid)
@@ -83,8 +83,8 @@
                 var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 var expenseDbModel = mapper.Map<Expense>(model);
                 var stream = new MemoryStream();
-                await model.Image.CopyToAsync(stream);
-                await expensesService.Create(expenseDbModel, stream.ToArray());
+                //await model.Image.CopyToAsync(stream);
+                await expensesService.Create(expenseDbModel, null);
 
                 return Ok();
             }

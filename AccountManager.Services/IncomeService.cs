@@ -67,7 +67,18 @@
                 throw new ArgumentNullException("Account does note exist.");
             }
 
-            context.Incomes.Add(inputIncome);
+            var income = context.Incomes
+                .Where(x =>x.Id == inputIncome.Id)
+                .SingleOrDefault();
+
+            if (income != null)
+            {
+                throw new ArgumentException("Account name already exists");
+            }
+
+            inputIncome.Id = Guid.NewGuid().ToString();
+            await context.Incomes.AddAsync(inputIncome);
+
             await context.SaveChangesAsync();
         }
 

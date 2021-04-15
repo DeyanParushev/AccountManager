@@ -25,7 +25,23 @@ const Account = {
     Create: `${BaseRoute}${ApiPrefix}/Accounts/Create`,
     Delete: `${BaseRoute}${ApiPrefix}/Accounts/Delete`,
     Edit: `${BaseRoute}${ApiPrefix}/Accounts/Edit`,
-    GetOne: `${BaseRoute}${ApiPrefix}/Accounts/Expense`,
+    GetOne: `${BaseRoute}${ApiPrefix}/Accounts/Account`,
+}
+
+const Tag = {
+    All: `${BaseRoute}${ApiPrefix}/Tags/All`,
+    Create: `${BaseRoute}${ApiPrefix}/Tags/Create`,
+    Delete: `${BaseRoute}${ApiPrefix}/Tags/Delete`,
+    Edit: `${BaseRoute}${ApiPrefix}/Tags/Edit`,
+    GetOne: `${BaseRoute}${ApiPrefix}/Tags/Tag`,
+}
+
+const Category = {
+    All: `${BaseRoute}${ApiPrefix}/Categories/All`,
+    Create: `${BaseRoute}${ApiPrefix}/Categories/Create`,
+    Delete: `${BaseRoute}${ApiPrefix}/Categories/Delete`,
+    Edit: `${BaseRoute}${ApiPrefix}/Categories/Edit`,
+    GetOne: `${BaseRoute}${ApiPrefix}/Categories/Categorie`,
 }
 
 export const ApplicationPaths = {
@@ -35,6 +51,7 @@ export const ApplicationPaths = {
     Logout: `${AuthPrefix}/Logout`,
     Incomes: Income,
     Expenses: Expense,
-    Balance: `${BaseRoute}/Balance`,
     Accounts: Account,
+    Tags: Tag,
+    Categories: Category,
 }

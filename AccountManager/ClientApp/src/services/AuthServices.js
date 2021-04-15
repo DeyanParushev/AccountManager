@@ -33,7 +33,7 @@ export function LoginService(user) {
 export function LogoutService(user) {
     const url = BaseRoute + ApiPrefix + ApplicationPaths.Logout;
 
-    return MakeRequest(url, ApiMethods.Post, user)
+    return MakeRequest(url, ApiMethods.Post, user, user.token)
     .then(res => {
         if(res.status === 400) {
             return 400;

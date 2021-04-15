@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
 
+    using AccountManager.Models;
+
     public class AccountDTO
     {
         public AccountDTO()

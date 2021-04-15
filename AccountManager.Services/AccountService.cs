@@ -9,6 +9,8 @@
     using AccountManager.Data;
     using AccountManager.Models;
     using AccountManager.Services.Interfaces;
+    using AccountManager.Services.Automapper;
+    using AccountManager.DTOs;
 
     public class AccountService : IAccountService
     {
@@ -26,6 +28,13 @@
             var account = context
                 .Accounts
                 .Where(x => x.Id == accountId && x.UserId == userId)
+                .Select(x => new AccountDTO
+                {
+                   Name = x.Name,
+                   Id = x.Id,
+                   Incomes = mapper.Map<ICollection<IncomeDTO>>(x.Incomes),
+                   Expenses = mapper.Map<ICollection<ExpenseDTO>>(x.Expenses),
+                })
                 .SingleOrDefault();
 
             if (account == null)
@@ -33,9 +42,9 @@
                 throw new ArgumentNullException("Account does not exist.");
             }
 
-            var returnAccount = mapper.Map<T>(account);
+            var accountInfo = mapper.Map<T>(account);
 
-            return returnAccount;
+            return accountInfo;
         }
 
         public async Task<ICollection<T>> GetAll<T>(string userId)

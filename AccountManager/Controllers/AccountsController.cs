@@ -1,6 +1,7 @@
 ﻿namespace AccountManager.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,6 @@
     using AccountManager.Services.Interfaces;
     using AccountManager.ViewModels.InputModels;
     using AccountManager.ViewModels.ViewModels;
-    using System.Collections.Generic;
 
     [ApiController]
     [Route("api/[controller]")]
@@ -22,7 +22,7 @@
         private readonly IAccountService accountsService;
         private readonly IJwtService jwtService;
         private readonly IMapper mapper;
-        private const string actionRouteEnd = "/{accountId}";
+        private const string routeParameter = "/{accountId}";
         private const string authRequestHeader = "Authorization";
 
         public AccountsController(
@@ -36,7 +36,7 @@
         }
 
         [HttpGet]
-        [Route(nameof(All) + actionRouteEnd)]
+        [Route(nameof(All) + routeParameter)]
         public async Task<IActionResult> All()
         {
             var userCalims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
@@ -45,7 +45,7 @@
             {
                 var accountsDTO = await accountsService.GetAll<AccountDTO>(userCalims["UserId"]);
                 var accountViewModels = mapper.Map<ICollection<AccountViewModel>>(accountsDTO);
-                return Ok(accountsDTO);
+                return Ok(accountViewModels);
             }
             catch (Exception ex)
             {
@@ -54,7 +54,7 @@
         }
 
         [HttpGet]
-        [Route(nameof(Account) + actionRouteEnd)]
+        [Route(nameof(Account) + routeParameter)]
         public async Task<IActionResult> Account(string accountId)
         {
             try
@@ -72,7 +72,7 @@
         }
 
         [HttpPost]
-        [Route(nameof(Create) + actionRouteEnd)]
+        [Route(nameof(Create) + routeParameter)]
         public async Task<IActionResult> Create(AccountInputModel acount)
         {
             if (!ModelState.IsValid)
@@ -100,7 +100,7 @@
         }
        
         [HttpPut]
-        [Route(nameof(Edit) + actionRouteEnd)]
+        [Route(nameof(Edit) + routeParameter)]
         public async Task<IActionResult> Edit(AccountInputModel model)
         {
             if (!ModelState.IsValid)
@@ -125,7 +125,7 @@
         }
 
         [HttpDelete]
-        [Route(nameof(Delete) + actionRouteEnd)]
+        [Route(nameof(Delete) + routeParameter)]
         public async Task<IActionResult> Delete(string accountId)
         {
             var user = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);

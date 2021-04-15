@@ -19,8 +19,6 @@
 
         public string AccountId { get; set; }
 
-        public AccountViewModel Account { get; set; }
-
         public CategoryViewModel Category { get; set; }
 
         public ICollection<TagViewModel> Tags { get; set; }

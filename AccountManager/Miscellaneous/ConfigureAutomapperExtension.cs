@@ -7,6 +7,7 @@
     using AccountManager.ViewModels;
     using AccountManager.ViewModels.InputModels;
     using AccountManager.ViewModels.ViewModels;
+    using AccountManager.Services.Automapper;
 
     public static class ConfigureAutomapperExtension
     {

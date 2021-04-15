@@ -1,10 +1,10 @@
-﻿import React, { Link, Fragment } from 'react';
+﻿import React, { Fragment } from 'react';
 import { useState, useEffect } from 'react';
-import { GetAll, GetOne, Delete, Create, Edit } from '../../services/ApiService';
+import { GetAll} from '../../services/ApiService';
 import Transaction from '../Transaction/Transaction';
 
-const Income = (props) => {
-    const [incomes, setIncomes] = useState([]);
+const Income = () => {
+    const [incomes] = useState([]);
 
     useEffect(() => {
         GetAll("dadawdaws", "Expenses")

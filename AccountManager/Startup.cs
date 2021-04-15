@@ -1,5 +1,6 @@
 namespace AccountManager
 {
+    using System.Reflection;
     using System.Text;
 
     using Microsoft.AspNetCore.Authentication;
@@ -14,9 +15,12 @@ namespace AccountManager
     using Microsoft.IdentityModel.Tokens;
 
     using AccountManager.Data;
+    using AccountManager.DTOs;
     using AccountManager.Models;
     using AccountManager.Services;
+    using AccountManager.Services.Automapper;
     using AccountManager.Services.Interfaces;
+    using AccountManager.ViewModels.ViewModels;
 
     public class Startup
     {
@@ -85,6 +89,11 @@ namespace AccountManager
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            AutoMapperConfig.RegisterMappings(
+                typeof(Income).GetTypeInfo().Assembly,
+                typeof(IncomeDTO).GetTypeInfo().Assembly,
+                typeof(IncomeViewModel).GetTypeInfo().Assembly);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

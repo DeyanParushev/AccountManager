@@ -1,0 +1,43 @@
+import React, { useContext } from 'react'
+import { FormGroup, Form, Label, Col, Button, Input } from 'reactstrap';
+import UserContext from '../../contexts/UserContext';
+import { Create } from '../../services/ApiService';
+
+function ExtractComponentName(url) {
+  const params = url.split('/');
+  return params[1];
+}
+
+const CreateFilterComponent = ({ match }) => {
+  const context = useContext(UserContext);
+  const onCreateSubmitHandler = (e) => {
+    e.preventDefault();
+    const componentName = ExtractComponentName(match.path);
+    let filterObject = {
+      name: e.target.name.value,
+    };
+
+    Create(context.user.id, componentName, filterObject, context.user.token)
+      .then(response => {
+        console.log(response);
+      });
+  }
+
+
+  return (
+    <Form onSubmit={onCreateSubmitHandler}>
+      <FormGroup>
+        <Label sm={2} for="name">Name</Label>
+        <Col sm={10}>
+          <Input type="text" id="name" name="name" />
+        </Col>
+      </FormGroup>
+
+      <Col>
+        <Button outline color="primary" >Create</Button>
+      </Col>
+    </Form>
+  );
+}
+
+export default CreateFilterComponent;
