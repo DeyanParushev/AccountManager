@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, Fragment } from 'react'
 import { Form, FormGroup, Label, Input, Button, Col } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import { Create, GetAll } from '../../services/ApiService';
+import BackButton from '../utilities/BackButton';
 
 function ExtractComponentName(url) {
     const params = url.split('/');
     return params[1];
 }
 
-const CreateTransaction = ({ match }) => {
+const CreateTransaction = ({ match, history }) => {
     const context = useContext(UserContext);
 
     const [categories, setCategories] = useState([]);
@@ -17,8 +18,12 @@ const CreateTransaction = ({ match }) => {
         async function fetchData() {
             let response = await GetAll('', 'Categories', context.user.token);
 
-            categoriesResponse = await response.json();
-            setCategories(categoriesResponse);
+            if (response.status === 200) {
+                categoriesResponse = await response.json();
+                setCategories(categoriesResponse);
+            } else {
+                console.log(response);
+            }
         }
 
         fetchData();
@@ -47,13 +52,15 @@ const CreateTransaction = ({ match }) => {
             accountId: match.params.accountId,
         }
 
-        console.log(transaction);
         let entity = ExtractComponentName(match.path);
         let response = {};
         async function postData() {
             response = await Create('', entity, transaction, context.user.token);
-            let responseData = await response.json();
-            console.log(responseData);
+            if (response.status === 200) {
+                history.push(`/Accounts/Details/${transaction.accountId}`)
+            } else {
+                console.log(response);
+            }
         }
 
         postData();
@@ -72,40 +79,43 @@ const CreateTransaction = ({ match }) => {
     }
 
     return (
-        <Form onSubmit={onCreateSubmitHandler}>
-            <FormGroup>
-                <Label sm={2} for="amount">Amount</Label>
-                <Col sm={10}>
-                    <Input type="number" id="amount" name="amount" />
+        <Fragment>
+            <Form onSubmit={onCreateSubmitHandler}>
+                <FormGroup>
+                    <Label sm={2} for="amount">Amount</Label>
+                    <Col sm={10}>
+                        <Input type="number" id="amount" name="amount" />
+                    </Col>
+                </FormGroup>
+
+                <FormGroup>
+                    <Label sm={2} for="category">Category</Label>
+                    <select type='number' name='category'>
+                        <option>Select...</option>
+                        {renderCategories(categories)}
+                    </select>
+                </FormGroup>
+
+                <FormGroup>
+                    <Label sm={2} for="tag">Tags</Label>
+                    <select type='number' name='tag'>
+                        <option>Select...</option>
+                        {renderTags(tags)}
+                    </select>
+                </FormGroup>
+
+                <FormGroup>
+                    <Label sm={2} for="description">Description</Label>
+                    <Col sm={10}>
+                        <Input type='text-area' id="description" name="description" />
+                    </Col>
+                </FormGroup>
+                <Col>
+                    <Button outline color="success" >Create</Button>
                 </Col>
-            </FormGroup>
-
-            <FormGroup>
-                <Label sm={2} for="category">Category</Label>
-                <select type='number' name='category'>
-                    <option>Select...</option>
-                    {renderCategories(categories)}
-                </select>
-            </FormGroup>
-
-            <FormGroup>
-                <Label sm={2} for="tag">Tags</Label>
-                <select type='number' name='tag'>
-                    <option>Select...</option>
-                    {renderTags(tags)}
-                </select>
-            </FormGroup>
-
-            <FormGroup>
-                <Label sm={2} for="description">Description</Label>
-                <Col sm={10}>
-                    <Input type='text-area' id="description" name="description" />
-                </Col>
-            </FormGroup>
-            <Col>
-                <Button outline color="primary" >Create</Button>
-            </Col>
-        </Form>
+            </Form>
+            <BackButton history={history} />
+        </Fragment>
     )
 }
 

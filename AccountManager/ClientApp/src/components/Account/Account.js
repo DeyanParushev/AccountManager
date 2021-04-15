@@ -3,8 +3,9 @@ import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import UserContext from '../../contexts/UserContext';
 import { GetAll } from '../../services/ApiService';
+import BackButton from '../utilities/BackButton';
 
-function Account() {
+function Account({ history }) {
     const context = useContext(UserContext);
     const [accounts, setAccounts] = useState([]);
 
@@ -30,7 +31,7 @@ function Account() {
     const createReactElement = (account) => {
         return (
             <Fragment key={account.id}>
-                <Link to={`/Accounts/Details/${account.id}`}><Button outline color='primary'>{account.name}</Button></Link>
+                <Link to={`/Accounts/Details/${account.id}`}><Button outline color='success'>{account.name}</Button></Link>
             </Fragment>
         )
     }
@@ -38,6 +39,9 @@ function Account() {
         <Fragment>
             <h1>My Accounts</h1>
             {renderAccounts()}
+            <div>
+                <BackButton history={history} />
+            </div>
         </Fragment>
     )
 }

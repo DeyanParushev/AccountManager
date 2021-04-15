@@ -13,6 +13,7 @@ import Account from './components/Account/Account';
 import CreateAccount from './components/Account/CreateAccount';
 import DetailsAccount from './components/Account/DetailsAccount';
 import CraateFilterComponent from './components/FilterComponents/CreateFilterComponent';
+import DetailsTransaction from './components/Transaction/DetailsTransaction';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -49,8 +50,10 @@ export default class App extends React.Component {
                     <Route path={AuthPrefix} component={ApiAuthorizationRoutes} />
                     <Route exact path='/Incomes' component={Income} />
                     <Route exact path='/Incomes/Create/:accountId' component={CreateTransaction} />
+                    <Route exact path='/Incomes/Details/:id' component={DetailsTransaction} />
                     <Route exact path='/Expenses' component={Expense} />
                     <Route exact path='/Expenses/Create/:accountId' component={CreateTransaction} />
+                    <Route exact path='/Expenses/Details/:id' component={DetailsTransaction} />
                     <Route exact path='/Accounts' component={Account} />
                     <Route exact path='/Accounts/Create' component={CreateAccount} />
                     <Route exact path='/Accounts/Details/:accountId' component={DetailsAccount} />

@@ -3,19 +3,20 @@ import { Form, FormGroup, Label, Col, Input, Button } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import { Create } from '../../services/ApiService';
 import Error from '../Error/Error';
+import BackButton from '../utilities/BackButton';
 
-const CreatAccount = ({history}) => {
+const CreatAccount = ({ history }) => {
     const context = useContext(UserContext);
     const [state, setState] = useState({ message: '' });
     const [showError, setShowError] = useState(false);
-    
+
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        
+
         if (e.target.name.value.length < 3 || e.target.name.value.length > 30) {
-           return setState({ message: 'Name should be between 3 and 40 cahracters long.' });
+            return setState({ message: 'Name should be between 3 and 40 cahracters long.' });
         } else {
-           setState({ message: '' })
+            setState({ message: '' })
         }
 
         const account = {
@@ -52,6 +53,7 @@ const CreatAccount = ({history}) => {
                 {showError ? <Error message={state.message} /> : null}
                 <Button outline color="primary">Create</Button>
             </Form>
+            <BackButton history={history} />
         </Fragment>
     )
 }

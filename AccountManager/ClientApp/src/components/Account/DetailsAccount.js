@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react';
 import UserContext from '../../contexts/UserContext';
-import { GetOne, GetAll } from '../../services/ApiService';
+import { GetOne } from '../../services/ApiService';
 import Transaction from '../Transaction/Transaction';
-import { Button } from 'reactstrap';
+import { Button, Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import BackButton from '../utilities/BackButton';
 
-function DetailsAccount({ match }) {
+function DetailsAccount({ match, history }) {
     const context = useContext(UserContext);
     const [account, setAccount] = useState({});
 
@@ -40,11 +41,11 @@ function DetailsAccount({ match }) {
 
     return (
         <Fragment>
-            <h1>Account details for {account.name}</h1>
-            <p>{account.name}</p>
+            <h1>Account details for <b>{account.name}</b></h1>
             <Link to={`/Incomes/Create/${account.id}`}><Button outline color='success'>Add income</Button></Link>
             <Link to={`/Expenses/Create/${account.id}`}><Button outline color='danger'>Add expense</Button></Link>
-            <table>
+            <hr />
+            <Table>
                 <thead>
                     <tr>
                         <td>Date</td>
@@ -57,7 +58,8 @@ function DetailsAccount({ match }) {
                     {renderIncomes()}
                     {renderExpenses()}
                 </tbody>
-            </table>
+            </Table>
+            <BackButton history={history} />
         </Fragment>
     )
 }

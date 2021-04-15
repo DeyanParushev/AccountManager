@@ -12,3 +12,28 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.fas{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.fa-info-circle {
+  color: rgb(113, 146, 196);
+}
+
+.fa-edit{
+  color: rgb(139, 225, 145);
+}
+
+.fa-trash-alt {
+  color: rgb(219, 47, 44);
+}
+
+hr {
+  height: 10px;
+}
+
+button {
+  margin: 10px;
+}
