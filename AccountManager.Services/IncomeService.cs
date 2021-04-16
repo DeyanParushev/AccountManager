@@ -9,6 +9,7 @@
     
     using AccountManager.Data;
     using AccountManager.Models;
+    using AccountManager.DTOs;
 
     public class IncomeService : IIncomeService
     {
@@ -54,7 +55,23 @@
 
             var income = context.Incomes
                 .Where(x => x.Id == incomeId && x.Account.UserId == userId)
+                .Select(x => new IncomeDTO
+                {
+                    Id = x.Id,
+                    CategoryId = x.CategoryId,
+                    Category = new CategoryDTO { Id = x.Category.Id, Name = x.Category.Name},
+                    Amount = x.Amount,
+                    Date = x.Date,
+                    Description = x.Description,
+                    Tags = x.Tags.Select(y => new TagDTO { Id = y.Id, Name = y.Name}).ToArray(),
+                    AccountId = x.AccountId
+                })
                 .SingleOrDefault();
+
+            if(income == null)
+            {
+                throw new ArgumentNullException("Income with this Id does not exist in this account.");
+            }
 
             var outputIncome = mapper.Map<T>(income);
             return outputIncome;

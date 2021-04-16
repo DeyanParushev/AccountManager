@@ -58,9 +58,9 @@
             {
                 var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 var income = await incomeService.GetOne<IncomeDTO>(incomeId, userClaims["UserId"]);
-                var incomeExpenses = mapper.Map<IncomeViewModel>(income);
+                var incomeViewModel = mapper.Map<IncomeViewModel>(income);
 
-                return Ok(incomeExpenses);
+                return Ok(incomeViewModel);
             }
             catch (Exception ex)
             {
@@ -93,7 +93,7 @@
 
         [HttpPut]
         [Route(nameof(Edit) + incomeParameter)]
-        public async Task<IActionResult> Edit(IncomeViewModel model)
+        public async Task<IActionResult> Edit(IncomeInputModel model)
         {
             if (!ModelState.IsValid)
             {

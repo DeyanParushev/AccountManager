@@ -11,34 +11,14 @@ export async function GetOne(id, entity, token) {
     return await MakeRequest(url, ApiMethods.Get, null, token)
 }
 
-export function Delete(id, entity, token) {
+export async function Delete(id, entity, token) {
     const url = ApplicationPaths[entity].Delete + `/${id}`;
-    return MakeRequest(url, ApiMethods.Delete, null, token)
-        .then(response => {
-            if (response.status === 400) {
-                return 400;
-            } else if (response.status === 200) {
-                return response;
-            } else {
-                return response.json();
-            }
-        })
-        .then(data => data);
+    return await MakeRequest(url, ApiMethods.Delete, null, token);
 }
 
-export function Edit(id, entity, object, token) {
+export async function Edit(id, entity, object, token) {
     const url = ApplicationPaths[entity].Edit + `/${id}`;
-    return MakeRequest(url, ApiMethods.Put, object, token)
-        .then(response => {
-            if (response.status === 400) {
-                return 400;
-            } else if (response.status === 200) {
-                return response;
-            } else {
-                return response.json();
-            }
-        })
-        .then(data => data);
+    return await MakeRequest(url, ApiMethods.Put, object, token);
 }
 
 export async function Create(id, entity, object, token) {

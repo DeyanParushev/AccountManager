@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react';
 import UserContext from '../../contexts/UserContext';
-import { GetOne } from '../../services/ApiService';
+import { GetOne, Delete } from '../../services/ApiService';
 import Transaction from '../Transaction/Transaction';
 import { Button, Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -9,6 +9,10 @@ import BackButton from '../utilities/BackButton';
 function DetailsAccount({ match, history }) {
     const context = useContext(UserContext);
     const [account, setAccount] = useState({});
+    const transactionTypes = {
+        Incomes: 'Incomes',
+        Expenses: 'Expenses',
+    };
 
     useEffect(() => {
         let responseAccount = {};
@@ -23,19 +27,29 @@ function DetailsAccount({ match, history }) {
 
     const renderIncomes = () => {
         if (account.incomes !== undefined) {
-            return (account.incomes.map(x => renderTransaction(x, 'Incomes')));
+            return (account.incomes.map(x => renderTransaction(x, transactionTypes.Incomes)));
         }
     }
 
     const renderTransaction = (transaction, transactionType) => {
         if (transaction.id) {
-            return <Transaction key={transaction.id} transaction={transaction} transactionType={transactionType} />
+            return <Transaction key={transaction.id} transaction={transaction} transactionType={transactionType} deleteFunction={deleteElement} />
+        }
+    }
+
+    async function deleteElement(id, transactionType) {
+        const result = await Delete(id, transactionType, context.user.token);
+
+        if(result.status === 200) {
+            history.push(`/Accounts/Details/${account.id}`)
+        } else {
+            console.log(result);
         }
     }
 
     const renderExpenses = () => {
         if (account.expenses !== undefined) {
-            return (account.expenses.map(x => renderTransaction(x, 'Expenses')));
+            return (account.expenses.map(x => renderTransaction(x, transactionTypes.Expenses)));
         }
     }
 

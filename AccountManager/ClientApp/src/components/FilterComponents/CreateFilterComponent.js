@@ -2,17 +2,13 @@ import React, { useContext } from 'react'
 import { FormGroup, Form, Label, Col, Button, Input } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import { Create } from '../../services/ApiService';
-
-function ExtractComponentName(url) {
-  const params = url.split('/');
-  return params[1];
-}
+import {ExtractComponentFromRoute} from '../../utilityFunctions/RoutingFunctions';
 
 const CreateFilterComponent = ({ match }) => {
   const context = useContext(UserContext);
   const onCreateSubmitHandler = (e) => {
     e.preventDefault();
-    const componentName = ExtractComponentName(match.path);
+    const componentName = ExtractComponentFromRoute(match.path);
     let filterObject = {
       name: e.target.name.value,
     };

@@ -10,6 +10,7 @@
     using AccountManager.Data;
     using AccountManager.Models;
     using AccountManager.Services.Interfaces;
+    using AccountManager.DTOs;
 
     public class ExpenseService : IExpenseService
     {
@@ -56,6 +57,17 @@
 
             var expense = context.Expenses
                 .Where(x => x.Id == expenseId && x.Account.UserId == userId)
+                .Select(x => new ExpenseDTO
+                {
+                    Id = x.Id,
+                    CategoryId = x.CategoryId,
+                    Category = new CategoryDTO { Id = x.Category.Id, Name = x.Category.Name },
+                    Amount = x.Amount,
+                    Date = x.Date,
+                    Description = x.Description,
+                    Tags = x.Tags.Select(y => new TagDTO { Id = y.Id, Name = y.Name }).ToArray(),
+                    AccountId = x.AccountId
+                })
                 .SingleOrDefault();
 
             var outputExpense = mapper.Map<T>(expense);

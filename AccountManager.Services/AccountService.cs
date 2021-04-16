@@ -32,8 +32,22 @@
                 {
                    Name = x.Name,
                    Id = x.Id,
-                   Incomes = mapper.Map<ICollection<IncomeDTO>>(x.Incomes),
-                   Expenses = mapper.Map<ICollection<ExpenseDTO>>(x.Expenses),
+                   Incomes = x.Incomes.Select(y => new IncomeDTO 
+                   {    
+                       AccountId = x.Id,
+                       Id = y.Id,
+                       Date = y.Date,
+                       Amount = y.Amount,
+                       Category = new CategoryDTO { Id = y.Category.Id, Name = y.Category.Name},
+                   }).ToArray(),
+                   Expenses = x.Expenses.Select(y => new ExpenseDTO
+                   {
+                       AccountId = x.Id,
+                       Id = y.Id,
+                       Date = y.Date,
+                       Amount = y.Amount,
+                       Category = new CategoryDTO { Id = y.Category.Id, Name = y.Category.Name },
+                   }).ToArray(),
                 })
                 .SingleOrDefault();
 

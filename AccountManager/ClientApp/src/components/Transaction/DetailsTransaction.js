@@ -3,18 +3,14 @@ import UserContext from '../../contexts/UserContext';
 import { GetOne } from '../../services/ApiService';
 import { Table } from 'reactstrap';
 import BackButton from '../utilities/BackButton';
-
-function ExtractComponentName(url) {
-    const params = url.split('/');
-    return params[1];
-}
+import { ExtractComponentFromRoute } from '../../utilityFunctions/RoutingFunctions';
 
 const DetailsTransaction = ({ match, history }) => {
 
     const context = useContext(UserContext);
     const [transaction, setTransaction] = useState({});
     const [date, setDate] = useState('');
-    const transactionType = ExtractComponentName(match.path);
+    const transactionType = ExtractComponentFromRoute(match.path);
     const transactionId = match.params.id;
 
     useEffect(() => {
@@ -25,16 +21,15 @@ const DetailsTransaction = ({ match, history }) => {
             if (transaction.hasOwnProperty('id') === false) {
                 transactionResponse = await result.json();
                 await setTransaction(transactionResponse);
-                setDate(shortDateString);
             } else if (result.status === 400 || result.status === 401) {
                 console.log(result);
             } else {
                 console.log('OtherError');
             }
         }
-        
+
         fetchData();
-        
+
         const date = new Date(transaction.date);
         const shortDateString = date.toLocaleDateString();
         setDate(shortDateString);
@@ -60,11 +55,11 @@ const DetailsTransaction = ({ match, history }) => {
                     </tr>
                     <tr>
                         <td><b>Category</b></td>
-                        <td>{transaction.category}</td>
+                        <td>{transaction.category ? transaction.category.name : ''}</td>
                     </tr>
                     <tr>
                         <td><b>Amount</b></td>
-                        <td style={{color: transactionColor()}}>{transaction.amount}</td>
+                        <td style={{ color: transactionColor() }}>{transaction.amount}</td>
                     </tr>
                     <tr>
                         <td><b>Description</b></td>
