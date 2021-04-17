@@ -10,8 +10,7 @@ const Login = ({ props }) => {
     const [createSucessfull, setCreateSuccessfull] = useState();
     const [error, setError] = useState('');
 
-
-    if (context.user.id !== "") {
+    if (context.user.hasOwnProperty('id') && context.user.id !== "") {
         return <Redirect to={props.location || '/'} />
     }
 
@@ -25,6 +24,10 @@ const Login = ({ props }) => {
 
         const result = await LoginService(sendUser);
         if (result.status === 200) {
+            const resultJson = await result.json();
+            const user = GetUser(document.cookie);
+            user.token = resultJson;
+            context.setUser(user);
             props.history.push('/');
         } else {
             setCreateSuccessfull(false);
@@ -37,7 +40,6 @@ const Login = ({ props }) => {
         if (error) {
             return <div><span><b style={{ color: 'red' }}>{error}</b></span></div>
         }
-        return null;
     }
 
     return (
@@ -57,7 +59,7 @@ const Login = ({ props }) => {
                         <Input type="password" id="password" name="password" />
                     </Col>
                 </FormGroup>
-                {createSucessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors()}
+                {createSucessfull ? <div><span style={{ color: 'lightgreen' }}><b>Success</b></span></div> : renderErrors()}
                 <Col>
                     <Button outline color="primary" >Login</Button>
                 </Col>
