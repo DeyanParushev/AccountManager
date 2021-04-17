@@ -1,11 +1,17 @@
 ﻿import React, { useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import { LoginService } from '../../services/AuthServices';
 import { Form, FormGroup, Label, Input, Button, Col } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import GetUser from '../../services/CookieProccessor';
 
-const Login = ({props}) => {
+const Login = ({ props }) => {
     const context = useContext(UserContext);
+
+    if (context.user.id !== "") {
+        return <Redirect to={props.location || '/'} />
+    }
+
     const onSubmitHandler = (event) => {
         event.preventDefault();
 

@@ -1,4 +1,5 @@
 ﻿import React, { Fragment, useState, useEffect, useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import UserContext from '../../contexts/UserContext';
@@ -11,6 +12,11 @@ function Account({ history }) {
 
     useEffect(() => {
         let responseAccounts = [];
+
+        if (!context.user.id) {
+            history.push('/Identity/Login');
+        }
+
         async function fetchData() {
             if (accounts.length < 1) {
                 let response = await GetAll(context.user.id, 'Accounts', context.user.token)

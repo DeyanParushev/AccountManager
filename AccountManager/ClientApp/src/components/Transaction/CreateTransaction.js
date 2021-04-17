@@ -1,4 +1,5 @@
 import React, { useState, useContext, Fragment } from 'react'
+import { Redirect } from 'react-router-dom';
 import { Form, FormGroup, Label, Input, Button, Col } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import { Create } from '../../services/ApiService';
@@ -11,6 +12,10 @@ const CreateTransaction = ({ match, history }) => {
     const [category, setCategory] = useState(0);
     const [tag, setTag] = useState(0);
 
+    if (!context.user.id) {
+        return <Redirect to='/Identity/Login' />
+    }
+    
     const onCreateSubmitHandler = (e) => {
         e.preventDefault();
         const transaction = {

@@ -1,23 +1,28 @@
-import React, {useState, useEffect, useContext, Fragment} from 'react';
-import {Form, FormGroup, Label, Input, Button, Col} from 'reactstrap';
+import React, { useState, useEffect, useContext, Fragment } from 'react';
+import { Form, FormGroup, Label, Input, Button, Col } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
-import {GetOne, Edit} from '../../services/ApiService';
-import {ExtractComponentFromRoute} from '../../utilityFunctions/RoutingFunctions';
+import { GetOne, Edit } from '../../services/ApiService';
+import { ExtractComponentFromRoute } from '../../utilityFunctions/RoutingFunctions';
 import FilterComponent from '../FilterComponents/FilterComponent';
 import BackButton from '../utilities/BackButton';
 
-function EditTransaction({match, history}) {
+function EditTransaction({ match, history }) {
     const context = useContext(UserContext);
     const [transaction, setTransaction] = useState({});
     const transactionType = ExtractComponentFromRoute(match.path);
     const [category, setCategory] = useState(0);
     const [tag, setTag] = useState(0);
 
+
     useEffect(() => {
+        if (!context.user.id) {
+            history.push('/Identity/Login');
+        }
+
         async function fetchData() {
             const response = await GetOne(match.params.id, transactionType, context.user.token);
 
-            if(transaction.hasOwnProperty('id') === false) {
+            if (transaction.hasOwnProperty('id') === false) {
                 const transactionResult = await response.json();
                 await setTransaction(transactionResult);
             } else if (response.status === 400 || response.status === 401) {
@@ -29,7 +34,7 @@ function EditTransaction({match, history}) {
 
         fetchData();
     }, [transaction]);
-    
+
     async function onEditSubmitHandler(e) {
         e.preventDefault();
         const editTransaction = {
@@ -38,11 +43,11 @@ function EditTransaction({match, history}) {
             amount: e.target.amount.value,
             categoryId: category,
             tags: tag,
-            description: e.target.description.value,  
+            description: e.target.description.value,
         }
 
         const response = await Edit(editTransaction.id, transactionType, editTransaction, context.user.token);
-        if(response.status === 200) {
+        if (response.status === 200) {
             history.push(`/Accounts/Details/${transaction.accountId}`);
         } else {
             const error = await response.json();
@@ -56,18 +61,18 @@ function EditTransaction({match, history}) {
                 <FormGroup>
                     <Label sm={2} for="amount">Amount</Label>
                     <Col sm={10}>
-                        <Input type="number" id="amount" name="amount" step="0.01" required defaultValue={transaction.amount}/>
+                        <Input type="number" id="amount" name="amount" step="0.01" required defaultValue={transaction.amount} />
                     </Col>
                 </FormGroup>
 
-                <FilterComponent onChangeFunction={setCategory} componentType='Categories'/>
+                <FilterComponent onChangeFunction={setCategory} componentType='Categories' />
 
-                <FilterComponent onChangeFunction={setTag} componentType='Tags' /> 
-              
+                <FilterComponent onChangeFunction={setTag} componentType='Tags' />
+
                 <FormGroup>
                     <Label sm={2} for="description">Description</Label>
                     <Col sm={10}>
-                        <Input type='text-area' id="description" name="description" required defaultValue={transaction.description}/>
+                        <Input type='text-area' id="description" name="description" required defaultValue={transaction.description} />
                     </Col>
                 </FormGroup>
                 <Col>

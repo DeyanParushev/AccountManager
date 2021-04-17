@@ -15,6 +15,10 @@ function DetailsAccount({ match, history }) {
     };
 
     useEffect(() => {
+        if (!context.user.id) {
+            history.push('/Identity/Login');
+        }
+
         let responseAccount = {};
         async function fetchData(userId, token) {
             const response = await GetOne(userId, 'Accounts', token);

@@ -13,8 +13,14 @@ const DetailsTransaction = ({ match, history }) => {
     const transactionType = ExtractComponentFromRoute(match.path);
     const transactionId = match.params.id;
 
+
     useEffect(() => {
         let transactionResponse = {};
+        
+        if (!context.user.id) {
+            history.push('/Identity/Login');
+        }
+
         async function fetchData() {
             const result = await GetOne(transactionId, transactionType, context.user.token);
 

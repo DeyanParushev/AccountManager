@@ -11,7 +11,7 @@ class DeleteTransaction extends React.Component {
     componentDidMount() {
         const componentType = ExtractComponentFromRoute(this.props.match.path);
         const id = ExtractIdFromUrl(this.props.match.url);
-        
+
         const deleteElement = async (id) => {
             const token = this.context.user.token;
             const result = await Delete(id, componentType, token);
@@ -21,6 +21,10 @@ class DeleteTransaction extends React.Component {
             } else {
                 console.log(result);
             }
+        }
+
+        if (!this.context.user.id) {
+            this.props.history.push('/Identity/Login');
         }
 
         deleteElement(id);

@@ -1,11 +1,16 @@
 import React, { useContext } from 'react'
+import { Redirect } from 'react-router-dom';
 import { FormGroup, Form, Label, Col, Button, Input } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import { Create } from '../../services/ApiService';
-import {ExtractComponentFromRoute} from '../../utilityFunctions/RoutingFunctions';
+import { ExtractComponentFromRoute } from '../../utilityFunctions/RoutingFunctions';
 
 const CreateFilterComponent = ({ match }) => {
   const context = useContext(UserContext);
+
+  if (!context.user.id) {
+    return <Redirect to='/Identity/Login' />
+  }
   const onCreateSubmitHandler = (e) => {
     e.preventDefault();
     const componentName = ExtractComponentFromRoute(match.path);
@@ -18,7 +23,6 @@ const CreateFilterComponent = ({ match }) => {
         console.log(response);
       });
   }
-
 
   return (
     <Form onSubmit={onCreateSubmitHandler}>

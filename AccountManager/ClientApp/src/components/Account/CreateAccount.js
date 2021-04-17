@@ -10,6 +10,7 @@ const CreatAccount = ({ history }) => {
     const [state, setState] = useState({ message: '' });
     const [showError, setShowError] = useState(false);
 
+
     const onSubmitHandler = (e) => {
         e.preventDefault();
 
@@ -33,6 +34,9 @@ const CreatAccount = ({ history }) => {
     }
 
     useEffect(() => {
+        if (!context.user.id) {
+            history.push('/Identity/Login');
+        }
         if (state.message === '') {
             setShowError(false);
         } else {

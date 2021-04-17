@@ -14,6 +14,7 @@ import CraateFilterComponent from './components/FilterComponents/CreateFilterCom
 import DetailsTransaction from './components/Transaction/DetailsTransaction';
 import EditTransaction from './components/Transaction/EditTransaction';
 import DeleteTransaction from './components/Transaction/DeleteTransaction';
+import ErrorPage from './components/Error/ErrorPage';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -46,6 +47,7 @@ export default class App extends React.Component {
         return (
             <UserContext.Provider value={value}>
                 <Layout>
+                    
                     <Route exact path='/' component={Home} />
                     <Route path={AuthPrefix} component={ApiAuthorizationRoutes} />
 
@@ -64,8 +66,9 @@ export default class App extends React.Component {
                     <Route exact path='/Accounts/Create' component={CreateAccount} />
                     <Route exact path='/Accounts/Details/:accountId' component={DetailsAccount} />
 
-                    <Route exact path='/Categories/Create' component={CraateFilterComponent} />
                     <Route exact path='/Tags/Create' component={CraateFilterComponent} />
+                    <Route exact path='/Categories/Create' component={CraateFilterComponent} />
+                    <Route path='/' component={ErrorPage} />
                 </Layout>
             </UserContext.Provider>
         );
