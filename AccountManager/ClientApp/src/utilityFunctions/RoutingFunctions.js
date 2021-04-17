@@ -5,5 +5,5 @@ export function ExtractComponentFromRoute(url) {
 
 export function ExtractIdFromUrl(url) {
     const params = url.split('/');
-    return params[2];
+    return params[3];
 }

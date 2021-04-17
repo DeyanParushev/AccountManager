@@ -1,38 +1,37 @@
 import React from 'react';
 import UserContext from '../../contexts/UserContext';
 import { Delete } from '../..//services/ApiService';
-import { ExtractComponentFromRoute } from '../../utilityFunctions/RoutingFunctions';
+import { ExtractComponentFromRoute, ExtractIdFromUrl } from '../../utilityFunctions/RoutingFunctions';
 
-class Logout extends React.Component {
+class DeleteTransaction extends React.Component {
     constructor(props) {
         super(props);
-        componentType = props.componentType;
-        history = props.history;
     }
 
     componentDidMount() {
-        const componentType = ExtractComponentFromRoute(match.path);
-
-
-        async function deleteElement(id) {
-            const result = await Delete(id, this.componentType, this.context.user.token);
+        const componentType = ExtractComponentFromRoute(this.props.match.path);
+        const id = ExtractIdFromUrl(this.props.match.url);
+        
+        const deleteElement = async (id) => {
+            const token = this.context.user.token;
+            const result = await Delete(id, componentType, token);
 
             if (result.status === 200) {
-                this.history.push(`/Accounts/Details/${accountId}`)
+                this.props.history.goBack();
             } else {
                 console.log(result);
             }
         }
 
-        deleteElement();
+        deleteElement(id);
     }
 
     render() {
-        return null;
+        return <h1>Delete element</h1>;
     }
 }
 
-Logout.contextType = UserContext;
+DeleteTransaction.contextType = UserContext;
 
-export default Logout;
+export default DeleteTransaction;
 

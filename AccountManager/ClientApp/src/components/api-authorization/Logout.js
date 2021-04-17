@@ -3,7 +3,6 @@ import UserContext from '../../contexts/UserContext';
 import { LogoutService } from '../..//services/AuthServices';
 
 class Logout extends React.Component {
-
     componentDidMount() {
         LogoutService(this.context.user)
             .then(result => {

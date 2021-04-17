@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react';
 import UserContext from '../../contexts/UserContext';
-import { GetOne, Delete } from '../../services/ApiService';
+import { GetOne } from '../../services/ApiService';
 import Transaction from '../Transaction/Transaction';
 import { Button, Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -33,17 +33,7 @@ function DetailsAccount({ match, history }) {
 
     const renderTransaction = (transaction, transactionType) => {
         if (transaction.id) {
-            return <Transaction key={transaction.id} transaction={transaction} transactionType={transactionType} deleteFunction={deleteElement} />
-        }
-    }
-
-    async function deleteElement(id, transactionType) {
-        const result = await Delete(id, transactionType, context.user.token);
-
-        if(result.status === 200) {
-            history.push(`/Accounts/Details/${account.id}`)
-        } else {
-            console.log(result);
+            return <Transaction key={transaction.id} transaction={transaction} transactionType={transactionType} />
         }
     }
 
