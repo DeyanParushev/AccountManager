@@ -5,7 +5,7 @@ import UserContext from '../../contexts/UserContext';
 import { Create } from '../../services/ApiService';
 import { ExtractComponentFromRoute } from '../../utilityFunctions/RoutingFunctions';
 
-const CreateFilterComponent = ({ match }) => {
+const CreateFilterComponent = ({ match, history }) => {
   const context = useContext(UserContext);
 
   if (!context.user.id) {
@@ -20,7 +20,14 @@ const CreateFilterComponent = ({ match }) => {
 
     Create(context.user.id, componentName, filterObject, context.user.token)
       .then(response => {
-        console.log(response);
+        if (response.status === 200) {
+          history.push('/');
+        } else {
+          response.json();
+        }
+      })
+      .then(data => {
+        console.log(data);
       });
   }
 
