@@ -12,7 +12,8 @@ function EditTransaction({ match, history }) {
     const transactionType = ExtractComponentFromRoute(match.path);
     const [category, setCategory] = useState(0);
     const [tag, setTag] = useState(0);
-
+    const [editSuccessfull, setCreateSuccessfull] = useState();
+    const [errors, setErrors] = useState([]);
 
     useEffect(() => {
         if (!context.user.id) {
@@ -22,18 +23,28 @@ function EditTransaction({ match, history }) {
         async function fetchData() {
             const response = await GetOne(match.params.id, transactionType, context.user.token);
 
-            if (transaction.hasOwnProperty('id') === false) {
+            if (response.status === 200) {
                 const transactionResult = await response.json();
                 await setTransaction(transactionResult);
-            } else if (response.status === 400 || response.status === 401) {
-                console.log(response);
             } else {
-                console.log('OtherError');
+                setCreateSuccessfull(false);
+                const responseError = await response.json();
+                setErrors(responseError.errors);
             }
         }
 
-        fetchData();
+        if(!transaction.hasOwnProperty('id')){
+            fetchData();
+        }
+
     }, [transaction]);
+
+    function renderErrors() {
+        if (Object.keys(errors).length > 0) {
+            return Object.keys(errors).map(x => <div key={x}><span><b style={{ color: 'red' }}>{errors[x]}</b></span></div>)
+        }
+        return null;
+    }
 
     async function onEditSubmitHandler(e) {
         e.preventDefault();
@@ -50,8 +61,9 @@ function EditTransaction({ match, history }) {
         if (response.status === 200) {
             history.push(`/Accounts/Details/${transaction.accountId}`);
         } else {
-            const error = await response.json();
-            console.log(error);
+            setCreateSuccessfull(false);
+            const responseError = await response.json();
+            setErrors(responseError.errors);
         }
     }
 
@@ -75,6 +87,8 @@ function EditTransaction({ match, history }) {
                         <Input type='text-area' id="description" name="description" required defaultValue={transaction.description} />
                     </Col>
                 </FormGroup>
+                {editSuccessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors()}
+
                 <Col>
                     <Button outline color="success" >Edit</Button>
                 </Col>

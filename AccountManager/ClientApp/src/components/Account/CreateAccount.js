@@ -2,47 +2,46 @@ import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { Form, FormGroup, Label, Col, Input, Button } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import { Create } from '../../services/ApiService';
-import Error from '../Error/Error';
 import BackButton from '../utilities/BackButton';
 
 const CreatAccount = ({ history }) => {
     const context = useContext(UserContext);
-    const [state, setState] = useState({ message: '' });
-    const [showError, setShowError] = useState(false);
-
+    const [createSucessfull, setCreateSuccessfull] = useState();
+    const [errors, setErrors] = useState([]);
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-
-        if (e.target.name.value.length < 3 || e.target.name.value.length > 30) {
-            return setState({ message: 'Name should be between 3 and 40 cahracters long.' });
-        } else {
-            setState({ message: '' })
-        }
 
         const account = {
             name: e.target.name.value,
         };
 
-        Create(context.user.id, 'Accounts', account, context.user.token)
-            .then(response => {
-                history.push('/Accounts');
-            })
-            .catch(ex => {
-                console.log(ex);
-            })
+        async function postData() {
+            const response = await Create(context.user.id, 'Accounts', account, context.user.token);
+            if (response.status === 200) {
+                history.push(`/Accounts`)
+            } else {
+                setCreateSuccessfull(false);
+                const responseError = await response.json();
+                setErrors(responseError.errors);
+            }
+        }
+
+        postData();
+    }
+
+    function renderErrors() {
+        if (Object.keys(errors).length > 0) {
+            return Object.keys(errors).map(x => <div key={x}><span><b style={{ color: 'red' }}>{errors[x]}</b></span></div>)
+        }
+        return null;
     }
 
     useEffect(() => {
         if (!context.user.id) {
             history.push('/Identity/Login');
         }
-        if (state.message === '') {
-            setShowError(false);
-        } else {
-            setShowError(true);
-        }
-    }, [state])
+    })
 
     return (
         <Fragment>
@@ -54,8 +53,8 @@ const CreatAccount = ({ history }) => {
                         <Input type="text" id="name" name="name" />
                     </Col>
                 </FormGroup>
-                {showError ? <Error message={state.message} /> : null}
-                <Button outline color="primary">Create</Button>
+                {createSucessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors()}
+                <Button outline color="success">Create</Button>
             </Form>
             <BackButton history={history} />
         </Fragment>

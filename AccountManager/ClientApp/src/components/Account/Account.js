@@ -1,5 +1,4 @@
 ﻿import React, { Fragment, useState, useEffect, useContext } from 'react';
-import { Redirect } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import UserContext from '../../contexts/UserContext';
@@ -37,7 +36,7 @@ function Account({ history }) {
     const createReactElement = (account) => {
         return (
             <Fragment key={account.id}>
-                <Link to={`/Accounts/Details/${account.id}`}><Button outline color='success'>{account.name}</Button></Link>
+                <Link to={`/Accounts/Details/${account.id}`}><Button outline color='info'>{account.name}</Button></Link>
             </Fragment>
         )
     }
@@ -45,6 +44,10 @@ function Account({ history }) {
         <Fragment>
             <h1>My Accounts</h1>
             {renderAccounts()}
+
+            <div>
+                <Link to={`/Accounts/Create/`}><Button outline color='success'>Create new</Button></Link>
+            </div>
             <div>
                 <BackButton history={history} />
             </div>

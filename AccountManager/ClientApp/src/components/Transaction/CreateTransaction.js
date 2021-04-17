@@ -11,11 +11,13 @@ const CreateTransaction = ({ match, history }) => {
     const context = useContext(UserContext);
     const [category, setCategory] = useState(0);
     const [tag, setTag] = useState(0);
+    const [createSucessfull, setCreateSuccessfull] = useState();
+    const [errors, setErrors] = useState([]);
 
     if (!context.user.id) {
         return <Redirect to='/Identity/Login' />
     }
-    
+
     const onCreateSubmitHandler = (e) => {
         e.preventDefault();
         const transaction = {
@@ -31,12 +33,20 @@ const CreateTransaction = ({ match, history }) => {
             if (response.status === 200) {
                 history.push(`/Accounts/Details/${transaction.accountId}`)
             } else {
-                const jsonResponse = await response.json();
-                console.log(jsonResponse);
+                setCreateSuccessfull(false);
+                const responseError = await response.json();
+                setErrors(responseError.errors);
             }
         }
 
         postData();
+    }
+
+    function renderErrors() {
+        if (Object.keys(errors).length > 0) {
+            return Object.keys(errors).map(x => <div key={x}><span><b style={{ color: 'red' }}>{errors[x]}</b></span></div>)
+        }
+        return null;
     }
 
     return (
@@ -45,7 +55,7 @@ const CreateTransaction = ({ match, history }) => {
                 <FormGroup>
                     <Label sm={2} for="amount">Amount</Label>
                     <Col sm={10}>
-                        <Input type="number" id="amount" name="amount" step="0.01" placeholder='0.00'/>
+                        <Input type="number" id="amount" name="amount" step="0.01" placeholder='0.00' />
                     </Col>
                 </FormGroup>
 
@@ -59,6 +69,7 @@ const CreateTransaction = ({ match, history }) => {
                         <Input type='text-area' id="description" name="description" />
                     </Col>
                 </FormGroup>
+                {createSucessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors()}
                 <Col>
                     <Button outline color="success" >Create</Button>
                 </Col>
