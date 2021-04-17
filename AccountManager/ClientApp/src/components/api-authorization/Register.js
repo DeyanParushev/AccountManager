@@ -1,12 +1,14 @@
-﻿import React from 'react';
-import { Form, FormGroup, Label, Input, Button, Col} from 'reactstrap';
+﻿import React, { useState } from 'react';
+import { Form, FormGroup, Label, Input, Button, Col } from 'reactstrap';
 import { RegisterService } from '../../services/AuthServices';
 
 const Register = ({
     history,
 }) => {
 
-    const [isRegistered, setState] = React.useState(false);
+    const [isRegistered, setState] = useState(false);
+    const [createSucessfull, setCreateSuccessfull] = useState();
+    const [errors, setErrors] = useState([]);
 
     const onSubmitHandler = async (event) => {
         event.preventDefault();
@@ -16,12 +18,23 @@ const Register = ({
             password: event.target.password.value,
             confirmPassword: event.target.confirmPassword.value,
         }
-        var result = await RegisterService(user);
+        const result = await RegisterService(user);
 
-        if (result === "Created") {
-            setTimeout(setState({isRegistered: true}), 2000);
+        if (result.status === 200) {
+            setTimeout(setState({ isRegistered: true }), 2000);
             history.push('/Identity/Login');
+        } else {    
+            setCreateSuccessfull(false);
+            const responseError = await result.json();
+            setErrors(responseError.errors);
         }
+    }
+
+    function renderErrors() {
+        if (Object.keys(errors).length > 0) {
+            return Object.keys(errors).map(x => <div key={x}><span><b style={{ color: 'red' }}>{errors[x]}</b></span></div>)
+        }
+        return null;
     }
 
     return (
@@ -55,6 +68,7 @@ const Register = ({
                         <Input type="password" id="confirmPassword" name="confirmPassword" />
                     </Col>
                 </FormGroup>
+                {createSucessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors()}
                 <Col>
                     <Button outline color="primary" >Register</Button>
                 </Col>

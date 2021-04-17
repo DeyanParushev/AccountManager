@@ -1,4 +1,4 @@
-﻿import React, { useContext } from 'react';
+﻿import React, { useContext, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { LoginService } from '../../services/AuthServices';
 import { Form, FormGroup, Label, Input, Button, Col } from 'reactstrap';
@@ -7,12 +7,15 @@ import GetUser from '../../services/CookieProccessor';
 
 const Login = ({ props }) => {
     const context = useContext(UserContext);
+    const [createSucessfull, setCreateSuccessfull] = useState();
+    const [error, setError] = useState('');
+
 
     if (context.user.id !== "") {
         return <Redirect to={props.location || '/'} />
     }
 
-    const onSubmitHandler = (event) => {
+    const onSubmitHandler = async (event) => {
         event.preventDefault();
 
         const sendUser = {
@@ -20,21 +23,21 @@ const Login = ({ props }) => {
             password: event.target.password.value,
         };
 
-        LoginService(sendUser)
-            .then(result => {
-                if (result !== 400) {
-                    const user = GetUser(document.cookie);
-                    user.token = result;
-                    context.setUser(user);
-                    props.history.push('/');
-                }
-                else {
-                    console.log(result);
-                }
-            })
-            .catch(ex => {
-                console.log(ex);
-            });
+        const result = await LoginService(sendUser);
+        if (result.status === 200) {
+            props.history.push('/');
+        } else {
+            setCreateSuccessfull(false);
+            const responseError = await result.json();
+            setError(responseError);
+        }
+    }
+
+    function renderErrors() {
+        if (error) {
+            return <div><span><b style={{ color: 'red' }}>{error}</b></span></div>
+        }
+        return null;
     }
 
     return (
@@ -54,6 +57,7 @@ const Login = ({ props }) => {
                         <Input type="password" id="password" name="password" />
                     </Col>
                 </FormGroup>
+                {createSucessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors()}
                 <Col>
                     <Button outline color="primary" >Login</Button>
                 </Col>
