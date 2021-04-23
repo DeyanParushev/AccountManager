@@ -6,6 +6,7 @@ import { Create } from '../../services/ApiService';
 import BackButton from '../utilities/BackButton';
 import { ExtractComponentFromRoute } from '../../utilityFunctions/RoutingFunctions';
 import FilterComponent from '../FilterComponents/FilterComponent';
+import { ApiRoutes } from '../api-authorization/ApiAuthorizationConstants';
 
 const CreateTransaction = ({ match, history }) => {
     const context = useContext(UserContext);
@@ -15,7 +16,7 @@ const CreateTransaction = ({ match, history }) => {
     const [errors, setErrors] = useState([]);
 
     if (!context.user.id) {
-        return <Redirect to='/Identity/Login' />
+        return <Redirect to={ApiRoutes.Login} />
     }
 
     const onCreateSubmitHandler = (e) => {

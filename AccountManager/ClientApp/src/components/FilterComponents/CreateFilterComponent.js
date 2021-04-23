@@ -4,6 +4,7 @@ import { FormGroup, Form, Label, Col, Button, Input } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import { Create } from '../../services/ApiService';
 import { ExtractComponentFromRoute } from '../../utilityFunctions/RoutingFunctions';
+import { ApiRoutes } from '../api-authorization/ApiAuthorizationConstants';
 
 const CreateFilterComponent = ({ match, history }) => {
   const context = useContext(UserContext);
@@ -11,7 +12,7 @@ const CreateFilterComponent = ({ match, history }) => {
   const [error, setError] = useState('');
 
   if (!context.user.id) {
-    return <Redirect to='/Identity/Login' />
+    return <Redirect to={ApiRoutes.Login} />
   }
   const onCreateSubmitHandler = async (e) => {
     e.preventDefault();
@@ -21,7 +22,7 @@ const CreateFilterComponent = ({ match, history }) => {
     };
 
     const response = await Create(context.user.id, componentName, filterObject, context.user.token)
-    if(response.status === 200) {
+    if (response.status === 200) {
       setCreateSuccessfull(true);
       history.push('/');
     } else {
@@ -34,12 +35,12 @@ const CreateFilterComponent = ({ match, history }) => {
   return (
     <Form onSubmit={onCreateSubmitHandler}>
       <FormGroup>
-        <h3 style={{textAlign: 'center', margin: 20}}>Create item</h3>
+        <h3 style={{ textAlign: 'center', margin: 20 }}>Create item</h3>
         <Label sm={2} for="name">Item Name</Label>
         <Col sm={10}>
           <Input type="text" id="name" name="name" />
         </Col>
-        {createSucessfull ? <span style={{color: 'lightgreen'}}><b>Success</b></span> : <span style={{color: 'red'}}><b>{error}</b></span>}
+        {createSucessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : <span style={{ color: 'red' }}><b>{error}</b></span>}
       </FormGroup>
 
       <Col>

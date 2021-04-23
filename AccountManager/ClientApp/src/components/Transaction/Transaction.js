@@ -19,7 +19,6 @@ const Transaction = ({ transaction, transactionType, deleteFunction }) => {
                 <Link to={`/${transactionType}/Details/${transaction.id}`}><i className="fas fa-info-circle"></i></Link>
                 <Link to={`/${transactionType}/Edit/${transaction.id}`}><i className="fas fa-edit"></i></Link>
                 <Link to={`/${transactionType}/Delete/${transaction.id}`}><i className="fas fa-trash-alt"></i></Link>
-                {/* <span onClick={onDeleteHandler}><i className="fas fa-trash-alt"></i></span> */}
             </td>
         </tr>
     )

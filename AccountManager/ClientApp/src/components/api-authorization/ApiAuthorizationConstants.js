@@ -44,7 +44,7 @@ const Category = {
     GetOne: `${BaseRoute}${ApiPrefix}/Categories/Categorie`,
 }
 
-export const ApplicationPaths = {
+export const ApiRoutes = {
     DefaultRedirectRoute: '/',
     Register: `${AuthPrefix}/Register`,
     Login: `${AuthPrefix}/Login`,

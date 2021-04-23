@@ -13,7 +13,6 @@ const DetailsTransaction = ({ match, history }) => {
     const transactionType = ExtractComponentFromRoute(match.path);
     const transactionId = match.params.id;
 
-
     useEffect(() => {
         let transactionResponse = {};
         

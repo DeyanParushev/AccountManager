@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
-import { ApplicationPaths } from './ApiAuthorizationConstants';
+import { ApiRoutes } from './ApiAuthorizationConstants';
 
 export default class ApiAuthorizationRoutes extends React.Component {
     constructor(props) {
@@ -13,13 +13,13 @@ export default class ApiAuthorizationRoutes extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Route exact path={ApplicationPaths.Register}>
+                <Route exact path={ApiRoutes.Register}>
                     <Register history={this.props.history}/>
                 </Route>
-                <Route exact path={ApplicationPaths.Login}>
+                <Route exact path={ApiRoutes.Login}>
                     <Login props={this.props} />
                 </Route>
-                <Route exact path={ApplicationPaths.Logout}>
+                <Route exact path={ApiRoutes.Logout}>
                     <Logout props={this.props}/>
                 </Route>
             </React.Fragment>

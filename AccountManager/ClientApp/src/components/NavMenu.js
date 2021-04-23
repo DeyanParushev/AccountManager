@@ -4,6 +4,7 @@ import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLi
 import { Link } from 'react-router-dom';
 import LoginMenu from './api-authorization/LoginMenu';
 import './NavMenu.css';
+import ApplicationRoutes from '../components/api-authorization/ApplicationRoutes';
 
 class NavMenu extends React.Component {
     static displayName = NavMenu.name;
@@ -28,13 +29,13 @@ class NavMenu extends React.Component {
             return (
                 <Fragment>
                     <NavItem>
-                        <NavLink tag={Link} className="text-dark" to="/Categories/Create">Create Category</NavLink>
+                        <NavLink tag={Link} className="text-dark" to={ApplicationRoutes.Categories.Create}>Create Category</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink tag={Link} className="text-dark" to="/Tags/Create">Create Tag</NavLink>
+                        <NavLink tag={Link} className="text-dark" to={ApplicationRoutes.Tags.Create}>Create Tag</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink tag={Link} className="text-dark" to="/Accounts">My Accounts</NavLink>
+                        <NavLink tag={Link} className="text-dark" to={ApplicationRoutes.Accounts.All}>My Accounts</NavLink>
                     </NavItem>
                 </Fragment>
             )

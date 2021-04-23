@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
+import ApplicationRoutes from './components/api-authorization/ApplicationRoutes';
 import { AuthPrefix } from './components/api-authorization/ApiAuthorizationConstants';
 import UserContext from './contexts/UserContext';
 import './custom.css'
@@ -51,23 +52,23 @@ export default class App extends React.Component {
                         <Route exact path='/' component={Home} />
                         <Route path={AuthPrefix} component={ApiAuthorizationRoutes} />
 
-                        <Route exact path='/Incomes/Create/:accountId' component={CreateTransaction} />
-                        <Route exact path='/Incomes/Details/:id' component={DetailsTransaction} />
-                        <Route exact path='/Incomes/Edit/:id' component={EditTransaction} />
-                        <Route exact path='/Incomes/Delete/:id' component={DeleteTransaction} />
+                        <Route exact path={ApplicationRoutes.Incomes.Create} component={CreateTransaction} />
+                        <Route exact path={ApplicationRoutes.Incomes.Details} component={DetailsTransaction} />
+                        <Route exact path={ApplicationRoutes.Incomes.Edit} component={EditTransaction} />
+                        <Route exact path={ApplicationRoutes.Incomes.Delete} component={DeleteTransaction} />
 
-                        <Route exact path='/Expenses/Create/:accountId' component={CreateTransaction} />
-                        <Route exact path='/Expenses/Details/:id' component={DetailsTransaction} />
-                        <Route exact path='/Expenses/Edit/:id' component={EditTransaction} />
-                        <Route exact path='/Expenses/Delete/:id' component={DeleteTransaction} />
+                        <Route exact path={ApplicationRoutes.Expenses.Create} component={CreateTransaction} />
+                        <Route exact path={ApplicationRoutes.Expenses.Details} component={DetailsTransaction} />
+                        <Route exact path={ApplicationRoutes.Expenses.Edit} component={EditTransaction} />
+                        <Route exact path={ApplicationRoutes.Expenses.Delete} component={DeleteTransaction} />
 
+                        <Route exact path={ApplicationRoutes.Accounts.All} component={Account} />
+                        <Route exact path={ApplicationRoutes.Accounts.Create} component={CreateAccount} />
+                        <Route exact path={ApplicationRoutes.Accounts.Details} component={DetailsAccount} />
 
-                        <Route exact path='/Accounts' component={Account} />
-                        <Route exact path='/Accounts/Create' component={CreateAccount} />
-                        <Route exact path='/Accounts/Details/:accountId' component={DetailsAccount} />
+                        <Route exact path={ApplicationRoutes.Tags.Create} component={CraateFilterComponent} />
 
-                        <Route exact path='/Tags/Create' component={CraateFilterComponent} />
-                        <Route exact path='/Categories/Create' component={CraateFilterComponent} />
+                        <Route exact path={ApplicationRoutes.Categories.Create} component={CraateFilterComponent} />
                         <Route path='*' component={ErrorPage} />
                     </Switch>
                 </Layout>

@@ -5,6 +5,7 @@ import Transaction from '../Transaction/Transaction';
 import { Button, Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import BackButton from '../utilities/BackButton';
+import ApplicationRoutes from '../api-authorization/ApplicationRoutes';
 
 function DetailsAccount({ match, history }) {
     const context = useContext(UserContext);
@@ -16,7 +17,7 @@ function DetailsAccount({ match, history }) {
 
     useEffect(() => {
         if (!context.user.id) {
-            history.push('/Identity/Login');
+            history.push(ApplicationRoutes.Login);
         }
 
         let responseAccount = {};
@@ -26,7 +27,7 @@ function DetailsAccount({ match, history }) {
             setAccount(responseAccount);
         }
 
-        fetchData(match.params.accountId, context.user.token);
+        fetchData(match.params.id, context.user.token);
     }, [])
 
     const renderIncomes = () => {
@@ -50,8 +51,8 @@ function DetailsAccount({ match, history }) {
     return (
         <Fragment>
             <h1>Account details for <b>{account.name}</b></h1>
-            <Link to={`/Incomes/Create/${account.id}`}><Button outline color='success'>Add income</Button></Link>
-            <Link to={`/Expenses/Create/${account.id}`}><Button outline color='danger'>Add expense</Button></Link>
+            <Link to={ApplicationRoutes.Incomes.Create}><Button outline color='success'>Add income</Button></Link>
+            <Link to={ApplicationRoutes.Expenses.Create}><Button outline color='danger'>Add expense</Button></Link>
             <hr />
             <Table>
                 <thead>
@@ -67,7 +68,11 @@ function DetailsAccount({ match, history }) {
                     {renderExpenses()}
                 </tbody>
             </Table>
-            <BackButton history={history} />
+            <Link to={ApplicationRoutes.Accounts.Edit}><Button outline color='primary'>Edit Account</Button></Link>
+            <Link to={ApplicationRoutes.Accounts.Delete}><Button outline color='danger'>Delete</Button></Link>
+            <div>
+                <BackButton history={history} />
+            </div>
         </Fragment>
     )
 }
