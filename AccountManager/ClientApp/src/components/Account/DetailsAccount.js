@@ -23,8 +23,10 @@ function DetailsAccount({ match, history }) {
         let responseAccount = {};
         async function fetchData(userId, token) {
             const response = await GetOne(userId, 'Accounts', token);
-            responseAccount = await response.json();
-            setAccount(responseAccount);
+            if (response.status == 200) {
+                responseAccount = await response.json();
+                setAccount(responseAccount);
+            }
         }
 
         fetchData(match.params.id, context.user.token);
