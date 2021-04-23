@@ -20,10 +20,10 @@ const Expense = {
 
 const Account = {
     All: `/Accounts/All`,
-    Create: `/Accounts/Create/:userId`,
-    Delete: `/Accounts/Delete/:id`,
-    Edit: `/Accounts/Edit/:id`,
-    Details: `/Accounts/Details/:id`,
+    Create: (id) => id ? `/Accounts/Create/${id}` : '/Accounts/Create/:id',
+    Delete: (id) => id ? `/Accounts/Delete/${id}` : '/Accounts/Delete/:id',
+    Edit: (id) => id ? `/Accounts/Edit/${id}` : `/Accounts/Edit/:id`,
+    Details: (id) => id ? `/Accounts/Details/${id}` : '/Accounts/Details/:id',
 }
 
 const Tag = {

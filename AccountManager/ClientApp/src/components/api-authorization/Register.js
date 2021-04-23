@@ -1,6 +1,7 @@
 ﻿import React, { useState } from 'react';
 import { Form, FormGroup, Label, Input, Button, Col } from 'reactstrap';
 import { RegisterService } from '../../services/AuthServices';
+import ApplicationRoutes from './ApplicationRoutes';
 
 const Register = ({
     history,
@@ -22,7 +23,7 @@ const Register = ({
 
         if (result.status === 200) {
             setTimeout(setState({ isRegistered: true }), 2000);
-            history.push('/Identity/Login');
+            history.push(ApplicationRoutes.Login);
         } else {    
             setCreateSuccessfull(false);
             const responseError = await result.json();

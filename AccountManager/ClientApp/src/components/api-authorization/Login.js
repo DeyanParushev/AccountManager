@@ -4,6 +4,7 @@ import { LoginService } from '../../services/AuthServices';
 import { Form, FormGroup, Label, Input, Button, Col } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import GetUser from '../../services/CookieProccessor';
+import ApplicationRoutes from './ApplicationRoutes';
 
 const Login = ({ props }) => {
     const context = useContext(UserContext);
@@ -11,7 +12,7 @@ const Login = ({ props }) => {
     const [error, setError] = useState('');
 
     if (context.user.hasOwnProperty('id') && context.user.id !== "") {
-        return <Redirect to={props.location || '/'} />
+        return <Redirect to={props.location || ApplicationRoutes.Home} />
     }
 
     const onSubmitHandler = async (event) => {
@@ -28,7 +29,7 @@ const Login = ({ props }) => {
             const user = GetUser(document.cookie);
             user.token = resultJson;
             context.setUser(user);
-            props.history.push('/');
+            props.history.push(ApplicationRoutes.Home);
         } else {
             setCreateSuccessfull(false);
             const responseError = await result.json();

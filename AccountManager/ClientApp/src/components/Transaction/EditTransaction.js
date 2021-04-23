@@ -3,6 +3,7 @@ import { Form, FormGroup, Label, Input, Button, Col } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import { GetOne, Edit } from '../../services/ApiService';
 import { ExtractComponentFromRoute } from '../../utilityFunctions/RoutingFunctions';
+import ApplicationRoutes from '../api-authorization/ApplicationRoutes';
 import FilterComponent from '../FilterComponents/FilterComponent';
 import BackButton from '../utilities/BackButton';
 
@@ -17,7 +18,7 @@ function EditTransaction({ match, history }) {
 
     useEffect(() => {
         if (!context.user.id) {
-            history.push('/Identity/Login');
+            history.push(ApplicationRoutes.Login);
         }
 
         async function fetchData() {

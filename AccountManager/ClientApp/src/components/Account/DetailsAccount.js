@@ -68,8 +68,8 @@ function DetailsAccount({ match, history }) {
                     {renderExpenses()}
                 </tbody>
             </Table>
-            <Link to={ApplicationRoutes.Accounts.Edit}><Button outline color='primary'>Edit Account</Button></Link>
-            <Link to={ApplicationRoutes.Accounts.Delete}><Button outline color='danger'>Delete</Button></Link>
+            <Link to={ApplicationRoutes.Accounts.Edit(account.id)}><Button outline color='primary'>Edit Account</Button></Link>
+            <Link to={ApplicationRoutes.Accounts.Delete(account.id)}><Button outline color='danger'>Delete</Button></Link>
             <div>
                 <BackButton history={history} />
             </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { Form, FormGroup, Label, Col, Input, Button } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
 import { Create } from '../../services/ApiService';
+import ApplicationRoutes from '../api-authorization/ApplicationRoutes';
 import BackButton from '../utilities/BackButton';
 
 const CreatAccount = ({ history }) => {
@@ -19,7 +20,7 @@ const CreatAccount = ({ history }) => {
         async function postData() {
             const response = await Create(context.user.id, 'Accounts', account, context.user.token);
             if (response.status === 200) {
-                history.push(`/Accounts`)
+                history.push(ApplicationRoutes.Accounts.All)
             } else {
                 setCreateSuccessfull(false);
                 const responseError = await response.json();
@@ -39,7 +40,7 @@ const CreatAccount = ({ history }) => {
 
     useEffect(() => {
         if (!context.user.id) {
-            history.push('/Identity/Login');
+            history.push(ApplicationRoutes.Login);
         }
     })
 

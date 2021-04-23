@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import UserContext from '../../contexts/UserContext';
 import { GetAll } from '../../services/ApiService';
 import BackButton from '../utilities/BackButton';
+import ApplicationRoutes from '../api-authorization/ApplicationRoutes';
 
 function Account({ history }) {
     const context = useContext(UserContext);
@@ -13,7 +14,7 @@ function Account({ history }) {
         let responseAccounts = [];
 
         if (!context.user.id) {
-            history.push('/Identity/Login');
+            history.push(ApplicationRoutes.Login);
         }
 
         async function fetchData() {
@@ -36,7 +37,7 @@ function Account({ history }) {
     const createReactElement = (account) => {
         return (
             <Fragment key={account.id}>
-                <Link to={`/Accounts/Details/${account.id}`}><Button outline color='info'>{account.name}</Button></Link>
+                <Link to={ApplicationRoutes.Accounts.Details(account.id)}><Button outline color='info'>{account.name}</Button></Link>
             </Fragment>
         )
     }
@@ -46,7 +47,7 @@ function Account({ history }) {
             {renderAccounts()}
 
             <div>
-                <Link to={`/Accounts/Create/`}><Button outline color='success'>Create new</Button></Link>
+                <Link to={ApplicationRoutes.Accounts.Create(context.user.id)}><Button outline color='success'>Create new</Button></Link>
             </div>
             <div>
                 <BackButton history={history} />

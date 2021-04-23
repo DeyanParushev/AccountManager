@@ -11,6 +11,8 @@ import CreateTransaction from './components/Transaction/CreateTransaction';
 import Account from './components/Account/Account';
 import CreateAccount from './components/Account/CreateAccount';
 import DetailsAccount from './components/Account/DetailsAccount';
+import EditAccount from './components/Account/EditAccount';
+import DeleteAccount from './components/Account/DeleteAccount';
 import CraateFilterComponent from './components/FilterComponents/CreateFilterComponent';
 import DetailsTransaction from './components/Transaction/DetailsTransaction';
 import EditTransaction from './components/Transaction/EditTransaction';
@@ -63,8 +65,10 @@ export default class App extends React.Component {
                         <Route exact path={ApplicationRoutes.Expenses.Delete} component={DeleteTransaction} />
 
                         <Route exact path={ApplicationRoutes.Accounts.All} component={Account} />
-                        <Route exact path={ApplicationRoutes.Accounts.Create} component={CreateAccount} />
-                        <Route exact path={ApplicationRoutes.Accounts.Details} component={DetailsAccount} />
+                        <Route exact path={ApplicationRoutes.Accounts.Create()} component={CreateAccount} />
+                        <Route exact path={ApplicationRoutes.Accounts.Details()} component={DetailsAccount} />
+                        <Route exact path={ApplicationRoutes.Accounts.Edit()} component={EditAccount} />
+                        <Route exact path={ApplicationRoutes.Accounts.Delete()} component={DeleteAccount} />
 
                         <Route exact path={ApplicationRoutes.Tags.Create} component={CraateFilterComponent} />
 
