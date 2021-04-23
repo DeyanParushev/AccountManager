@@ -1,21 +1,19 @@
-import { BaseRoute } from './ApiAuthorizationConstants';
-
 const AuthPrefix = '/Identity';
 
 const Income = {
     All: `/Incomes/All`,
-    Create: `/Incomes/Create/:accountId`,
-    Delete: `/Incomes/Delete/:id`,
-    Edit: `/Incomes/Edit/:id`,
-    Details: `/Incomes/Details/:id`,
+    Create: (id) => id ? `/Incomes/Create/${id}` : `/Incomes/Create/:id`,
+    Delete: (id) => id ? `/Incomes/Delete/${id}` : `/Incomes/Delete/:id`,
+    Edit: (id) => id ? `/Incomes/Edit/${id}` : `/Incomes/Edit/:id`,
+    Details: (id) => id ? `/Incomes/Details/${id}` : `/Incomes/Details/:id`,
 }
 
 const Expense = {
     All: `/Expenses/All`,
-    Create: `/Expenses/Create/:accountId`,
-    Delete: `/Expenses/Delete/:id`,
-    Edit: `/Expenses/Edit/:id`,
-    Details: `/Expenses/Details/:id`,
+    Create: (id) => id ? `/Expenses/Create/${id}` : `/Expenses/Create/:id`,
+    Delete: (id) => id ? `/Expenses/Delete/${id}` : `/Expenses/Delete/:id`,
+    Edit: (id) => id ? `/Expenses/Edit/${id}` : `/Expenses/Edit/:id`,
+    Details: (id) => id ? `/Expenses/Details/${id}` : `/Expenses/Details/:id`,
 }
 
 const Account = {

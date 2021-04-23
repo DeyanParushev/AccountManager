@@ -54,15 +54,15 @@ export default class App extends React.Component {
                         <Route exact path='/' component={Home} />
                         <Route path={AuthPrefix} component={ApiAuthorizationRoutes} />
 
-                        <Route exact path={ApplicationRoutes.Incomes.Create} component={CreateTransaction} />
-                        <Route exact path={ApplicationRoutes.Incomes.Details} component={DetailsTransaction} />
-                        <Route exact path={ApplicationRoutes.Incomes.Edit} component={EditTransaction} />
-                        <Route exact path={ApplicationRoutes.Incomes.Delete} component={DeleteTransaction} />
+                        <Route exact path={ApplicationRoutes.Incomes.Create()} component={CreateTransaction} />
+                        <Route exact path={ApplicationRoutes.Incomes.Details()} component={DetailsTransaction} />
+                        <Route exact path={ApplicationRoutes.Incomes.Edit()} component={EditTransaction} />
+                        <Route exact path={ApplicationRoutes.Incomes.Delete()} component={DeleteTransaction} />
 
-                        <Route exact path={ApplicationRoutes.Expenses.Create} component={CreateTransaction} />
-                        <Route exact path={ApplicationRoutes.Expenses.Details} component={DetailsTransaction} />
-                        <Route exact path={ApplicationRoutes.Expenses.Edit} component={EditTransaction} />
-                        <Route exact path={ApplicationRoutes.Expenses.Delete} component={DeleteTransaction} />
+                        <Route exact path={ApplicationRoutes.Expenses.Create()} component={CreateTransaction} />
+                        <Route exact path={ApplicationRoutes.Expenses.Details()} component={DetailsTransaction} />
+                        <Route exact path={ApplicationRoutes.Expenses.Edit()} component={EditTransaction} />
+                        <Route exact path={ApplicationRoutes.Expenses.Delete()} component={DeleteTransaction} />
 
                         <Route exact path={ApplicationRoutes.Accounts.All} component={Account} />
                         <Route exact path={ApplicationRoutes.Accounts.Create()} component={CreateAccount} />

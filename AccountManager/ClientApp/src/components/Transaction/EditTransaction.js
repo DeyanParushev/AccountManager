@@ -40,8 +40,8 @@ function EditTransaction({ match, history }) {
 
     }, [transaction]);
 
-    function renderErrors() {
-        if (Object.keys(errors).length > 0) {
+    function renderErrors(errorList) {
+        if (errorList && errorList.length > 0) {
             return Object.keys(errors).map(x => <div key={x}><span><b style={{ color: 'red' }}>{errors[x]}</b></span></div>)
         }
         return null;
@@ -88,7 +88,7 @@ function EditTransaction({ match, history }) {
                         <Input type='text-area' id="description" name="description" required defaultValue={transaction.description} />
                     </Col>
                 </FormGroup>
-                {editSuccessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors()}
+                {editSuccessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors(errors)}
 
                 <Col>
                     <Button outline color="success" >Edit</Button>

@@ -9,15 +9,15 @@ function FilterComponent({ onChangeFunction, componentType }) {
    
     useEffect(() => {
         let componentResponse = [];
-        async function fetchData() {
-            let response = await GetAll('', componentType, context.user.token);
+        async function fetchData(componentType, token) {
+            let response = await GetAll('', componentType, token);
 
             componentResponse = await response.json();
             setComponents(componentResponse);
         }
 
         if (components.length < 1) {
-            fetchData();
+            fetchData(componentType, context.user.token);
         }
 
     }, [components]);

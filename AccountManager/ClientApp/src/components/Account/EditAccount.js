@@ -10,16 +10,17 @@ function EditAccount({ match, history }) {
     const conetext = useContext(UserContext);
     const [editSuccessfull, setEditSuccessfull] = useState();
     const [errors, setErrors] = useState([]);
+
     useEffect(() => {
         if (!conetext.user.id) {
             history.push(ApplicationRoutes.Login);
         }
 
         async function getAccount() {
-            const response = await GetOne(conetext.user.id, 'Accounts', conetext.user.token);
+            const response = await GetOne(match.params.id, 'Accounts', conetext.user.token);
 
             if (response.status === 200) {
-                const responseAcccount = response.json();
+                const responseAcccount = await response.json();
                 setAccount(responseAcccount);
             } else {
                 setEditSuccessfull(false);
@@ -31,12 +32,12 @@ function EditAccount({ match, history }) {
         if (!account.hasOwnProperty('id')) {
             getAccount();
         }
-    });
+    }, [account]);
 
-    function renderErrors() {
-        console.log(errors);
-        if (errors.length > 0) {
-            return errors.map(x => <div key={x}><span><b style={{ color: 'red' }}>{errors[x]}</b></span></div>)
+    function renderErrors(errorList) {
+        
+        if (errorList && errorList.length > 0) {
+            return errorList.map(x => <div key={x}><span><b style={{ color: 'red' }}>{errorList[x]}</b></span></div>)
         }
         return null;
     }
@@ -56,7 +57,7 @@ function EditAccount({ match, history }) {
                         <Input type='text' id="name" name="name" required defaultValue={account.name} />
                     </Col>
                 </FormGroup>
-                {editSuccessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors()}
+                {editSuccessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors(errors)}
 
                 <Col>
                     <Button outline color="success" >Edit</Button>

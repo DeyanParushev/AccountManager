@@ -11,7 +11,7 @@ import { ApiRoutes } from '../api-authorization/ApiAuthorizationConstants';
 const CreateTransaction = ({ match, history }) => {
     const context = useContext(UserContext);
     const [category, setCategory] = useState(0);
-    const [tag, setTag] = useState(0);
+    const [, setTag] = useState(0);
     const [createSucessfull, setCreateSuccessfull] = useState();
     const [errors, setErrors] = useState([]);
 
@@ -25,7 +25,7 @@ const CreateTransaction = ({ match, history }) => {
             amount: Number(e.target.amount.value),
             categoryId: category,
             description: e.target.description.value,
-            accountId: match.params.accountId,
+            accountId: match.params.id,
         }
 
         let entity = ExtractComponentFromRoute(match.path);
@@ -43,9 +43,9 @@ const CreateTransaction = ({ match, history }) => {
         postData();
     }
 
-    function renderErrors() {
-        if (Object.keys(errors).length > 0) {
-            return Object.keys(errors).map(x => <div key={x}><span><b style={{ color: 'red' }}>{errors[x]}</b></span></div>)
+    function renderErrors(errorList) {
+        if (errorList !== undefined && errorList.length > 0) {
+            return errorList.map(x => <div key={x}><span><b style={{ color: 'red' }}>{errorList[x]}</b></span></div>)
         }
         return null;
     }
@@ -70,7 +70,7 @@ const CreateTransaction = ({ match, history }) => {
                         <Input type='text-area' id="description" name="description" />
                     </Col>
                 </FormGroup>
-                {createSucessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors()}
+                {createSucessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors(errors)}
                 <Col>
                     <Button outline color="success" >Create</Button>
                 </Col>

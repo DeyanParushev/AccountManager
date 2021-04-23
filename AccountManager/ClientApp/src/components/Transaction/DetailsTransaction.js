@@ -4,6 +4,7 @@ import { GetOne } from '../../services/ApiService';
 import { Table } from 'reactstrap';
 import BackButton from '../utilities/BackButton';
 import { ExtractComponentFromRoute } from '../../utilityFunctions/RoutingFunctions';
+import ApplicationRoutes from '../api-authorization/ApplicationRoutes';
 
 const DetailsTransaction = ({ match, history }) => {
 
@@ -17,7 +18,7 @@ const DetailsTransaction = ({ match, history }) => {
         let transactionResponse = {};
         
         if (!context.user.id) {
-            history.push('/Identity/Login');
+            history.push(ApplicationRoutes.Login);
         }
 
         async function fetchData() {

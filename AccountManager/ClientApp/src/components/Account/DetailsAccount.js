@@ -23,7 +23,7 @@ function DetailsAccount({ match, history }) {
         let responseAccount = {};
         async function fetchData(userId, token) {
             const response = await GetOne(userId, 'Accounts', token);
-            if (response.status == 200) {
+            if (response.status === 200) {
                 responseAccount = await response.json();
                 setAccount(responseAccount);
             }
@@ -53,8 +53,8 @@ function DetailsAccount({ match, history }) {
     return (
         <Fragment>
             <h1>Account details for <b>{account.name}</b></h1>
-            <Link to={ApplicationRoutes.Incomes.Create}><Button outline color='success'>Add income</Button></Link>
-            <Link to={ApplicationRoutes.Expenses.Create}><Button outline color='danger'>Add expense</Button></Link>
+            <Link to={ApplicationRoutes.Incomes.Create(account.id)}><Button outline color='success'>Add income</Button></Link>
+            <Link to={ApplicationRoutes.Expenses.Create(account.id)}><Button outline color='danger'>Add expense</Button></Link>
             <hr />
             <Table>
                 <thead>
