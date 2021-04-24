@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using AutoMapper;
@@ -14,21 +13,15 @@
     using AccountManager.ViewModels.InputModels;
     using AccountManager.ViewModels.ViewModels;
 
-    [ApiController]
-    [Route("api/[controller]")]
-    [Authorize]
-    public class AccountsController : ControllerBase
+    public class AccountsController : BaseController
     {
         private readonly IAccountService accountsService;
         private readonly IJwtService jwtService;
         private readonly IMapper mapper;
         private const string routeParameter = "/{accountId}";
-        private const string authRequestHeader = "Authorization";
 
-        public AccountsController(
-            IAccountService accountsService,
-            IJwtService jwtService,
-            IMapper mapper)
+        public AccountsController(IAccountService accountsService, IJwtService jwtService, IMapper mapper)
+            : base(jwtService)
         {
             this.accountsService = accountsService;
             this.jwtService = jwtService;
@@ -39,11 +32,10 @@
         [Route(nameof(All) + routeParameter)]
         public async Task<IActionResult> All()
         {
-            var userCalims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
-
             try
             {
-                var accountsDTO = await accountsService.GetAll<AccountDTO>(userCalims["UserId"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
+                var accountsDTO = await accountsService.GetAll<AccountDTO>(userId);
                 var accountViewModels = mapper.Map<ICollection<AccountViewModel>>(accountsDTO);
                 return Ok(accountViewModels);
             }
@@ -59,8 +51,8 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
-                var accountDto = await accountsService.GetOne<AccountDTO>(accountId, userClaims["UserId"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
+                var accountDto = await accountsService.GetOne<AccountDTO>(accountId, userId);
                 var accountViewModel = mapper.Map<AccountViewModel>(accountDto);
 
                 return Ok(accountViewModel);
@@ -83,12 +75,12 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
 
                 var acountModel = new Account
                 {
                     Name = acount.Name,
-                    UserId = userClaims["UserId"],
+                    UserId = userId,
                 };
                 await accountsService.Create(acountModel);
                 return Ok();
@@ -98,7 +90,7 @@
                 return BadRequest(ex.Message);
             }
         }
-       
+
         [HttpPut]
         [Route(nameof(Edit) + routeParameter)]
         public async Task<IActionResult> Edit(AccountInputModel model)
@@ -108,12 +100,11 @@
                 return BadRequest();
             }
 
-            var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
-
             try
             {
+                var userId = base.GetUserIdFromAuthorizeHeader();
                 var account = new Account { Id = model.Id, Name = model.Name };
-                var returnAccount = await accountsService.Edit<AccountDTO>(account, userClaims["UserId"]);
+                var returnAccount = await accountsService.Edit<AccountDTO>(account, userId);
                 var accountView = mapper.Map<AccountViewModel>(returnAccount);
 
                 return Ok(accountView);
@@ -128,11 +119,10 @@
         [Route(nameof(Delete) + routeParameter)]
         public async Task<IActionResult> Delete(string accountId)
         {
-            var user = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
-
             try
             {
-                await accountsService.Delete(accountId, user["UserId"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
+                await accountsService.Delete(accountId, userId);
                 return Ok();
             }
             catch (Exception ex)

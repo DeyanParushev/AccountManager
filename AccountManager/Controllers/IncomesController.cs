@@ -5,7 +5,6 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using AccountManager.DTOs;
@@ -14,18 +13,15 @@
     using AccountManager.ViewModels.ViewModels;
     using AccountManager.ViewModels.InputModels;
 
-    [ApiController]
-    [Route("api/[controller]")]
-    [Authorize]
-    public class IncomesController : ControllerBase
+    public class IncomesController : BaseController
     {
         private readonly IIncomeService incomeService;
         private readonly IMapper mapper;
         private readonly IJwtService jwtService;
         private const string incomeParameter = "/{incomeId}";
-        private const string authRequestHeader = "Authorization";
 
         public IncomesController(IIncomeService incomeService, IMapper mapper, IJwtService jwtService)
+            : base(jwtService)
         {
             this.incomeService = incomeService;
             this.mapper = mapper;
@@ -38,8 +34,8 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
-                var incomes = await incomeService.GetAll<IncomeDTO>(accountId, userClaims["UserId"]);
+                var userId = GetUserIdFromAuthorizeHeader();
+                var incomes = await incomeService.GetAll<IncomeDTO>(accountId, userId);
                 var putputIncomes = mapper.Map<ICollection<IncomeViewModel>>(incomes);
 
                 return Ok(putputIncomes);
@@ -56,8 +52,8 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
-                var income = await incomeService.GetOne<IncomeDTO>(incomeId, userClaims["UserId"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
+                var income = await incomeService.GetOne<IncomeDTO>(incomeId, userId);
                 var incomeViewModel = mapper.Map<IncomeViewModel>(income);
 
                 return Ok(incomeViewModel);
@@ -79,7 +75,6 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 var income = mapper.Map<Income>(model);
                 await incomeService.Create(income);
 
@@ -102,9 +97,9 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
                 var incomeDbModel = mapper.Map<Income>(model);
-                var editedIncome = await incomeService.Edit<IncomeDTO>(incomeDbModel, userClaims["UserId"]);
+                var editedIncome = await incomeService.Edit<IncomeDTO>(incomeDbModel, userId);
 
                 return Ok(editedIncome);
             }
@@ -120,8 +115,8 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
-                await incomeService.Delete(incomeId, userClaims["UserId"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
+                await incomeService.Delete(incomeId, userId);
 
                 return Ok();
             }

@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using AccountManager.DTOs;
@@ -15,18 +14,15 @@
     using AccountManager.ViewModels.InputModels;
     using AccountManager.Models;
 
-    [ApiController]
-    [Route("api/[controller]")]
-    [Authorize]
-    public class ExpensesController : ControllerBase
+    public class ExpensesController : BaseController
     {
         private readonly IExpenseService expensesService;
         private readonly IMapper mapper;
         private readonly IJwtService jwtService;
         private const string actionRouteEnd = "/{expenseId}";
-        private const string authRequestHeader = "Authorization";
 
         public ExpensesController(IExpenseService expensesService, IMapper mapper, IJwtService jwtService)
+            : base(jwtService)
         {
             this.expensesService = expensesService;
             this.mapper = mapper;
@@ -39,8 +35,8 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
-                var expenses = await expensesService.GetAll<ExpenseDTO>(accountId, userClaims["UserId"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
+                var expenses = await expensesService.GetAll<ExpenseDTO>(accountId, userId);
                 var outputExpenses = mapper.Map<ICollection<ExpenseViewModel>>(expenses);
 
                 return Ok(outputExpenses);
@@ -57,8 +53,8 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
-                var expense = await expensesService.GetOne<ExpenseDTO>(expenseId, userClaims["UserId"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
+                var expense = await expensesService.GetOne<ExpenseDTO>(expenseId, userId);
                 var outputExpense = mapper.Map<ExpenseViewModel>(expense);
 
                 return Ok(outputExpense);
@@ -80,7 +76,6 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
                 var expenseDbModel = mapper.Map<Expense>(model);
                 var stream = new MemoryStream();
                 //await model.Image.CopyToAsync(stream);
@@ -105,9 +100,9 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
                 var expenseDbModel = mapper.Map<Expense>(model);
-                var editedExpense = await expensesService.Edit<ExpenseDTO>(expenseDbModel, userClaims["UserId"]);
+                var editedExpense = await expensesService.Edit<ExpenseDTO>(expenseDbModel, userId);
 
                 return Ok(editedExpense);
             }
@@ -123,8 +118,8 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers[authRequestHeader]);
-                await expensesService.Delete(expenseId, userClaims["UserId"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
+                await expensesService.Delete(expenseId, userId);
 
                 return Ok();
             }

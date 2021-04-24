@@ -4,9 +4,9 @@
     using System.Linq;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    
+
     using AutoMapper;
-    
+
     using AccountManager.Data;
     using AccountManager.Models;
     using AccountManager.DTOs;
@@ -59,16 +59,16 @@
                 {
                     Id = x.Id,
                     CategoryId = x.CategoryId,
-                    Category = new CategoryDTO { Id = x.Category.Id, Name = x.Category.Name},
+                    Category = new CategoryDTO { Id = x.Category.Id, Name = x.Category.Name },
                     Amount = x.Amount,
                     Date = x.Date,
                     Description = x.Description,
-                    Tags = x.Tags.Select(y => new TagDTO { Id = y.Id, Name = y.Name}).ToArray(),
+                    Tags = x.Tags.Select(y => new TagDTO { Id = y.Id, Name = y.Name }).ToArray(),
                     AccountId = x.AccountId
                 })
                 .SingleOrDefault();
 
-            if(income == null)
+            if (income == null)
             {
                 throw new ArgumentNullException("Income with this Id does not exist in this account.");
             }
@@ -85,12 +85,12 @@
             }
 
             var income = context.Incomes
-                .Where(x =>x.Id == inputIncome.Id)
+                .Where(x => x.Id == inputIncome.Id)
                 .SingleOrDefault();
 
             if (income != null)
             {
-                throw new ArgumentException("Account name already exists");
+                throw new ArgumentException("Account already exists");
             }
 
             inputIncome.Id = Guid.NewGuid().ToString();

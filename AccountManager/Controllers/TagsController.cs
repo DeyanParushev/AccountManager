@@ -5,7 +5,6 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using AccountManager.DTOs;
@@ -14,10 +13,7 @@
     using AccountManager.ViewModels;
     using AccountManager.ViewModels.InputModels;
 
-    [ApiController]
-    [Route("api/[controller]")]
-    [Authorize]
-    public class TagsController : ControllerBase
+    public class TagsController : BaseController
     {
         private readonly ITagService tagService;
         private readonly IMapper mapper;
@@ -25,6 +21,7 @@
         private const string routeParameter = "/{userId}";
 
         public TagsController(ITagService tagService, IMapper mapper, IJwtService jwtService)
+            : base(jwtService)
         {
             this.tagService = tagService;
             this.mapper = mapper;
@@ -37,8 +34,8 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                var tag = await tagService.GetAll<TagDTO>(userClaims["UserId"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
+                var tag = await tagService.GetAll<TagDTO>(userId);
                 var outputTags = mapper.Map<ICollection<TagViewModel>>(tag);
 
                 return Ok(outputTags);
@@ -54,7 +51,6 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
                 var tag = await tagService.GetOne<TagDTO>(tagId);
                 var outputTag = mapper.Map<TagViewModel>(tag);
 
@@ -77,9 +73,9 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
                 var tagDbModel = mapper.Map<Tag>(model);
-                await tagService.Create(tagDbModel, userClaims["UserId"]);
+                await tagService.Create(tagDbModel, userId);
 
                 return Ok();
             }
@@ -99,9 +95,9 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
                 var tagDbModel = mapper.Map<Tag>(model);
-                var editedTag = await tagService.Edit<TagDTO>(tagDbModel, userClaims["UserId"]);
+                var editedTag = await tagService.Edit<TagDTO>(tagDbModel, userId);
 
                 return Ok(editedTag);
             }
@@ -116,8 +112,8 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                await tagService.Delete(tagId, userClaims["UserId"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
+                await tagService.Delete(tagId, userId);
 
                 return Ok();
             }

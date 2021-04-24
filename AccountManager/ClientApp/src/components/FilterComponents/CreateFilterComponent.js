@@ -29,7 +29,7 @@ const CreateFilterComponent = ({ match, history }) => {
     } else {
       setCreateSuccessfull(false);
       const responseError = await response.json();
-      setError(responseError.errors.Name[0]);
+      setError(responseError);
     }
   }
 

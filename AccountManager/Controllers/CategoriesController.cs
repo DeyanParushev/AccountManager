@@ -5,7 +5,6 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using AccountManager.DTOs;
@@ -14,10 +13,7 @@
     using AccountManager.ViewModels;
     using AccountManager.ViewModels.InputModels;
 
-    [ApiController]
-    [Route("api/[controller]")]
-    [Authorize]
-    public class CategoriesController : ControllerBase
+    public class CategoriesController : BaseController
     {
         private readonly ICategoryService categoryService;
         private readonly IMapper mapper;
@@ -25,6 +21,7 @@
         private const string routeParameter = "/{userId}";
 
         public CategoriesController(ICategoryService categoryService, IMapper mapper, IJwtService jwtService)
+            : base(jwtService)
         {
             this.categoryService = categoryService;
             this.mapper = mapper;
@@ -37,8 +34,8 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                var category = await categoryService.GetAll<CategoryDTO>(userClaims["UserId"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
+                var category = await categoryService.GetAll<CategoryDTO>(userId);
                 var outputCategories = mapper.Map<ICollection<CategoryViewModel>>(category);
 
                 return Ok(outputCategories);
@@ -54,7 +51,6 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
                 var category = await categoryService.GetOne<CategoryDTO>(categoryId);
                 var outputCategory = mapper.Map<CategoryViewModel>(category);
 
@@ -98,9 +94,9 @@
 
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
                 var categoryDbModel = mapper.Map<Category>(model);
-                var editedCategory = await categoryService.Edit<CategoryDTO>(categoryDbModel, userClaims["UserId"]);
+                var editedCategory = await categoryService.Edit<CategoryDTO>(categoryDbModel, userId);
 
                 return Ok(editedCategory);
             }
@@ -115,8 +111,8 @@
         {
             try
             {
-                var userClaims = jwtService.GetUserClaims(Request.Headers["Authorization"]);
-                await categoryService.Delete(categoryId, userClaims["UserId"]);
+                var userId = base.GetUserIdFromAuthorizeHeader();
+                await categoryService.Delete(categoryId, userId);
 
                 return Ok();
             }
