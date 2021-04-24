@@ -16,7 +16,7 @@
         public string Id { get; set; }
 
         [Required]
-        [Range(0, double.MaxValue)]
+        [Range(double.MinValue, -0.001)]
         public decimal Amount { get; set; }
 
         [Required]

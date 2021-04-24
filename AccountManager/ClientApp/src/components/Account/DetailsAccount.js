@@ -6,14 +6,12 @@ import { Button, Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import BackButton from '../utilities/BackButton';
 import ApplicationRoutes from '../api-authorization/ApplicationRoutes';
+import BalanceBar from '../Balance/BalanceBar';
 
 function DetailsAccount({ match, history }) {
     const context = useContext(UserContext);
     const [account, setAccount] = useState({});
-    const transactionTypes = {
-        Incomes: 'Incomes',
-        Expenses: 'Expenses',
-    };
+    const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
         if (!context.user.id) {
@@ -26,27 +24,17 @@ function DetailsAccount({ match, history }) {
             if (response.status === 200) {
                 responseAccount = await response.json();
                 setAccount(responseAccount);
+                const transactionList = responseAccount.incomes.concat(responseAccount.expenses);
+                setTransactions(transactionList);
             }
         }
 
         fetchData(match.params.id, context.user.token);
     }, [])
 
-    const renderIncomes = () => {
-        if (account.incomes !== undefined) {
-            return (account.incomes.map(x => renderTransaction(x, transactionTypes.Incomes)));
-        }
-    }
-
-    const renderTransaction = (transaction, transactionType) => {
-        if (transaction.id) {
-            return <Transaction key={transaction.id} transaction={transaction} transactionType={transactionType} />
-        }
-    }
-
-    const renderExpenses = () => {
-        if (account.expenses !== undefined) {
-            return (account.expenses.map(x => renderTransaction(x, transactionTypes.Expenses)));
+    const renderTransactions = (transactionList) => {
+        if (transactionList.length > 0) {
+            return transactionList.map(x => <Transaction key={x.id} transaction={x} />);
         }
     }
 
@@ -57,18 +45,20 @@ function DetailsAccount({ match, history }) {
             <Link to={ApplicationRoutes.Expenses.Create(account.id)}><Button outline color='danger'>Add expense</Button></Link>
             <hr />
             <Table>
-                <thead>
+                <thead style={{ background: 'lightblue' }}>
                     <tr>
-                        <td>Date</td>
-                        <td>Category</td>
-                        <td>Amount</td>
-                        <td>Actions</td>
+                        <td><b>Date</b></td>
+                        <td><b>Category</b></td>
+                        <td><b>Amount</b></td>
+                        <td><b>Actions</b></td>
                     </tr>
                 </thead>
                 <tbody>
-                    {renderIncomes()}
-                    {renderExpenses()}
+                    {renderTransactions(transactions)}
                 </tbody>
+                <tfoot style={{background: 'lightblue'}}>
+                    <BalanceBar transactions={transactions} />
+                </tfoot>
             </Table>
             <Link to={ApplicationRoutes.Accounts.Edit(account.id)}><Button outline color='primary'>Edit Account</Button></Link>
             <Link to={ApplicationRoutes.Accounts.Delete(account.id)}><Button outline color='danger'>Delete</Button></Link>
