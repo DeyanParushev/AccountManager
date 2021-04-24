@@ -5,6 +5,7 @@ import UserContext from '../../contexts/UserContext';
 import { Create } from '../../services/ApiService';
 import { ExtractComponentFromRoute } from '../../utilityFunctions/RoutingFunctions';
 import { ApiRoutes } from '../api-authorization/ApiAuthorizationConstants';
+import ApplicationRoutes from '../api-authorization/ApplicationRoutes';
 
 const CreateFilterComponent = ({ match, history }) => {
   const context = useContext(UserContext);
@@ -24,7 +25,7 @@ const CreateFilterComponent = ({ match, history }) => {
     const response = await Create(context.user.id, componentName, filterObject, context.user.token)
     if (response.status === 200) {
       setCreateSuccessfull(true);
-      history.push('/');
+      history.push(ApplicationRoutes.Home);
     } else {
       setCreateSuccessfull(false);
       const responseError = await response.json();

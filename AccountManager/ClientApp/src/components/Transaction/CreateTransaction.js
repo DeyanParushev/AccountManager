@@ -7,6 +7,7 @@ import BackButton from '../utilities/BackButton';
 import { ExtractComponentFromRoute } from '../../utilityFunctions/RoutingFunctions';
 import FilterComponent from '../FilterComponents/FilterComponent';
 import { ApiRoutes } from '../api-authorization/ApiAuthorizationConstants';
+import ApplicationRoutes from '../api-authorization/ApplicationRoutes';
 
 const CreateTransaction = ({ match, history }) => {
     const context = useContext(UserContext);
@@ -32,7 +33,7 @@ const CreateTransaction = ({ match, history }) => {
         async function postData() {
             const response = await Create('', entity, transaction, context.user.token);
             if (response.status === 200) {
-                history.push(`/Accounts/Details/${transaction.accountId}`)
+                history.push(ApplicationRoutes.Accounts.Details(match.params.id));
             } else {
                 setCreateSuccessfull(false);
                 const responseError = await response.json();

@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Form, FormGroup, Label, Col, Input, Button } from 'reactstrap';
 import UserContext from '../../contexts/UserContext';
-import { GetOne } from '../../services/ApiService';
+import { Edit, GetOne } from '../../services/ApiService';
 import ApplicationRoutes from '../api-authorization/ApplicationRoutes';
 import BackButton from '../utilities/BackButton';
 
@@ -42,10 +42,23 @@ function EditAccount({ match, history }) {
         return null;
     }
 
-    function onSubmitHandler(event) {
+    async function onSubmitHandler(event) {
         event.preventDefault();
+        const edditAccount = {
+            id: account.id,
+            name: event.target.name.value,
+        };
 
-        console.log('Edit');
+        const response = await Edit(edditAccount.id, 'Accounts', edditAccount, conetext.user.token);
+
+        if(response.status === 200) {
+            setEditSuccessfull(true);
+            history.push(ApplicationRoutes.Accounts.All);
+        } else {
+            const responseErrors = await response.json();
+            setErrors(responseErrors);
+            setEditSuccessfull(false);
+        }
     }
 
     return (
