@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 import { GetAll } from '../../services/ApiService';
-import { FormGroup, Label } from 'reactstrap';
 
 function FilterComponent({ onChangeFunction, componentType }) {
     const context = useContext(UserContext);
     const [components, setComponents] = useState([]);
-   
+
     useEffect(() => {
         let componentResponse = [];
         async function fetchData(componentType, token) {
@@ -20,7 +19,7 @@ function FilterComponent({ onChangeFunction, componentType }) {
             fetchData(componentType, context.user.token);
         }
 
-    }, [components]);
+    });
 
     function renderComponents(components) {
         if (components.length > 0) {
@@ -29,13 +28,10 @@ function FilterComponent({ onChangeFunction, componentType }) {
     }
 
     return (
-        <FormGroup>
-            <Label sm={2}>{componentType}</Label>
-            <select type='number' onChange={(ev) => { onChangeFunction(ev.target.value) }}>
-                <option>Select...</option>
-                {renderComponents(components)}
-            </select>
-        </FormGroup>
+        <select type='number' onChange={(ev) => { onChangeFunction(ev.target.value) }}>
+            <option value={0}>Select...</option>
+            {renderComponents(components)}
+        </select>
     )
 }
 

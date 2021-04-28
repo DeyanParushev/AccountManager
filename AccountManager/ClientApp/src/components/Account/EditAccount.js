@@ -32,7 +32,7 @@ function EditAccount({ match, history }) {
         if (!account.hasOwnProperty('id')) {
             getAccount();
         }
-    }, [account]);
+    });
 
     function renderErrors(errorList) {
         

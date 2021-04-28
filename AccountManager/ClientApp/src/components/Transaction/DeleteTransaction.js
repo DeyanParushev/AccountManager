@@ -5,10 +5,7 @@ import { ExtractComponentFromRoute, ExtractIdFromUrl } from '../../utilityFuncti
 import ApplicationRoutes from '../api-authorization/ApplicationRoutes';
 
 class DeleteTransaction extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+    
     componentDidMount() {
         const componentType = ExtractComponentFromRoute(this.props.match.path);
         const id = ExtractIdFromUrl(this.props.match.url);

@@ -38,7 +38,7 @@ function EditTransaction({ match, history }) {
             fetchData();
         }
 
-    }, [transaction]);
+    });
 
     function renderErrors(errorList) {
         if (errorList && errorList.length > 0) {

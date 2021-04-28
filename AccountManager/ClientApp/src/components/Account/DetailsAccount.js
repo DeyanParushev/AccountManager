@@ -7,11 +7,14 @@ import { Link } from 'react-router-dom';
 import BackButton from '../utilities/BackButton';
 import ApplicationRoutes from '../api-authorization/ApplicationRoutes';
 import BalanceBar from '../Balance/BalanceBar';
+import Sort from '../../utilityFunctions/SortingFunctions';
+import CategoryFilter from '../FilterComponents/CategoryFilter';
 
 function DetailsAccount({ match, history }) {
     const context = useContext(UserContext);
     const [account, setAccount] = useState({});
     const [transactions, setTransactions] = useState([]);
+    const [filterredTransactions, setFilterredTransactions] = useState([]);
 
     useEffect(() => {
         if (!context.user.id) {
@@ -25,7 +28,8 @@ function DetailsAccount({ match, history }) {
                 responseAccount = await response.json();
                 setAccount(responseAccount);
                 const transactionList = responseAccount.incomes.concat(responseAccount.expenses);
-                setTransactions(transactionList);
+                const sortedTransactions = Sort.ByDate(transactionList);
+                setTransactions(sortedTransactions);
             }
         }
 
@@ -44,6 +48,7 @@ function DetailsAccount({ match, history }) {
             <Link to={ApplicationRoutes.Incomes.Create(account.id)}><Button outline color='success'>Add income</Button></Link>
             <Link to={ApplicationRoutes.Expenses.Create(account.id)}><Button outline color='danger'>Add expense</Button></Link>
             <hr />
+            <CategoryFilter transactions={transactions} filterTransactions={setFilterredTransactions} />
             <Table>
                 <thead style={{ background: 'lightblue' }}>
                     <tr>
@@ -54,10 +59,10 @@ function DetailsAccount({ match, history }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {renderTransactions(transactions)}
+                    {renderTransactions(filterredTransactions)}
                 </tbody>
-                <tfoot style={{background: 'lightblue'}}>
-                    <BalanceBar transactions={transactions} />
+                <tfoot style={{ background: 'lightblue' }}>
+                    <BalanceBar transactions={filterredTransactions} />
                 </tfoot>
             </Table>
             <Link to={ApplicationRoutes.Accounts.Edit(account.id)}><Button outline color='primary'>Edit Account</Button></Link>

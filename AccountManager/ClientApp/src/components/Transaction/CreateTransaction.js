@@ -61,9 +61,15 @@ const CreateTransaction = ({ match, history }) => {
                     </Col>
                 </FormGroup>
 
-                <FilterComponent onChangeFunction={setCategory} componentType='Categories' />
+                <FormGroup>
+                    <Label sm={2}>Category</Label>
+                    <FilterComponent onChangeFunction={setCategory} componentType='Categories' />
+                </FormGroup>
 
-                <FilterComponent onChangeFunction={setTag} componentType='Tags' />
+                <FormGroup>
+                    <Label sm={2}>Tag</Label>
+                    <FilterComponent onChangeFunction={setTag} componentType='Tags' />
+                </FormGroup>
 
                 <FormGroup>
                     <Label sm={2} for="description">Description</Label>

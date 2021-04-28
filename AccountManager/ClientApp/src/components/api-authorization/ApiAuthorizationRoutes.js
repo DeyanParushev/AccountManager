@@ -6,10 +6,7 @@ import Logout from './Logout';
 import { ApiRoutes } from './ApiAuthorizationConstants';
 
 export default class ApiAuthorizationRoutes extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+   
     render() {
         return (
             <React.Fragment>
