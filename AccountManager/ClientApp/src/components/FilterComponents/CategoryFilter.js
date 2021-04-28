@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { Label, Col } from 'reactstrap';
+import React, { useState, useEffect } from 'react';
+import { Label, Col, FormGroup } from 'reactstrap';
 import Filter from '../../utilityFunctions/FilterFunctions';
 import FilterComponent from './FilterComponent';
 
@@ -12,12 +12,12 @@ function CategoryFilter({ transactions, filterTransactions }) {
     }, [category, transactions, filterTransactions])
 
     return (
-        <Fragment>
-            <Label xs='3'>Filter by category</Label>
+        <FormGroup>
+            <Label sm={2}>Filter by category</Label>
             <Col sm={8}>
                 <FilterComponent componentType='Categories' onChangeFunction={setCategory} />
             </Col>
-        </Fragment>
+        </FormGroup>
     )
 }
 

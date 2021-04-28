@@ -6,14 +6,14 @@ function BalanceBar({ transactions }) {
         transactions.map(x => balance += Number(x.amount));
     }
 
-    const balanceColor = balance < 0 ? 'red' : 'darkgreen'
+    let fontColor = Number(balance) <= 0 ? 'red' : 'forestgreen';
     
     return (
         <Fragment>
             <tr>
                 <td><b>Balance</b></td>
                 <td></td>
-                <td style={{ color: balanceColor }}><b>{balance.toFixed(2)}</b></td>
+                <td style={{ color: fontColor }}><b>{balance.toFixed(2)}</b></td>
                 <td></td>
             </tr>
         </Fragment>
