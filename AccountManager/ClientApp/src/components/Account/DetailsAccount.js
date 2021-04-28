@@ -9,6 +9,7 @@ import ApplicationRoutes from '../api-authorization/ApplicationRoutes';
 import BalanceBar from '../Balance/BalanceBar';
 import Sort from '../../utilityFunctions/SortingFunctions';
 import CategoryFilter from '../FilterComponents/CategoryFilter';
+import SortingComponent from '../SortingComponent/SortingComponent';
 
 function DetailsAccount({ match, history }) {
     const context = useContext(UserContext);
@@ -28,8 +29,8 @@ function DetailsAccount({ match, history }) {
                 responseAccount = await response.json();
                 setAccount(responseAccount);
                 const transactionList = responseAccount.incomes.concat(responseAccount.expenses);
-                const sortedTransactions = Sort.ByDate(transactionList);
-                setTransactions(sortedTransactions);
+                const sortedByDate = Sort.ByDate(transactionList);
+                setTransactions(sortedByDate);
             }
         }
 
@@ -52,9 +53,9 @@ function DetailsAccount({ match, history }) {
             <Table>
                 <thead style={{ background: 'lightblue' }}>
                     <tr>
-                        <td><b>Date</b></td>
+                        <td><b>Date</b> <SortingComponent property='date' collection={transactions} setCollection={setTransactions} /></td>
                         <td><b>Category</b></td>
-                        <td><b>Amount</b></td>
+                        <td><b>Amount <SortingComponent property='amount' collection={transactions} setCollection={setTransactions} /></b></td>
                         <td><b>Actions</b></td>
                     </tr>
                 </thead>

@@ -30,6 +30,10 @@ code {
   color: rgb(219, 47, 44);
 }
 
+.fa-sort:hover {
+  cursor: pointer;
+}
+
 hr {
   height: 10px;
 }

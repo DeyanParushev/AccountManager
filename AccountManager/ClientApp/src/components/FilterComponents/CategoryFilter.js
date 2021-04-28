@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { FormGroup, Label, Col } from 'reactstrap';
+import { Label, Col } from 'reactstrap';
 import Filter from '../../utilityFunctions/FilterFunctions';
 import FilterComponent from './FilterComponent';
 
