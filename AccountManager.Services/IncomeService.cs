@@ -8,8 +8,8 @@
     using AutoMapper;
 
     using AccountManager.Data;
-    using AccountManager.Models;
     using AccountManager.DTOs;
+    using AccountManager.Models;
 
     public class IncomeService : IIncomeService
     {
@@ -90,7 +90,12 @@
 
             if (income != null)
             {
-                throw new ArgumentException("Account already exists");
+                throw new ArgumentException("Income already exists.");
+            }
+
+            if(!context.Categories.Any(x => x.Id == inputIncome.CategoryId))
+            {
+                throw new ArgumentException("Category does not exist.");
             }
 
             inputIncome.Id = Guid.NewGuid().ToString();

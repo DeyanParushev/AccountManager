@@ -9,10 +9,11 @@
         public string Id { get; set; }
 
         [Required]
-        [Range(0, double.MaxValue)]
+        [Range(0, double.MaxValue, ErrorMessage = "Amount must be a positive number.")]
         public decimal Amount { get; set; }
 
         [Required]
+        [Range(1, int.MaxValue)]
         public int CategoryId { get; set; }
 
         [Required]

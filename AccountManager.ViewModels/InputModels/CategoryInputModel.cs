@@ -4,7 +4,7 @@ namespace AccountManager.ViewModels.InputModels
 {
     public class CategoryInputModel
     {
-        [Range(0, int.MaxValue)]
+        [Range(1, int.MaxValue, ErrorMessage = "Category Id must be a positive number.")]
         public int Id { get; set; }
 
         [Required]

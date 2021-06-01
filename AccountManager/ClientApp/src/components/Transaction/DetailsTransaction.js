@@ -16,7 +16,7 @@ const DetailsTransaction = ({ match, history }) => {
 
     useEffect(() => {
         let transactionResponse = {};
-        
+
         if (!context.user.id) {
             history.push(ApplicationRoutes.Login);
         }
@@ -42,13 +42,7 @@ const DetailsTransaction = ({ match, history }) => {
         // Creates two requests!!
     }, [transaction]);
 
-    function transactionColor() {
-        if (transactionType === 'Expenses') {
-            return 'red';
-        } else {
-            return 'green';
-        }
-    }
+    const textColor = transactionType === 'Expenses' ? 'red' : 'lightgreen';
 
     return (
         <Fragment>
@@ -65,7 +59,7 @@ const DetailsTransaction = ({ match, history }) => {
                     </tr>
                     <tr>
                         <td><b>Amount</b></td>
-                        <td style={{ color: transactionColor() }}>{transaction.amount}</td>
+                        <td style={{ color: textColor }}><b>{transaction.amount}</b></td>
                     </tr>
                     <tr>
                         <td><b>Description</b></td>

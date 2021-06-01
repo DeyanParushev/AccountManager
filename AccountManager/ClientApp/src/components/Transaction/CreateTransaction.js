@@ -37,7 +37,15 @@ const CreateTransaction = ({ match, history }) => {
             } else {
                 setCreateSuccessfull(false);
                 const responseError = await response.json();
-                setErrors(responseError.errors);
+
+                if(typeof(responseError) === 'string'){
+                    setErrors(responseError);
+                    return;
+                }
+
+                const errorList = responseError.errors;
+                const errorsMessages = Object.values(errorList).flat(4);
+                setErrors(errorsMessages);
             }
         }
 
@@ -45,10 +53,12 @@ const CreateTransaction = ({ match, history }) => {
     }
 
     function renderErrors(errorList) {
+        console.log(errorList);
         if (errorList !== undefined && errorList.length > 0) {
-            return errorList.map(x => <div key={x}><span><b style={{ color: 'red' }}>{errorList[x]}</b></span></div>)
+            return errorList.map(x => <div key={errorList.indexOf(x)    }><span><b style={{ color: 'red' }}>{x}</b></span></div>)
+        } else {
+            return <div><span><b style={{ color: 'red' }}>{errorList}</b></span></div>
         }
-        return null;
     }
 
     return (
@@ -77,6 +87,7 @@ const CreateTransaction = ({ match, history }) => {
                         <Input type='text-area' id="description" name="description" />
                     </Col>
                 </FormGroup>
+                
                 {createSucessfull ? <span style={{ color: 'lightgreen' }}><b>Success</b></span> : renderErrors(errors)}
                 <Col>
                     <Button outline color="success" >Create</Button>
